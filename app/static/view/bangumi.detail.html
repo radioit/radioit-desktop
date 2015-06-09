@@ -1,0 +1,61 @@
+<md-card>
+    <div class="md-actions" layout="row" layout-align="space-between center">
+        <md-button class="md-icon-button" ng-click="bangumiDetail.goBack()" aria-label="back">
+            <md-tooltip md-autohide md-direction="right">Back to list</md-tooltip>
+            <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="back">arrow_back</md-icon>
+        </md-button>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="bangumiDetail.reload()" aria-label="refresh">
+            <md-tooltip md-autohide md-direction="left">Refresh</md-tooltip>
+            <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="refresh">refresh</md-icon>
+        </md-button>
+    </div>
+    <img src="{{ bangumiDetail.data.image }}" class="md-card-image" alt="{{ bangumiDetail.data.name }}">
+    <md-card-content>
+        <h1 class="md-display-1">{{ bangumiDetail.data.name }}</h1>
+        <md-list class="bangumi-detail-list">
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="home">home</md-icon>
+                <p title="homepage"><a class="link" ng-click="app.openUrl(bangumiDetail.data.homepage)">{{ bangumiDetail.data.homepage }}</a></p>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="description">description</md-icon>
+                <pre title="description">{{ bangumiDetail.data.description }}</pre>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="subtitles">subtitles</md-icon>
+                <p title="title">{{ bangumiDetail.data.title }}</p>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="comment">comment</md-icon>
+                <pre title="comment">{{ bangumiDetail.data.comment }}</pre>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="schedule">schedule</md-icon>
+                <pre title="schedule">{{ bangumiDetail.data.schedule }}</pre>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="today">today</md-icon>
+                <p title="update">{{ bangumiDetail.data.update }}</p>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="perm_identity">perm_identity</md-icon>
+                <p title="personality">{{ bangumiDetail.data.personality }}</p>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="supervisor_account">supervisor_account</md-icon>
+                <p title="guest">{{ bangumiDetail.data.guest }}</p>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="photo">photo</md-icon>
+                <p>
+                    <img alt="images" src="static/image/spinner.gif" lazy-img="{{ value }}" ng-repeat="value in bangumiDetail.data.images">
+                </p>
+            </md-list-item>
+            <md-list-item layout="row" layout-align="space-between start">
+                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="audiotrack">audiotrack</md-icon>
+                <p title="audio" class="long-string-wrapper"><span class="long-string-inner">{{ bangumiDetail.data.audio }}</span></p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,67 @@
+vendors = offical
+.toogle-left
+.toogle-right
+.slide-left
+.slide-right
+    transition-timing-function cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    transition-duration 250ms
+
+.toogle-left
+    &.ng-hide-add
+        transform translateX(0)
+        opacity 1
+        &.ng-hide-add-active
+            transform translateX(-100%)
+            opacity 0
+    &.ng-hide-remove
+        transform translateX(-100%)
+        display block !important
+        opacity 0
+        &.ng-hide-remove-active
+            transform translateX(0)
+            opacity 1
+
+.toogle-right
+    &.ng-hide-add
+        transform translateX(0)
+        opacity 1
+        &.ng-hide-add-active
+            transform translateX(100%)
+            opacity 0
+    &.ng-hide-remove
+        transform translateX(100%)
+        display block !important
+        opacity 0
+        &.ng-hide-remove-active
+            transform translateX(0)
+            opacity 1
+
+.slide-left
+    &.ng-hide-add
+        transform translateX(0)
+        opacity 1
+        &.ng-hide-add-active
+            transform translateX(-100%)
+            opacity 0
+    &.ng-hide-remove
+        transform translateX(100%)
+        display block !important
+        opacity 0
+        &.ng-hide-remove-active
+            transform translateX(0)
+            opacity 1
+
+.slide-right
+    &.ng-hide-add
+        transform translateX(0)
+        opacity 1
+        &.ng-hide-add-active
+            transform translateX(100%)
+            opacity 0
+    &.ng-hide-remove
+        transform translateX(-100%)
+        display block !important
+        opacity 0
+        &.ng-hide-remove-active
+            transform translateX(0)
+            opacity 1

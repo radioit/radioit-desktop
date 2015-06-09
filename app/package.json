@@ -1,0 +1,40 @@
+{
+  "name": "Radioit",
+  "description": "radioit desktop edition",
+  "version": "0.1.0",
+  "main": "main.js",
+  "author": "exoticknight",
+  "mail": "draco.knight0@gmail.com",
+  "devDependencies": {
+    "jshint": "latest",
+    "rimraf": "latest",
+    "electron-packager": "latest",
+    "electron-prebuilt": "latest",
+    "silence-chromium": "latest",
+    "mkdirp": "latest",
+    "nib": "latest",
+    "stylus": "latest",
+    "uglifyjs": "latest",
+    "browserify": "latest",
+    "watchify": "latest"
+  },
+  "scripts": {
+    "clean:test": "rimraf test",
+    "clean:dist": "rimraf dist",
+    "build:css": "stylus -u nib src/css/app.styl -o static/css/app.css -c",
+    "build:js": "browserify src/modules/main.js | uglifyjs > static/js/bundle.min.js",
+    "package": "npm run build:css && electron-packager . Radioit --icon=static/app.ico",
+    "start": "npm run build:js && npm run build:css && electron main.js 2>&1 | silence-chromium",
+    "test": "electron main.js 2>&1 | silence-chromium",
+    "watch:css": "stylus -u nib src/css/app.styl -o static/css/app.css -w",
+    "watch:js": "watchify src/modules/main.js | uglifyjs > static/js/bundle.js"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.25",
+    "cheerio": "^0.19.0",
+    "deepcopy": "^0.5.0",
+    "extend": "^2.0.1",
+    "superagent": "^1.2.0",
+    "superagent-bluebird-promise": "^2.0.2"
+  }
+}

@@ -1,0 +1,149 @@
+// vars
+// --------------------------------
+$appHeight = 600px
+// --------------------------------
+
+// mixins
+// --------------------------------
+buildIconSelector(size)
+    .md-{size}
+        font-size unit(size, px)
+// --------------------------------
+
+// animation
+@import "animation"
+
+// color
+@import "color"
+
+// global style
+html
+    max-height $appHeight
+    overflow hidden
+
+body
+    overflow hidden
+    transition-timing-function cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    transition-duration 250ms
+
+h1
+h2
+h3
+h4
+h5
+h6
+    margin-bottom 1rem
+    margin-top 1rem
+
+pre
+    flex 1
+    margin 0
+    white-space pre-wrap
+    text-rendering optimizeLegibility
+    font-family RobotoDraft, Roboto, 'Helvetica Neue', sans-serif
+
+$iconSize = 24 32 48
+for $size in $iconSize
+    buildIconSelector($size)
+
+.long-string-wrapper
+    overflow-x scroll
+    &::-webkit-scrollbar
+        width 0
+        height 0
+        line-height 0
+    .long-string-inner
+        white-space nowrap
+
+a
+    &.link
+        color #4472B9
+        text-decoration none
+        border-bottom 2px solid transparent
+        cursor pointer
+        &:hover
+            color #333
+            border-bottom-color #999
+        &:active
+            outline none
+
+::-webkit-scrollbar
+    width 10px
+
+::-webkit-scrollbar-track
+    background none
+
+::-webkit-scrollbar-thumb
+    transition background-color .3s
+    background-color rgba(0,0,0,0.3)
+
+::-webkit-scrollbar-thumb:hover
+    background-color rgba(0,0,0,0.6)
+
+// app layer
+.title-bar
+    height 28px
+    line-height 28px
+    background-color linear-gradient(to top, #e6e6e6, #ffffff)
+    color #6e6e6e
+    font-weight 600
+    -webkit-user-select none
+    -webkit-app-region drag
+    p
+        text-align center
+    div
+    button
+        -webkit-app-region no-drag
+
+// close button
+#close-button
+    width 10px
+    height 10px
+    margin-right 5px
+    border-radius 50%
+    cursor pointer
+    background-color lightness(#C0392B, 80%)
+    &:hover
+        background-color #C0392B
+
+// minimize button
+#mini-button
+    width 10px
+    height 10px
+    margin-right 5px
+    border-radius 50%
+    cursor pointer
+    background-color lightness(#F1C40F, 80%)
+    &:hover
+        background-color #F1C40F
+
+// weekday list
+.weekday-menu
+    md-list
+        padding 0
+
+// content
+.bangumi-area
+    height 500px
+
+// bangumi list
+.bangumi-list-wrapper
+    h5
+        padding-left 20px
+
+// bangumi detail
+.bangumi-detail-list
+    md-list-item
+        min-height 0
+        padding 0
+        margin 20px 0
+    md-icon
+        margin 0 !important
+        webkit-user-select none
+    p
+    pre
+        line-height 24px
+        padding-left 15px
+    p
+        img
+            vertical-align middle
