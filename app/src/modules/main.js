@@ -1,4 +1,4 @@
-angular.module( 'radioit', [
+module.exports = angular.module( 'radioit', [
     'ngMaterial',
     'ui.router',
     'angularLazyImg',
@@ -13,11 +13,6 @@ angular.module( 'radioit', [
             url: '/',
             templateUrl: 'static/view/default.html'
         });
-
-    // $mdThemingProvider.theme( 'default' )
-    //     .primaryPalette( 'indigo' )
-    //     .accentPalette( 'light-blue' )
-    //     .warnPalette( 'amber' );
 })
 
 .run( function ( $rootScope, $mdToast ) {
@@ -69,6 +64,8 @@ angular.module( 'radioit', [
     }
 ])
 
+.service( 'appManagerService', require( './app/appManagerService' ) )
+
 .service( 'appConfig',
     [ '$window',
     function ( $window ) {
@@ -108,4 +105,7 @@ angular.module( 'radioit', [
             $window.App.openExternelUrl( url );
         };
     }
-]);
+])
+;
+
+require( './directives' );
