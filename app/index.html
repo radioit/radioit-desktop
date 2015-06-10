@@ -14,10 +14,10 @@
 <div ng-controller="AppCtrl as app">
 <!-- title bar start -->
 <div class="title-bar bg-color-grey" layout="row" layout-align="start center">
-    <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="radio">radio</md-icon>
+    <md-icon md-font-library="material-icons" aria-label="radio">radio</md-icon>
     <p flex layout-align="center center">{{ app.config.appName }}</p>
-    <div id="mini-button" onclick="window.App.minimize()"></div>
-    <div id="close-button" onclick="window.App.quit()"></div>
+    <div minimize-button></div>
+    <div close-button></div>
 </div>
 <!-- title bar end -->
 
@@ -27,12 +27,12 @@
         <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Settings">
                 <md-tooltip md-autohide>Settings</md-tooltip>
-                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="settings">settings</md-icon>
+                <md-icon md-font-library="material-icons" aria-label="settings">settings</md-icon>
             </md-button>
         </div>
     </span>
-    <md-progress-circular id="loadingSpinner" md-mode="indeterminate" class="md-warn" ng-show="app.isLoading()"></md-progress-circular>
     <span flex></span>
+    <md-progress-circular id="loadingSpinner" md-mode="indeterminate" class="md-warn" ng-show="app.isLoading()"></md-progress-circular>
     <span ng-controller="CatalogueSwitchCtrl as catalogueSwitch">
         <md-select placeholder="Pick" ng-model="catalogueSwitch.selectedCatalogue" ng-change="catalogueSwitch.switch()">
             <md-option ng-value="catalogue.id" ng-repeat="catalogue in catalogueSwitch.list">{{ catalogue.name }}</md-option>
@@ -41,20 +41,23 @@
 </md-toolbar>
 <!-- toolbar end -->
 
-<!-- weekday left start -->
 <div layout="row">
+    <!-- weekday left start -->
     <span class="weekday-menu" ng-controller="WeekdayCtrl as weekday">
         <md-list>
-            <md-list-item ng-repeat="day in weekday.day">
-                <md-button ng-class="{'md-raised' : weekday.isSelected(day.id), 'md-primary' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">{{ day.name }}</md-button>
+            <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">
+                <!-- <md-button ng-class="{'md-raised' : weekday.isSelected(day.id), 'md-primary' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">{{ day.name }}</md-button> -->
+                <div>{{ day.name }}</div>
             </md-list-item>
         </md-list>
     </span>
+    <!-- weekday left end -->
+    <!-- bangumi content start -->
     <md-content class="bangumi-area" flex md-scroll-y>
         <div ui-view></div>
     </md-content>
+    <!-- bangumi content end -->
 </div>
-<!-- weekday left end -->
 
 </div><!-- AppCtrl end -->
 
@@ -63,20 +66,17 @@ require( './lib/app.js' );
 </script>
 
 <!-- Angular Material Dependencies -->
-<!-- <script src="static/js/angular.min.js"></script> -->
-<script src="bower_components/angular/angular.js"></script>
-<script src="static/js/angular-ui-router.min.js"></script>
+<script src="static/js/angular.min.js"></script>
 <script src="static/js/angular-animate.min.js"></script>
 <script src="static/js/angular-aria.min.js"></script>
-<script src="static/js/angular-material.min.js"></script>
-<!-- <script src="static/js/angular-material-icons.min.js"></script>
-<script src="static/js/svg-morpheus.js"></script> -->
+<script src="static/js/angular-material.js"></script>
+<script src="static/js/angular-ui-router.min.js"></script>
 
 <!-- Angular vendors -->
 <script src="static/js/angular-lazy-img.min.js"></script>
 
 <!-- startup angular app -->
-<script src="static/js/bundle.min.js"></script>
+<script src="static/js/bundle.js"></script>
 
 </body>
 </html>
