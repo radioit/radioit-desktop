@@ -131,7 +131,8 @@ var onsen = {
                     'title': $( '#newProgramWrap .programContHeader h1' ).text().trim(),
                     'comment': $( '.newProgramRight p' ).text().trim(),
                     'schedule': $( '#updateText' ).text().trim(),
-                    'personality': $( '.personality02' ).map( function () {return $( this ).text().trim();} ).get().join( ' ' ),
+                    'update': $( '.newProgramUpdate' ).text().trim(),
+                    'personality': $( '.personality02' ).map( function () { return $( this ).text().trim();} ).get().join( ' ' ),
                     'guest': '',
                     'images': $( '.newProgramLeft > img' ).map( function () {return url.resolve( URLs.bangumi, id ) + '/' + $( this ).attr( 'src' );}).get(),
                     'audio': url.resolve( URLs.audio, id )
