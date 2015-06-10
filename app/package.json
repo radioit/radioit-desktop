@@ -16,18 +16,22 @@
     "stylus": "latest",
     "uglifyjs": "latest",
     "browserify": "latest",
-    "watchify": "latest"
+    "watchify": "latest",
+    "parallelshell": "latest"
   },
   "scripts": {
     "clean:test": "rimraf test",
     "clean:dist": "rimraf dist",
-    "build:css": "stylus -u nib src/css/app.styl -o static/css/app.css -c",
-    "build:js": "browserify src/modules/main.js | uglifyjs > static/js/bundle.min.js",
-    "package": "npm run build:css && electron-packager . Radioit --icon=static/app.ico",
-    "start": "npm run build:js && npm run build:css && electron main.js 2>&1 | silence-chromium",
-    "test": "electron main.js 2>&1 | silence-chromium",
+    "build:css": "stylus -u nib src/css/app.styl -o static/css/app.css",
+    "build:js": "browserify src/modules/entry.js -o static/js/bundle.js",
+    "release:css": "stylus -u nib src/css/app.styl -o static/css/app.css -c",
+    "release:js": "browserify src/modules/entry.js | uglifyjs > static/js/bundle.js",
     "watch:css": "stylus -u nib src/css/app.styl -o static/css/app.css -w",
-    "watch:js": "watchify src/modules/main.js | uglifyjs > static/js/bundle.js"
+    "watch:js": "watchify src/modules/entry.js -o static/js/bundle.js",
+    "test": "electron main.js 2>&1 | silence-chromium",
+    "test:js": "parallelshell \"npm run watch:js\" \"npm run test\"",
+    "start": "npm run build:js && npm run build:css && electron main.js 2>&1 | silence-chromium",
+    "package": "npm run release:js && npm run release:css && electron-packager . Radioit --icon=static/app.ico"
   },
   "dependencies": {
     "bluebird": "^2.9.25",
