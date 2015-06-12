@@ -7,18 +7,18 @@ module.exports = function ( $stateProvider ) {
                 list: function ( $q, $rootScope, $stateParams, bangumiService ) {
                     var deferred = $q.defer();
 
-                    $rootScope.$emit( 'notify', '获取数据中...' );
+                    $rootScope.$emit( 'notify', 'Loading...' );
                     console.log('list start');
 
                     bangumiService.getList( $stateParams.catalogueID )
                         .then( function ( data ) {
                             console.log( data );
-                            $rootScope.$emit( 'notify', '获取成功', 3000 );
+                            $rootScope.$emit( 'notify', 'Success', 3000 );
                             deferred.resolve( data );
                         },
                         function ( err ) {
                             console.log( err );
-                            $rootScope.$emit( 'notify', '获取失败', 3000 );
+                            $rootScope.$emit( 'notify', 'Failed', 3000 );
                             deferred.reject( err );
                         })
                         .done();
@@ -37,18 +37,18 @@ module.exports = function ( $stateProvider ) {
                 detail: function ( $q, $rootScope, $stateParams, bangumiService ) {
                     var deferred = $q.defer();
 
-                    $rootScope.$emit( 'notify', '获取数据中...' );
+                    $rootScope.$emit( 'notify', 'Loading...' );
                     console.log('detail start');
 
                     bangumiService.getDetail( $stateParams.catalogueID, $stateParams.bangumiID )
                         .then( function ( data ) {
                             console.log( data );
-                            $rootScope.$emit( 'notify', '获取成功', 3000 );
+                            $rootScope.$emit( 'notify', 'Success', 3000 );
                             deferred.resolve( data );
                         },
                         function ( err ) {
                             console.log( err );
-                            $rootScope.$emit( 'notify', '获取失败', 3000 );
+                            $rootScope.$emit( 'notify', 'Failed', 3000 );
                             deferred.reject( err );
                         })
                         .done();

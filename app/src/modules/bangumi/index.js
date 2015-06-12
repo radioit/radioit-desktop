@@ -7,11 +7,7 @@ module.exports = angular.module( 'radioit.bangumi', ['ui.router'] )
     $rootScope.$on( '$stateChangeError',
         function ( event, toState, toParams, fromState, fromParams, error ) {
             event.preventDefault();
-            $rootScope.$emit( 'notify', '载入失败', 3000 );
-        });
 
-    $rootScope.$on( '$stateChangeError',
-        function ( event, toState, toParams, fromState, fromParams, error ) {
             if ( toState.name === 'catalogue.bangumi' ) {
                 console.log( 'failed to load detail' );
             }
@@ -21,7 +17,7 @@ module.exports = angular.module( 'radioit.bangumi', ['ui.router'] )
         function( event, toState, toParams, fromState, fromParams ){
             if ( bangumiService.isBusy() ) {
                 event.preventDefault();
-                $rootScope.$emit( 'notify', '等候上一次获取数据的完成...' );
+                $rootScope.$emit( 'notify', 'Please wait for last loading...' );
             }
         });
 })
