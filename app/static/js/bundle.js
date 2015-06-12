@@ -1,16 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = [ '$window',
-    function ( $window ) {
-        this.quit = function () {
-            $window.App.quit();
-        };
-
-        this.minimize = function () {
-            $window.App.minimize();
-        };
-    }
-]
-},{}],2:[function(require,module,exports){
 module.exports = [ '$state', '$scope', '$stateParams', 'detail',
     function ( $state, $scope, $stateParams, detail ) {
         var vm = this;
@@ -36,7 +24,7 @@ module.exports = [ '$state', '$scope', '$stateParams', 'detail',
         vm.data = angular.merge( detail, $scope.bangumiToBeLoaded );
     }
 ]
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 module.exports = [ '$state', '$stateParams', '$scope', 'bangumiListRestrict', 'list',
     function ( $state, $stateParams, $scope, bangumiListRestrict, list ) {
         var vm = this;
@@ -79,7 +67,7 @@ module.exports = [ '$state', '$stateParams', '$scope', 'bangumiListRestrict', 'l
         };
     }
 ]
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ) {
         var busy = false;
@@ -120,7 +108,7 @@ module.exports = [ '$window',
         };
     }
 ]
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function ( $stateProvider ) {
     $stateProvider
         .state( 'catalogue', {
@@ -183,7 +171,7 @@ module.exports = function ( $stateProvider ) {
             controllerAs: 'bangumiDetail'
         });
 }
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = angular.module( 'radioit.bangumi', ['ui.router'] )
 
 .config( require( './config' ) )
@@ -217,7 +205,7 @@ module.exports = angular.module( 'radioit.bangumi', ['ui.router'] )
 .controller( 'BangumiListCtrl', require( './BangumiListCtrl' ) )
 
 .controller( 'BangumiDetailCtrl', require( './BangumiDetailCtrl' ) );
-},{"./BangumiDetailCtrl":2,"./BangumiListCtrl":3,"./bangumiService":4,"./config":5}],7:[function(require,module,exports){
+},{"./BangumiDetailCtrl":1,"./BangumiListCtrl":2,"./bangumiService":3,"./config":4}],6:[function(require,module,exports){
 module.exports = [ '$scope', '$state', 'catalogueService', 'bangumiListRestrict',
     function( $scope, $state, catalogueService, bangumiListRestrict ){
         var vm = this;
@@ -235,7 +223,7 @@ module.exports = [ '$scope', '$state', 'catalogueService', 'bangumiListRestrict'
         }
     }
 ]
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ){
         this.getList = function () {
@@ -243,7 +231,7 @@ module.exports = [ '$window',
         };
     }
 ]
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = angular.module( 'radioit.catalogue', ['ui.router'] )
 
 .run( function ( $rootScope ) {
@@ -261,26 +249,50 @@ module.exports = angular.module( 'radioit.catalogue', ['ui.router'] )
 
 .controller( 'CatalogueSwitchCtrl', require( './CatalogueSwitchCtrl' ) )
 ;
-},{"./CatalogueSwitchCtrl":7,"./catalogueService":8}],10:[function(require,module,exports){
+},{"./CatalogueSwitchCtrl":6,"./catalogueService":7}],9:[function(require,module,exports){
+var radioit = require( './main' );
+
+radioit.controller( 'AppCtrl',
+    [ '$scope', '$window', 'bangumiService',
+    function ( $scope, $window, bangumiService ) {
+        var vm = this;
+
+        // settings
+        // ----------------------------------------------
+        vm.config = {
+            appName: 'Radioit',
+        };
+
+        vm.isLoading = function () {
+            return bangumiService.isBusy();
+        }
+
+        vm.openUrl = function ( url ) {
+            $window.App.openExternelUrl( url );
+        };
+    }
+])
+;
+},{"./main":11}],10:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.directive( 'closeButton',
-    [ 'appManagerService',
-    function ( appManager ) {
+    [ 'appService',
+    function ( app ) {
         return function ( scope, el ) {
             el.on( 'click', function () {
-                appManager.quit();
+                app.quit();
             });
         }
     }]
 )
 
 .directive( 'minimizeButton',
-    [ 'appManagerService',
-    function ( appManager ) {
+    [ 'appService',
+    function ( app ) {
         return function ( scope, el ) {
             el.on( 'click', function () {
-                appManager.minimize();
+                app.minimize();
             });
         }
     }]
@@ -350,54 +362,32 @@ module.exports = angular.module( 'radioit', [
             return _currentDay;
         };
     }
-])
+]);
 
-.service( 'appManagerService', require( './app/appManagerService' ) )
+require( './services' );
+require( './controllers' );
+require( './directives' );
+},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./services":12,"./weekday":13}],12:[function(require,module,exports){
+var radioit = require( './main' );
 
-.service( 'appConfig',
+radioit.service( 'appService',
     [ '$window',
     function ( $window ) {
-        ;
-    }
-])
-
-.service( 'cacheService',
-    [ '$window',
-    function ( $window ){
-        this.cache = function ( json ) {
-            ;
+        this.quit = function () {
+            $window.App.quit();
         };
 
-        this.save = function () {
-            ;
-        };
-    }
-])
-
-.controller( 'AppCtrl',
-    [ '$scope', '$window', 'appConfig', 'bangumiService',
-    function ( $scope, $window, appConfig, bangumiService ) {
-        var vm = this;
-
-        // settings
-        // ----------------------------------------------
-        vm.config = {
-            appName: 'Radioit',
+        this.minimize = function () {
+            $window.App.minimize();
         };
 
-        vm.isLoading = function () {
-            return bangumiService.isBusy();
-        }
-
-        vm.openUrl = function ( url ) {
+        this.openUrl = function ( url ) {
             $window.App.openExternelUrl( url );
         };
     }
 ])
 ;
-
-require( './directives' );
-},{"./app/appManagerService":1,"./bangumi":6,"./catalogue":9,"./directives":10,"./weekday":12}],12:[function(require,module,exports){
+},{"./main":11}],13:[function(require,module,exports){
 module.exports = angular.module( 'radioit.weekday', [] )
 
 .controller( 'WeekdayCtrl',
@@ -425,6 +415,6 @@ module.exports = angular.module( 'radioit.weekday', [] )
         };
     }
 ]);
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require( './main' )
-},{"./main":11}]},{},[13]);
+},{"./main":11}]},{},[14]);

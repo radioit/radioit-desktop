@@ -1,4 +1,7 @@
-module.exports = [ '$window',
+var radioit = require( './main' );
+
+radioit.service( 'appService',
+    [ '$window',
     function ( $window ) {
         this.quit = function () {
             $window.App.quit();
@@ -7,5 +10,10 @@ module.exports = [ '$window',
         this.minimize = function () {
             $window.App.minimize();
         };
+
+        this.openUrl = function ( url ) {
+            $window.App.openExternelUrl( url );
+        };
     }
-]
+])
+;

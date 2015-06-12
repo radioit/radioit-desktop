@@ -1,22 +1,22 @@
 var radioit = require( './main' );
 
 radioit.directive( 'closeButton',
-    [ 'appManagerService',
-    function ( appManager ) {
+    [ 'appService',
+    function ( app ) {
         return function ( scope, el ) {
             el.on( 'click', function () {
-                appManager.quit();
+                app.quit();
             });
         }
     }]
 )
 
 .directive( 'minimizeButton',
-    [ 'appManagerService',
-    function ( appManager ) {
+    [ 'appService',
+    function ( app ) {
         return function ( scope, el ) {
             el.on( 'click', function () {
-                appManager.minimize();
+                app.minimize();
             });
         }
     }]

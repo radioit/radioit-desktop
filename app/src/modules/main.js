@@ -62,50 +62,8 @@ module.exports = angular.module( 'radioit', [
             return _currentDay;
         };
     }
-])
+]);
 
-.service( 'appManagerService', require( './app/appManagerService' ) )
-
-.service( 'appConfig',
-    [ '$window',
-    function ( $window ) {
-        ;
-    }
-])
-
-.service( 'cacheService',
-    [ '$window',
-    function ( $window ){
-        this.cache = function ( json ) {
-            ;
-        };
-
-        this.save = function () {
-            ;
-        };
-    }
-])
-
-.controller( 'AppCtrl',
-    [ '$scope', '$window', 'appConfig', 'bangumiService',
-    function ( $scope, $window, appConfig, bangumiService ) {
-        var vm = this;
-
-        // settings
-        // ----------------------------------------------
-        vm.config = {
-            appName: 'Radioit',
-        };
-
-        vm.isLoading = function () {
-            return bangumiService.isBusy();
-        }
-
-        vm.openUrl = function ( url ) {
-            $window.App.openExternelUrl( url );
-        };
-    }
-])
-;
-
+require( './services' );
+require( './controllers' );
 require( './directives' );
