@@ -31,13 +31,14 @@ app.on( 'ready', appReady );
 function appReady () {
 
     mainWindow = new BrowserWindow({
-        'width': 1024,
-        'height': 600,
+        'width': 1028,
+        'height': 604,
         'resizable': false,
         'accept-first-mouse': true,
         'title': APP_NAME,
         'show': false,
-        'frame': false
+        'frame': false,
+        'transparent': true
     });
 
     mainWindow.loadUrl( INDEX );

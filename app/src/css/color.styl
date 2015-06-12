@@ -1,7 +1,35 @@
-buildColorSelector(nameColorPairs)
-    for $pair in nameColorPairs
-        .md-{$pair[0]}
-            color $pair[1]
+$BLACK = #263238
+$LIGHT_BLACK = lighten($BLACK, 10%)
+$WHITE = #f5f5f5
+$GREY = #a9a9a9
+$LIGHT_GREY = lighten($GREY, 10%)
+$DARK_GREY = darken($GREY, 10%)
+$BLUE = #3F51B5
+$GREEN = #48984b
+$RED = #ca3e2d
+$YELLOW = #ebdd4d
+$PINK = #ba174e
 
-$nameColorPairs = 'black' #000, 'white' #fff, 'grey' #eee, 'blue' #3F51B5
-buildColorSelector($nameColorPairs)
+buildBackgroundColorSelector(nameColorPairs)
+    for $pair in nameColorPairs
+        .paper-bg-{$pair[0]}
+            background $pair[1]
+
+$nameColorPairs = 'black' $BLACK, 'light-black' $LIGHT_BLACK,
+    'white' $WHITE,
+    'grey' $GREY,
+    'blue' $BLUE,
+    'green' $GREEN
+buildBackgroundColorSelector($nameColorPairs)
+
+buildTextColorSelector(nameColorPairs)
+    for $pair in nameColorPairs
+        .paper-text-{$pair[0]}
+            color $pair[1]
+            md-icon
+                color $pair[1]
+
+$nameColorPairs = 'grey' $LIGHT_GREY,  'light-grey' $LIGHT_GREY, 'dark-grey' $DARK_GREY,
+    'white' $WHITE
+buildTextColorSelector($nameColorPairs)
+

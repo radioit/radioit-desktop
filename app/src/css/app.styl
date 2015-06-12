@@ -1,6 +1,8 @@
 // vars
 // --------------------------------
-$appHeight = 600px
+$appHeight = 604px
+$titleHeight = 50px
+$contentHeight = $appHeight - $titleHeight
 // --------------------------------
 
 // mixins
@@ -16,16 +18,37 @@ buildIconSelector(size)
 // color
 @import "color"
 
+.transition-enable
+    transition-timing-function cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    transition-duration 250ms
+    transition-property all
+
+*[no-select]
+    -webkit-user-select none
+
+*[no-drag]
+    -webkit-app-region no-drag
+
+.title-high
+    height $titleHeight
+
+.content-high
+    height $contentHeight
+
+$iconSize = 24 32 48
+for $size in $iconSize
+    buildIconSelector($size)
+
 // global style & reset
 html
     max-height $appHeight
     overflow hidden
+    background transparent
 
 body
+    @extend .transition-enable
     overflow hidden
-    transition-timing-function cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    transition-duration 250ms
-    background-color #a8a8a8
+    background transparent
 
 h1
 h2
@@ -42,10 +65,6 @@ pre
     white-space pre-wrap
     text-rendering optimizeLegibility
     font-family RobotoDraft, Roboto, 'Helvetica Neue', sans-serif
-
-$iconSize = 24 32 48
-for $size in $iconSize
-    buildIconSelector($size)
 
 .long-string-wrapper
     overflow-x scroll
@@ -75,77 +94,86 @@ a
     background none
 
 ::-webkit-scrollbar-thumb
-    transition background-color .3s
-    background-color rgba(0,0,0,0.3)
+    @extend .transition-enable
+    background $LIGHT_GREY
 
 ::-webkit-scrollbar-thumb:hover
-    background-color rgba(0,0,0,0.6)
+    background $LIGHT_GREY
+
+// app layer
+#app
+    box-shadow 0px 0px 4px 0px rgba(0,0,0,0.7)
+    margin auto
+    width calc(100% - 4px)
+    margin-top 2px
+    background $WHITE // basic background color
+
+// titlebar
+.titlebar
+    @extend .title-high
+    width 100%
+    -webkit-app-region drag
+    >div
+        height inherit
+        font-weight 600
+
+// control button
+.titlebar-button
+    @extend .transition-enable
+    @extend *[no-drag]
+    @extend *[no-select]
+    display inherit
+    position relative
+    height 100%
+    padding 0 13px
+    color $DARK_GREY
+    cursor pointer
+    md-icon
+        color $DARK_GREY
+    &.active
+    &:hover
+        color $WHITE
+        background rgba(0,0,0,0.15)
+        &::after
+            content ''
+            position absolute
+            left 1px
+            bottom 1px
+            width calc(100% - 2px)
+            height 2px
+            background $WHITE
+        md-icon
+            color $WHITE
+    p
+        padding-left 5px
 
 md-select:not([disabled]):focus
     .md-select-label
         color inherit
 
 md-select
+    padding 0
     .md-select-label
         &.md-placeholder
             color inherit
-
-// app layer
-.title-bar
-    height 28px
-    line-height 28px
-    background: linear-gradient(to bottom, #cfcfcf, #a8a8a8)
-    font-weight 600
-    -webkit-user-select none
-    -webkit-app-region drag
-    p
-        margin 0
-        text-align center
-    div
-    button
-        -webkit-app-region no-drag
-
-// minimize button
-div[minimize-button]
-    width 10px
-    height 10px
-    margin-right 10px
-    border-radius 50%
-    cursor pointer
-    box-shadow 0 -1px 1px 0 rgba(0, 0, 0, 0.3) inset, 0 1px 3px 0 rgba(0, 0, 0, 0.80) inset, 0 1px 0px 0 rgba(255, 255, 255, 0.40)
-    background linear-gradient(to bottom, #e59130, #ffdf4b)
-    &:hover
-        background #bb7e39
-
-// close button
-div[close-button]
-    width 10px
-    height 10px
-    margin-right 10px
-    border-radius 50%
-    cursor pointer
-    box-shadow 0 -1px 1px 0 rgba(0, 0, 0, 0.3) inset, 0 1px 3px 0 rgba(0, 0, 0, 0.80) inset, 0 1px 0px 0 rgba(255, 255, 255, 0.40)
-    background linear-gradient(to bottom, #f12519, #ff8684)
-    &:hover
-        background #c84840
-
-// toolbar
-md-toolbar
-    md-progress-circular
-        transform: scale(0.48) !important;
+    +md-progress-circular
+        transform scale(0.45) !important
 
 // weekday list
 .weekday-menu
+    border-right 1px solid $LIGHT_GREY
     md-list
-        padding 0
         md-list-item
+            color $LIGHT_GREY
             &.active
             &:hover
-                background white
+                color $LIGHT_BLACK
+                p
+                    font-weight 600 !important
 
 // content
-.bangumi-area
-    height 500px
+#bangumi-area
+    @extend .content-high
 
 // bangumi list
 .bangumi-list-wrapper
@@ -168,3 +196,7 @@ md-toolbar
     p
         img
             vertical-align middle
+
+// settings
+#settings-area
+    @extend .content-high

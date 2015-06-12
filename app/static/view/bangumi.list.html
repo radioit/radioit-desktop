@@ -1,17 +1,19 @@
-<div ng-show="bangumiList.isListShowed()" class="bangumi-list-wrapper toogle-left">
+<div ng-show="bangumiList.isListShowed()" class="bangumi-list-wrapper toggle-left">
     <!-- head bar start -->
     <div layout="row" layout-align="space-between center">
         <!-- homepage button -->
         <md-button class="md-icon-button" aria-label="homepage" ng-click="app.openUrl(bangumiList.data.url)">
-            <md-tooltip md-autohide md-direction="right">go to {{ bangumiList.data.name }}</md-tooltip>
-            <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="open_in_new">open_in_new</md-icon>
+            <md-tooltip md-autohide md-direction="right">Go to {{ bangumiList.data.name }}</md-tooltip>
+            <md-icon md-font-library="material-icons" class="md-24" aria-label="open_in_new">open_in_new</md-icon>
         </md-button>
         <span flex></span>
         <!-- refresh button -->
         <md-button class="md-icon-button" aria-label="refresh" ng-click="bangumiList.reload()">
             <md-tooltip md-autohide md-direction="left">Refresh</md-tooltip>
-            <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="refresh">refresh</md-icon>
+            <md-icon md-font-library="material-icons" class="md-24" aria-label="refresh">refresh</md-icon>
         </md-button>
+        <p>updated at {{ bangumiList.data.timestamp | date : 'yyyy/MM/dd HH:mm:ss' }}</p>
+        <span style="width:10px"></span>
     </div>
     <!-- head bar end -->
     <md-divider></md-divider>
@@ -22,10 +24,10 @@
             <img src="static/image/spinner.gif" lazy-img="{{ bangumi.image }}" alt="{{ bangumi.name }}">
             <h5 class="md-title"><span ng-show="bangumiList.isNew(bangumi)" style="color:red">New</span> {{ bangumi.name }}</h5>
             <md-button class="md-icon-button" aria-label="homepage" title="Open in browser" ng-click="app.openUrl(bangumi.homepage);$event.preventDefault();$event.stopPropagation()">
-                <md-icon md-font-library="material-icons" class="md-24 md-black" aria-label="home">home</md-icon>
+                <md-icon md-font-library="material-icons" class="md-24" aria-label="home">home</md-icon>
             </md-button>
         </md-list-item>
     </md-list>
     <!-- bangumi list end -->
 </div>
-<div ui-view ng-hide="bangumiDetail.isListShowed()" class="bangumi-content-wrapper toogle-right"></div>
+<div ui-view ng-hide="bangumiDetail.isListShowed()" class="bangumi-content-wrapper toggle-right"></div>

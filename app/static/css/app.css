@@ -1,41 +1,41 @@
-.toogle-left,
-.toogle-right,
+.toggle-left,
+.toggle-right,
 .slide-left,
 .slide-right {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition-duration: 250ms;
 }
-.toogle-left.ng-hide-add {
+.toggle-left.ng-hide-add {
   transform: translateX(0);
   opacity: 1;
 }
-.toogle-left.ng-hide-add.ng-hide-add-active {
+.toggle-left.ng-hide-add.ng-hide-add-active {
   transform: translateX(-100%);
   opacity: 0;
 }
-.toogle-left.ng-hide-remove {
+.toggle-left.ng-hide-remove {
   transform: translateX(-100%);
   display: block !important;
   opacity: 0;
 }
-.toogle-left.ng-hide-remove.ng-hide-remove-active {
+.toggle-left.ng-hide-remove.ng-hide-remove-active {
   transform: translateX(0);
   opacity: 1;
 }
-.toogle-right.ng-hide-add {
+.toggle-right.ng-hide-add {
   transform: translateX(0);
   opacity: 1;
 }
-.toogle-right.ng-hide-add.ng-hide-add-active {
+.toggle-right.ng-hide-add.ng-hide-add-active {
   transform: translateX(100%);
   opacity: 0;
 }
-.toogle-right.ng-hide-remove {
+.toggle-right.ng-hide-remove {
   transform: translateX(100%);
   display: block !important;
   opacity: 0;
 }
-.toogle-right.ng-hide-remove.ng-hide-remove-active {
+.toggle-right.ng-hide-remove.ng-hide-remove-active {
   transform: translateX(0);
   opacity: 1;
 }
@@ -73,27 +73,81 @@
   transform: translateX(0);
   opacity: 1;
 }
-.md-black {
-  color: #000;
+.paper-bg-black {
+  background: #263238;
 }
-.md-white {
-  color: #fff;
+.paper-bg-light-black {
+  background: #374851;
 }
-.md-grey {
-  color: #eee;
+.paper-bg-white {
+  background: #f5f5f5;
 }
-.md-blue {
-  color: #3f51b5;
+.paper-bg-grey {
+  background: #a9a9a9;
+}
+.paper-bg-blue {
+  background: #3f51b5;
+}
+.paper-bg-green {
+  background: #48984b;
+}
+.paper-text-grey {
+  color: #b2b2b2;
+}
+.paper-text-grey md-icon {
+  color: #b2b2b2;
+}
+.paper-text-light-grey {
+  color: #b2b2b2;
+}
+.paper-text-light-grey md-icon {
+  color: #b2b2b2;
+}
+.paper-text-dark-grey {
+  color: #989898;
+}
+.paper-text-dark-grey md-icon {
+  color: #989898;
+}
+.paper-text-white {
+  color: #f5f5f5;
+}
+.paper-text-white md-icon {
+  color: #f5f5f5;
+}
+.transition-enable,
+body,
+::-webkit-scrollbar-thumb,
+.titlebar-button {
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-duration: 250ms;
+  transition-property: all;
+}
+*[no-select],
+.titlebar-button {
+  -webkit-user-select: none;
+}
+*[no-drag],
+.titlebar-button {
+  -webkit-app-region: no-drag;
+}
+.md-24 {
+  font-size: 24px;
+}
+.md-32 {
+  font-size: 32px;
+}
+.md-48 {
+  font-size: 48px;
 }
 html {
-  max-height: 600px;
+  max-height: 604px;
   overflow: hidden;
+  background: transparent;
 }
 body {
   overflow: hidden;
-  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-duration: 250ms;
-  background-color: #a8a8a8;
+  background: transparent;
 }
 h1,
 h2,
@@ -110,15 +164,6 @@ pre {
   white-space: pre-wrap;
   text-rendering: optimizeLegibility;
   font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
-}
-.md-24 {
-  font-size: 24px;
-}
-.md-32 {
-  font-size: 32px;
-}
-.md-48 {
-  font-size: 48px;
 }
 .long-string-wrapper {
   overflow-x: scroll;
@@ -151,70 +196,88 @@ a.link:active {
   background: none;
 }
 ::-webkit-scrollbar-thumb {
-  transition: background-color 0.3s;
-  background-color: rgba(0,0,0,0.3);
+  background: #b2b2b2;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0,0,0,0.6);
+  background: #b2b2b2;
+}
+#app {
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.7);
+  margin: auto;
+  width: calc(100% - 4px);
+  margin-top: 2px;
+  background: #f5f5f5;
+}
+.titlebar {
+  height: 50px;
+  width: 100%;
+  -webkit-app-region: drag;
+}
+.titlebar >div {
+  height: inherit;
+  font-weight: 600;
+}
+.titlebar-button {
+  display: inherit;
+  position: relative;
+  height: 100%;
+  padding: 0 13px;
+  color: #989898;
+  cursor: pointer;
+}
+.titlebar-button md-icon {
+  color: #989898;
+}
+.titlebar-button.active,
+.titlebar-button:hover {
+  color: #f5f5f5;
+  background: rgba(0,0,0,0.15);
+}
+.titlebar-button.active::after,
+.titlebar-button:hover::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  bottom: 1px;
+  width: calc(100% - 2px);
+  height: 2px;
+  background: #f5f5f5;
+}
+.titlebar-button.active md-icon,
+.titlebar-button:hover md-icon {
+  color: #f5f5f5;
+}
+.titlebar-button p {
+  padding-left: 5px;
 }
 md-select:not([disabled]):focus .md-select-label {
   color: inherit;
 }
+md-select {
+  padding: 0;
+}
 md-select .md-select-label.md-placeholder {
   color: inherit;
 }
-.title-bar {
-  height: 28px;
-  line-height: 28px;
-  background: linear-gradient(to bottom, #cfcfcf, #a8a8a8);
-  font-weight: 600;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
+md-select +md-progress-circular {
+  transform: scale(0.45) !important;
 }
-.title-bar p {
-  margin: 0;
-  text-align: center;
+.weekday-menu {
+  border-right: 1px solid #b2b2b2;
 }
-.title-bar div,
-.title-bar button {
-  -webkit-app-region: no-drag;
-}
-div[minimize-button] {
-  width: 10px;
-  height: 10px;
-  margin-right: 5px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 -1px 1px 0 rgba(0,0,0,0.3) inset, 0 1px 3px 0 rgba(0,0,0,0.8) inset, 0 1px 0px 0 rgba(255,255,255,0.4);
-  background: linear-gradient(to bottom, #e59130, #ffdf4b);
-}
-div[minimize-button]:hover {
-  background: #bb7e39;
-}
-div[close-button] {
-  width: 10px;
-  height: 10px;
-  margin-right: 5px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 -1px 1px 0 rgba(0,0,0,0.3) inset, 0 1px 3px 0 rgba(0,0,0,0.8) inset, 0 1px 0px 0 rgba(255,255,255,0.4);
-  background: linear-gradient(to bottom, #f12519, #ff8684);
-}
-div[close-button]:hover {
-  background: #c84840;
-}
-md-toolbar md-progress-circular {
-  transform: scale(0.48) !important;
-}
-.weekday-menu md-list {
-  padding: 0;
+.weekday-menu md-list md-list-item {
+  color: #b2b2b2;
 }
 .weekday-menu md-list md-list-item.active,
 .weekday-menu md-list md-list-item:hover {
-  background: #fff;
+  color: #374851;
+}
+.weekday-menu md-list md-list-item.active p,
+.weekday-menu md-list md-list-item:hover p {
+  font-weight: 600 !important;
 }
 .bangumi-area {
-  height: 500px;
+  height: 554px;
 }
 .bangumi-list-wrapper h5 {
   padding-left: 20px;
