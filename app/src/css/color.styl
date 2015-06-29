@@ -1,6 +1,7 @@
 $BLACK = #263238
 $LIGHT_BLACK = lighten($BLACK, 10%)
 $WHITE = #f5f5f5
+$PURE_WHITE = #ffffff
 $GREY = #a9a9a9
 $LIGHT_GREY = lighten($GREY, 10%)
 $DARK_GREY = darken($GREY, 10%)
@@ -10,18 +11,22 @@ $RED = #ca3e2d
 $YELLOW = #ebdd4d
 $PINK = #ba174e
 
+// background color
 buildBackgroundColorSelector(nameColorPairs)
     for $pair in nameColorPairs
         .paper-bg-{$pair[0]}
             background $pair[1]
 
-$nameColorPairs = 'black' $BLACK, 'light-black' $LIGHT_BLACK,
+$nameColorPairs = 'black' $BLACK,
+    'light-black' $LIGHT_BLACK,
+    'pure-white' $PURE_WHITE,
     'white' $WHITE,
     'grey' $GREY,
     'blue' $BLUE,
     'green' $GREEN
 buildBackgroundColorSelector($nameColorPairs)
 
+// text color
 buildTextColorSelector(nameColorPairs)
     for $pair in nameColorPairs
         .paper-text-{$pair[0]}
@@ -30,6 +35,6 @@ buildTextColorSelector(nameColorPairs)
                 color $pair[1]
 
 $nameColorPairs = 'grey' $LIGHT_GREY,  'light-grey' $LIGHT_GREY, 'dark-grey' $DARK_GREY,
-    'white' $WHITE
+    'white' $WHITE, 'blue' $BLUE
 buildTextColorSelector($nameColorPairs)
 

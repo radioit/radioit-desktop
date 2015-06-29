@@ -2,66 +2,56 @@ var extend = require( 'extend' );
 var env = require( './env.js' );
 var Storage = require( './storage.js' );
 
+var settingStorage = new Storage( env.settingsPath );
+
 /**
  * Setting
- *   Proxy
- *     IP
- *     Port
- *   About
- *     Author
- *     Mail
- *     Github
+ *   proxy
+ *     enable
+ *     ip
+ *     port
+ *   timout
+ *     hour
+ *     minute
+ *     second
+ *   about
+ *     author
+ *     email
+ *     github
  */
 
 var Default = {
     'proxy': {
+        'enable': false,
         'ip': '',
         'port': 0
     },
+    'timeout': {
+        'hour': 0,
+        'minute': 0,
+        'second': 60 // default is 60 seconds
+    },
     'about': {
-        'author': env.author,
-        'mail': env.mail,
+        'author': env.author || '',
+        'email': env.email || '',
         'github': env.github || ''
     }
 };
 
-var SettingManager = function () {
-    if ( !( this instanceof SettingManager ) ) {
-        return new SettingManager();
+
+// init
+settingStorage.restore( extend( true, {}, Default, settingStorage.getItems() ) );
+settingStorage.save();
+
+var SettingManager = {
+    save: function ( data ) {
+        settingStorage.restore( data );
+        settingStorage.save();
+    },
+
+    get: function () {
+        return settingStorage.getItems();
     }
-    var self = this;
-
-    var settingStorage = new Storage( env.settingsPath );
-
-    // init
-    settingStorage.restore( extend( true, Default, settingStorage.getItems() ) );
-
-    self.set = function ( keyValues ) {
-        var keys,
-            last
-            current;
-
-        keyValues.forEach( function( el ){
-            var key;
-            keys = el['key'].split( '.' );
-            last = keys.pop();
-            current = data;
-
-            while ( keys.length ) {
-                key = keys.shift();
-                if ( current[key] === null || current[key] === undefined ) {
-                    current[key] = {};
-                }
-                current = current[key];
-            }
-
-            current[last] = el['value'];
-        });
-    };
-
-    self.get = function ( keys ) {
-        return settingStorage.getItems( keys );
-    };
 };
 
-module.exports = SettingManager();
+module.exports = SettingManager;

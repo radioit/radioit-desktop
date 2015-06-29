@@ -14,6 +14,13 @@ var Storage = function ( filePath ) {
         catch ( err ) {}
     };
 
+    self.save = function () {
+        try {
+            save( filePath, db );
+        }
+        catch ( err ) {}
+    };
+
     self.setItem = function ( key, value ) {
         db[key] = value;
         save( filePath, db );
@@ -49,7 +56,7 @@ var Storage = function ( filePath ) {
     };
 };
 
-var load = function ( filePath ) {
+var load = function ( filePath ) {console.log( 'load file:' + filePath );
     try {
         fs.accessSync( filePath, fs.R_OK | fs.W_OK );
         return JSON.parse( fs.readFileSync( filePath ).toString() );
@@ -60,8 +67,8 @@ var load = function ( filePath ) {
     }
 }
 
-var save = function ( filePath, db ) {
-    fs.writeFileSync( filePath, JSON.stringify( db, null, 4 ) );
+var save = function ( filePath, db ) {console.log( 'save file:' + filePath );
+    fs.writeFileSync( filePath, JSON.stringify( db ) );
 }
 
 module.exports = Storage;

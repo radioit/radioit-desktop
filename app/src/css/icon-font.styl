@@ -1,0 +1,7 @@
+buildIconSelector(size)
+    .paper-icon-{size}
+        font-size unit(size, px)
+
+$iconSize = 24 36 48
+for $size in $iconSize
+    buildIconSelector($size)

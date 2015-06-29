@@ -14,6 +14,6 @@ radioit.service( 'appService',
         this.openUrl = function ( url ) {
             $window.App.openExternelUrl( url );
         };
-    }
-])
+    }]
+)
 ;

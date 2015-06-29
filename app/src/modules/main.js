@@ -1,7 +1,9 @@
 module.exports = angular.module( 'radioit', [
     'ngMaterial',
+    'ngMessages',
     'ui.router',
     'angularLazyImg',
+    require( './settings' ).name,
     require( './catalogue' ).name,
     require( './weekday' ).name,
     require( './bangumi' ).name
@@ -13,6 +15,10 @@ module.exports = angular.module( 'radioit', [
             url: '/',
             templateUrl: 'static/view/default.html'
         });
+})
+
+.config( function( $logProvider ) {
+    $logProvider.debugEnabled( true );
 })
 
 .run( function ( $rootScope, $mdToast ) {

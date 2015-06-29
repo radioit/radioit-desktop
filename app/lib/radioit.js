@@ -18,12 +18,18 @@ var Radioit = ( function () {
 
     Radioit.prototype.registerListeners = function () {
         // setting
-        ipc.on( 'get-setting', function ( event, arg ) {});
-        ipc.on( 'set-setting', function ( event, arg ) {});
+        ipc.on( 'get-settings', function ( event, arg ) {
+            event.returnValue = settings.get();
+        });
+        ipc.on( 'set-settings', function ( event, arg ) {});
 
         // cache
-        ipc.on( 'get-cache', function ( event, arg ) {});
-        ipc.on( 'set-cache', function ( event, arg ) {});
+        ipc.on( 'get-cache', function ( event, arg ) {
+            event.returnValue = cache.get();
+        });
+        ipc.on( 'save-cache', function ( event, arg ) {
+            cache.save( arg );
+        });
     };
 
     return Radioit;

@@ -15,26 +15,21 @@
 
 <!-- title bar start -->
 <div no-select class="titlebar paper-bg-light-black paper-text-white" layout="row" layout-align="start center">
-
+    <div flex="10"></div>
+    <!-- tab start -->
     <div layout="row" layout-align="start center">
-        <div class="titlebar-button active" tab-id="home">
+        <div class="titlebar-button" ng-class="{active:app.selectedTabName=='home'}" ng-click="app.selectTab('home')">
             <md-icon icon-font-library="material-icons" aria-label="home">home</md-icon>
             <p>Home</p>
         </div>
-        <div class="titlebar-button" tab-id="settings">
+        <div class="titlebar-button" ng-class="{active:app.selectedTabName=='settings'}" ng-click="app.selectTab('settings')">
             <md-icon icon-font-library="material-icons" aria-label="settings">settings</md-icon>
             <p>Settings</p>
         </div>
     </div>
-
-    <div flex style="padding-left:50px" layout="row" layout-align="start center" ng-controller="CatalogueSwitchCtrl as catalogueSwitch">
-        <md-select placeholder="pick a channel" ng-model="catalogueSwitch.selectedCatalogue" ng-change="catalogueSwitch.switch()" no-select no-drag>
-            <md-option ng-value="catalogue.id" ng-repeat="catalogue in catalogueSwitch.list">{{ catalogue.name }}</md-option>
-        </md-select>
-        <md-progress-circular id="loadingSpinner" md-mode="indeterminate" class="md-accent" ng-show="app.isLoading()"></md-progress-circular>
-        <span flex></span>
-    </div>
-
+    <!-- tab end -->
+    <div flex></div>
+    <!-- control start -->
     <div layout="row" layout-align="start center">
         <div minimize-button class="titlebar-button">
             <md-icon icon-font-library="material-icons" aria-label="minimize">keyboard_arrow_down</md-icon>
@@ -43,23 +38,36 @@
             <md-icon icon-font-library="material-icons" aria-label="close">close</md-icon>
         </div>
     </div>
-
+    <!-- control end -->
 </div>
 <!-- title bar end -->
 
 <!-- tab = home start -->
-<div id="tab-home" layout="row" class="paper-bg-white toggle-left">
-    <!-- weekday left start -->
-    <span class="weekday-menu" ng-controller="WeekdayCtrl as weekday">
-        <md-list>
+<div class="paper-bg-white content-high animate-opcity" ng-show="app.selectedTabName=='home'" layout="row">
+    <div class="left-pane paper-bg-pure-white" layout="column" layout-align="start center">
+        <!-- channel switch start -->
+        <md-menu ng-controller="CatalogueSwitchCtrl as catalogueSwitch">
+            <md-button class="md-icon-button" style="transform:scale(1.5)" ng-click="$mdOpenMenu()">
+                <md-tooltip md-autohide md-direction="right">Select channel</md-tooltip>
+                <md-icon icon-font-library="material-icons" class="paper-text-blue" aria-label="channel" md-menu-origin>radio</md-icon>
+            </md-button>
+            <md-menu-content>
+                <md-menu-item ng-repeat="catalogue in catalogueSwitch.list">
+                    <md-button ng-click="catalogueSwitch.switch(catalogue.id)"><span md-menu-align-target>{{ catalogue.name }}</span></md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+        <!-- channel switch end -->
+        <!-- weekday left start -->
+        <md-list id="weekday-list" ng-controller="WeekdayCtrl as weekday">
             <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">
                 <p>{{ day.name }}</p>
             </md-list-item>
         </md-list>
-    </span>
+    </div>
     <!-- weekday left end -->
     <!-- bangumi content start -->
-    <md-content id="bangumi-area" flex md-scroll-y>
+    <md-content class="content-high" flex md-scroll-y>
         <div ui-view></div>
     </md-content>
     <!-- bangumi content end -->
@@ -67,10 +75,90 @@
 <!-- tab = home end -->
 
 <!-- tab = settings start -->
-<div class="tab-settings" id="settings-area" class="toggle-right">
-    
+<div class="paper-bg-white animate-opcity" ng-show="app.selectedTabName=='settings'">
+    <md-content class="paper-bg-white content-high">
+        <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" style="margin:20px auto;width:61.8%" layout layout-align="center center" ng-controller="SettingsCtrl as settings">
+            <md-list flex>
+                <!-- settings:proxy start -->
+                <md-subheader>Proxy</md-subheader>
+                <md-list-item>
+                    <p>{{ proxy.enable ? 'Enabled' : 'Disabled' }}</p>
+                    <md-switch ng-model="proxy.enable" aria-label="proxy enable"></md-switch>
+                </md-list-item>
+                <md-list-item>
+                    <form name="proxyForm" layout="row" layout-align="start center">
+                        <md-input-container flex>
+                            <label>IP</label>
+                            <input type="text" name="ip" ng-model="proxy.ip" ng-disabled="!proxy.enable" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" ng-model-options="{ updateOn: 'blur' }">
+                            <div ng-messages="proxyForm.ip.$error">
+                                <div ng-message="pattern">Wrong format</div>
+                            </div>
+                        </md-input-container>
+                        <span>:</span>
+                        <md-input-container flex>
+                            <label>Port</label>
+                            <input type="number" name="port" step="1" min="1" max="65535" ng-model="proxy.port" ng-disabled="!proxy.enable">
+                            <div ng-messages="proxyForm.port.$error">
+                                <div ng-message="min">Less than 1</div>
+                                <div ng-message="max">Larger than 65535</div>
+                            </div>
+                        </md-input-container>
+                    </form>
+                </md-list-item>
+                <!-- settings:proxy end -->
+                <!-- settings:cache start -->
+                <md-subheader>Cache</md-subheader>
+                <md-list-item>
+                    <form name="cacheForm" layout="row" layout-align="start center">
+                        <span>Timeout in</span>
+                        <md-input-container flex>
+                            <label>hour</label>
+                            <input type="number" name="hour" step="1" min="0" max="24" ng-model="timeout.hour">
+                            <div ng-messages="cacheForm.hour.$error">
+                                <div ng-message="min">Less than 0</div>
+                                <div ng-message="max">Larger than 24</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>minute</label>
+                            <input type="number" name="minute" step="1" min="0" max="60" ng-model="timeout.minute">
+                            <div ng-messages="cacheForm.minute.$error">
+                                <div ng-message="min">Less than 0</div>
+                                <div ng-message="max">Larger than 60</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>second</label>
+                            <input type="number" name="second" step="1" min="1" max="60" ng-model="timeout.second">
+                            <div ng-messages="cacheForm.second.$error">
+                                <div ng-message="min">Less than 1</div>
+                                <div ng-message="max">Larger than 60</div>
+                            </div>
+                        </md-input-container>
+                    </form>
+                </md-list-item>
+                <!-- settings:cache end -->
+                <!-- settings:about start -->
+                <md-subheader>About</md-subheader>
+                <md-list-item>
+                    <md-icon icon-font-library="material-icons" aria-label="author">perm_identity</md-icon>
+                    <p>{{ about.author }}</p>
+                </md-list-item>
+                <md-list-item>
+                    <md-icon icon-font-library="material-icons" aria-label="email">email</md-icon>
+                    <p>{{ about.email }}</p>
+                </md-list-item>
+                <md-list-item>
+                    <md-icon md-svg-src="static/image/github.svg" aria-label="github"></md-icon>
+                    <p>{{ about.github }}</p>
+                </md-list-item>
+                <!-- settings:about end -->
+            </md-list>
+        </md-whiteframe>
+    </md-content>
 </div>
 <!-- tab = settings end -->
+
 </div><!-- AppCtrl end -->
 
 <script>
@@ -79,9 +167,10 @@ require( './lib/app.js' );
 
 <!-- Angular Material Dependencies -->
 <script src="static/js/angular.min.js"></script>
+<script src="static/js/angular-messages.min.js"></script>
 <script src="static/js/angular-animate.min.js"></script>
 <script src="static/js/angular-aria.min.js"></script>
-<script src="static/js/angular-material.js"></script>
+<script src="static/js/angular-material.min.js"></script>
 <script src="static/js/angular-ui-router.min.js"></script>
 
 <!-- Angular vendors -->

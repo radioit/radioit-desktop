@@ -1,12 +1,10 @@
 vendors = offical
-.toggle-left
-.toggle-right
-.slide-left
-.slide-right
+.animation-base
     transition-timing-function cubic-bezier(0.25, 0.46, 0.45, 0.94)
     transition-duration 250ms
 
-.toggle-left
+.animate-toggle-left
+    @extend .animation-base
     &.ng-hide-add
         transform translateX(0)
         opacity 1
@@ -21,7 +19,8 @@ vendors = offical
             transform translateX(0)
             opacity 1
 
-.toggle-right
+.animate-toggle-right
+    @extend .animation-base
     &.ng-hide-add
         transform translateX(0)
         opacity 1
@@ -36,7 +35,8 @@ vendors = offical
             transform translateX(0)
             opacity 1
 
-.slide-left
+.animate-slide-left
+    @extend .animation-base
     &.ng-hide-add
         transform translateX(0)
         opacity 1
@@ -51,7 +51,8 @@ vendors = offical
             transform translateX(0)
             opacity 1
 
-.slide-right
+.animate-slide-right
+    @extend .animation-base
     &.ng-hide-add
         transform translateX(0)
         opacity 1
@@ -64,4 +65,13 @@ vendors = offical
         opacity 0
         &.ng-hide-remove-active
             transform translateX(0)
+            opacity 1
+
+.animate-opcity
+    @extend .animation-base
+    &.ng-hide-add
+        &.ng-hide-add-active
+            opacity 0
+    &.ng-hide-remove
+        &.ng-hide-remove-active
             opacity 1

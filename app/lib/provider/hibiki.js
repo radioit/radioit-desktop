@@ -87,7 +87,7 @@ var hibiki = {
                 // add extra data
                 data.name = NAME;
                 data.url = HOST;
-                data.timestamp = new Date().getTime();
+                data.timestamp = Date.now();
 
                 return data;
 
@@ -112,6 +112,7 @@ var hibiki = {
                 // Extract html and structure data
                 // data will be formated as a json object in following structure:
                 // {
+                //     'timestamp': 'Number',
                 //     'name': 'String, name of the bangumi',
                 //     'homepage': 'URL, homepage of the bangumi',
                 //     'description': 'String, description of the bangumi',
@@ -124,6 +125,7 @@ var hibiki = {
                 //     'audio': 'String, url of audio'
                 // }
                 data = {
+                    'timestamp': Date.now(),
                     'name': $( 'title' ).text().slice( 27, -5 ),
                     'homepage': url.resolve( URLs.bangumi, id ),
                     'description': $( 'table.hbkTextTable td:nth-of-type(1) div:nth-of-type(1)' ).eq( 0 ).text().trim(),

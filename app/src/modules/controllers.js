@@ -1,23 +1,19 @@
 var radioit = require( './main' );
 
 radioit.controller( 'AppCtrl',
-    [ '$scope', '$window', 'bangumiService',
-    function ( $scope, $window, bangumiService ) {
+    [ '$scope', '$window', 'bangumiService', '$mdDialog',
+    function ( $scope, $window, bangumiService, $mdDialog) {
         var vm = this;
 
-        // settings
-        // ----------------------------------------------
-        vm.config = {
-            appName: 'Radioit',
-        };
+        vm.selectedTabName = 'home';
 
         vm.isLoading = function () {
             return bangumiService.isBusy();
-        }
-
-        vm.openUrl = function ( url ) {
-            $window.App.openExternelUrl( url );
         };
-    }
-])
+
+        vm.selectTab = function ( tabName ) {
+            vm.selectedTabName = tabName;
+        };
+    }]
+)
 ;

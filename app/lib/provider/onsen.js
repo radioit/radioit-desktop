@@ -88,7 +88,7 @@ var onsen = {
                 // add extra data
                 data.name = NAME;
                 data.url = HOST;
-                data.timestamp = new Date().getTime();
+                data.timestamp = Date.now();
 
                 return data;
 
@@ -113,6 +113,7 @@ var onsen = {
                 // Extract html and structure data
                 // data will be formated as a json object in following structure:
                 // {
+                //     'timestamp': 'Number',
                 //     'name': 'String, name of the bangumi',
                 //     'homepage': 'URL, homepage of the bangumi',
                 //     'description': 'String, description of the bangumi',
@@ -125,6 +126,7 @@ var onsen = {
                 //     'audio': 'String, url of audio'
                 // }
                 data = {
+                    'timestamp': Date.now(),
                     'name': $( '#outLineWrap h1' ).text().trim(),
                     'homepage': url.resolve( URLs.bangumi, id ),
                     'description': $( '#introductionWrap p' ).text().trim(),

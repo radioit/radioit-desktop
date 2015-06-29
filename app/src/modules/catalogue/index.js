@@ -13,5 +13,5 @@ module.exports = angular.module( 'radioit.catalogue', ['ui.router'] )
 
 .service( 'catalogueService', require( './catalogueService' ) )
 
-.controller( 'CatalogueSwitchCtrl', require( './CatalogueSwitchCtrl' ) )
+.controller( 'CatalogueSwitchCtrl', require( './catalogueSwitchCtrl' ) )
 ;

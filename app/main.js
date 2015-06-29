@@ -6,7 +6,7 @@ var path = require( 'path' );
 // global variable
 var APP_NAME = 'Radioit';
 var INDEX = 'file://' + path.join( __dirname, 'index.html' );
-
+console.log(__dirname)
 // custom js
 var Radioit = require( './lib/radioit.js' );
 Radioit.boot();

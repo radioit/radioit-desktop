@@ -24,6 +24,6 @@ module.exports = angular.module( 'radioit.bangumi', ['ui.router'] )
 
 .service( 'bangumiService', require( './bangumiService' ) )
 
-.controller( 'BangumiListCtrl', require( './BangumiListCtrl' ) )
+.controller( 'BangumiListCtrl', require( './bangumiListCtrl' ) )
 
-.controller( 'BangumiDetailCtrl', require( './BangumiDetailCtrl' ) );
+.controller( 'BangumiDetailCtrl', require( './bangumiDetailCtrl' ) );

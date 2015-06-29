@@ -83,7 +83,7 @@ var animate = {
                 // add extra data
                 data.name = NAME;
                 data.url = HOST;
-                data.timestamp = new Date().getTime();
+                data.timestamp = Date.now();
 
                 return data;
 
@@ -108,6 +108,7 @@ var animate = {
                 // Extract html and structure data
                 // data will be formated as a json object in following structure:
                 // {
+                //     'timestamp': 'Number',
                 //     'name': 'String, name of the bangumi',
                 //     'homepage': 'URL, homepage of the bangumi',
                 //     'description': 'String, description of the bangumi',
@@ -120,6 +121,7 @@ var animate = {
                 //     'audio': 'String, url of audio'
                 // }
                 data = {
+                    'timestamp': Date.now(),
                     'name': $( '.ttl' ).text().trim(),
                     'homepage': url.resolve( URLs.bangumi, id ),
                     'description': $( '.tab-outline' ).text().trim(),

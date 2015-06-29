@@ -75,6 +75,7 @@ var provider = {
      *
      * Data should be formated as a json object in following structure:
      * {
+     *     'timestamp': 'Number',
      *     'name': 'String, name of the bangumi',
      *     'homepage': 'URL, homepage of hte bangumi',
      *     'description': 'String, description of the bangumi',

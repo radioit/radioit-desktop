@@ -1,15 +1,9 @@
 // vars
 // --------------------------------
-$appHeight = 604px
+$appHeight = 600px
+$appBorderSize = 2px
 $titleHeight = 50px
 $contentHeight = $appHeight - $titleHeight
-// --------------------------------
-
-// mixins
-// --------------------------------
-buildIconSelector(size)
-    .md-{size}
-        font-size unit(size, px)
 // --------------------------------
 
 // animation
@@ -18,6 +12,9 @@ buildIconSelector(size)
 // color
 @import "color"
 
+// icon-font
+@import "icon-font"
+
 .transition-enable
     transition-timing-function cubic-bezier(0.25, 0.46, 0.45, 0.94)
     transition-duration 250ms
@@ -25,6 +22,9 @@ buildIconSelector(size)
 
 *[no-select]
     -webkit-user-select none
+
+*[drag]
+    -webkit-app-region drag
 
 *[no-drag]
     -webkit-app-region no-drag
@@ -35,18 +35,15 @@ buildIconSelector(size)
 .content-high
     height $contentHeight
 
-$iconSize = 24 32 48
-for $size in $iconSize
-    buildIconSelector($size)
-
 // global style & reset
 html
-    max-height $appHeight
+    height $appHeight + $appBorderSize * 2
     overflow hidden
     background transparent
 
 body
     @extend .transition-enable
+    height inherit
     overflow hidden
     background transparent
 
@@ -77,13 +74,13 @@ pre
 
 a
     &.link
-        color #4472B9
+        color $BLUE
         text-decoration none
         border-bottom 2px solid transparent
         cursor pointer
         &:hover
-            color #333
-            border-bottom-color #999
+            color $LIGHT_BLACK
+            border-bottom-color $LIGHT_BLACK
         &:active
             outline none
 
@@ -100,19 +97,24 @@ a
 ::-webkit-scrollbar-thumb:hover
     background $LIGHT_GREY
 
+*[ng-click]
+    outline none
+
 // app layer
 #app
-    box-shadow 0px 0px 4px 0px rgba(0,0,0,0.7)
     margin auto
-    width calc(100% - 4px)
-    margin-top 2px
+    width "calc(100% - %s * 2)" % $appBorderSize
+    height $appHeight
+    margin-top $appBorderSize
     background $WHITE // basic background color
+    box-shadow 0px 0px 4px 0px rgba(0,0,0,0.7)
 
 // titlebar
 .titlebar
+    @extend *[drag]
+    @extend *[no-select]
     @extend .title-high
     width 100%
-    -webkit-app-region drag
     >div
         height inherit
         font-weight 600
@@ -128,52 +130,52 @@ a
     padding 0 13px
     color $DARK_GREY
     cursor pointer
-    md-icon
-        color $DARK_GREY
+    &::after
+        content ''
+        position absolute
+        left 1px
+        bottom 1px
+        width calc(100% - 2px)
+        height 0px
+        background $WHITE
     &.active
     &:hover
         color $WHITE
         background rgba(0,0,0,0.15)
         &::after
-            content ''
-            position absolute
-            left 1px
-            bottom 1px
-            width calc(100% - 2px)
-            height 2px
-            background $WHITE
+            height 3px
         md-icon
             color $WHITE
+    md-icon
+        color $DARK_GREY
     p
         padding-left 5px
 
 md-select:not([disabled]):focus
     .md-select-label
-        color inherit
+        color inherit !important
 
 md-select
+    @extend *[no-drag]
     padding 0
     .md-select-label
         &.md-placeholder
-            color inherit
+            color inherit !important
     +md-progress-circular
         transform scale(0.45) !important
 
-// weekday list
-.weekday-menu
-    border-right 1px solid $LIGHT_GREY
-    md-list
-        md-list-item
-            color $LIGHT_GREY
-            &.active
-            &:hover
-                color $LIGHT_BLACK
-                p
-                    font-weight 600 !important
+// left panel
+.left-pane
+    border-right 1px solid rgba(0,0,0,0.12)
 
-// content
-#bangumi-area
-    @extend .content-high
+#weekday-list
+    md-list-item
+        color $LIGHT_GREY
+        &.active
+        &:hover
+            color $LIGHT_BLACK
+            p
+                font-weight 600 !important
 
 // bangumi list
 .bangumi-list-wrapper
