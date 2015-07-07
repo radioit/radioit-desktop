@@ -1,8 +1,8 @@
 # radioit-desktop
 radioit desktop edition, based on electron / angular / angular material
 
-![overview](../../raw/master/screenshot/overview.png)
+![overview](../../raw/master/screenshot/1.png)
 
-![list](../../raw/master/screenshot/list.png)
+![list](../../raw/master/screenshot/2.png)
 
-![detail](../../raw/master/screenshot/detail.png)
+![detail](../../raw/master/screenshot/3.png)

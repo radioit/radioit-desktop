@@ -441,7 +441,7 @@ module.exports = [ '$window',
             return $window.App.getSettings();
         };
 
-        this.saveSettings = function ( settings ) {console.log(settings)
+        this.saveSettings = function ( settings ) {
             $window.App.saveSettings( settings );
         }
     }
