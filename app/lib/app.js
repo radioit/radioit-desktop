@@ -119,7 +119,7 @@ var App = function () {
                 },
                 function ( err ) {
                     self.emit( 'get-bangumi:error', err );
-                    return err;
+                    throw new Error( err );
                 })
                 .finally( function () {
                     self.emit( 'get-bangumi:end', catalogueID, bangumiID );
@@ -127,7 +127,23 @@ var App = function () {
         }
     };
 
-    self.getAudioAsync = function ( catalogueID, url ) {};
+    self.getAudioAsync = function ( catalogueID, url ) {
+        self.emit( 'get-audio:start', catalogueID, url );
+
+        return provider.getAudioRealUrlAsync( catalogueID, url )
+            .then( function ( data ) {
+                self.emit( 'get-audio:success', catalogueID, url );
+
+                return data;
+            },
+            function ( err ) {
+                self.emit( 'get-audio:error', err );
+                throw new Error( err );
+            })
+            .finally( function () {
+                self.emit( 'get-audio:end', catalogueID, url );
+            });
+    };
 
     // ----------------------------------------------
 
@@ -137,7 +153,9 @@ var App = function () {
     self.getSettings = function () {
         return settings;
     };
-    self.saveSettings = function () {};
+    self.saveSettings = function ( obj ) {
+        ipc.send( 'save-settings', obj );
+    };
     // ----------------------------------------------
 
     // cache related APIs

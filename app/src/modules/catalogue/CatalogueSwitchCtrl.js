@@ -9,5 +9,9 @@ module.exports = [ '$scope', '$state', 'catalogueService', 'bangumiListRestrict'
 
             $state.go( 'catalogue', { catalogueID: id } );
         }
+
+        vm.isDisabled = function () {
+            return !bangumiListRestrict.isListShowed();
+        };
     }
 ]

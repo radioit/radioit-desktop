@@ -47,7 +47,7 @@
     <div class="left-pane paper-bg-pure-white" layout="column" layout-align="start center">
         <!-- channel switch start -->
         <md-menu ng-controller="CatalogueSwitchCtrl as catalogueSwitch">
-            <md-button class="md-icon-button" style="transform:scale(1.5)" ng-click="$mdOpenMenu()">
+            <md-button class="md-icon-button" style="transform:scale(1.5)" ng-click="$mdOpenMenu()" ng-disabled="catalogueSwitch.isDisabled()">
                 <md-tooltip md-autohide md-direction="right">Select channel</md-tooltip>
                 <md-icon icon-font-library="material-icons" class="paper-text-blue" aria-label="channel" md-menu-origin>radio</md-icon>
             </md-button>
@@ -59,7 +59,7 @@
         </md-menu>
         <!-- channel switch end -->
         <!-- weekday left start -->
-        <md-list id="weekday-list" ng-controller="WeekdayCtrl as weekday">
+        <md-list id="weekday-list" ng-controller="WeekdayCtrl as weekday" ng-disabled="catalogueSwitch.isDisabled()">
             <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">
                 <p>{{ day.name }}</p>
             </md-list-item>
@@ -83,13 +83,13 @@
                 <md-subheader>Proxy</md-subheader>
                 <md-list-item>
                     <p>{{ proxy.enable ? 'Enabled' : 'Disabled' }}</p>
-                    <md-switch ng-model="proxy.enable" aria-label="proxy enable"></md-switch>
+                    <md-switch ng-model="settings.items.proxy.enable" aria-label="proxy enable"></md-switch>
                 </md-list-item>
                 <md-list-item>
                     <form name="proxyForm" layout="row" layout-align="start center">
                         <md-input-container flex>
                             <label>IP</label>
-                            <input type="text" name="ip" ng-model="proxy.ip" ng-disabled="!proxy.enable" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" ng-model-options="{ updateOn: 'blur' }">
+                            <input type="text" name="ip" ng-model="settings.items.proxy.ip" ng-disabled="!settings.items.proxy.enable" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" ng-model-options="{ updateOn: 'blur' }">
                             <div ng-messages="proxyForm.ip.$error">
                                 <div ng-message="pattern">Wrong format</div>
                             </div>
@@ -97,7 +97,7 @@
                         <span>:</span>
                         <md-input-container flex>
                             <label>Port</label>
-                            <input type="number" name="port" step="1" min="1" max="65535" ng-model="proxy.port" ng-disabled="!proxy.enable">
+                            <input type="number" name="port" step="1" min="1" max="65535" ng-model="settings.items.proxy.port" ng-disabled="!settings.items.proxy.enable">
                             <div ng-messages="proxyForm.port.$error">
                                 <div ng-message="min">Less than 1</div>
                                 <div ng-message="max">Larger than 65535</div>
@@ -113,7 +113,7 @@
                         <span>Timeout in</span>
                         <md-input-container flex>
                             <label>hour</label>
-                            <input type="number" name="hour" step="1" min="0" max="24" ng-model="timeout.hour">
+                            <input type="number" name="hour" step="1" min="0" max="24" ng-model="settings.items.timeout.hour">
                             <div ng-messages="cacheForm.hour.$error">
                                 <div ng-message="min">Less than 0</div>
                                 <div ng-message="max">Larger than 24</div>
@@ -121,7 +121,7 @@
                         </md-input-container>
                         <md-input-container flex>
                             <label>minute</label>
-                            <input type="number" name="minute" step="1" min="0" max="60" ng-model="timeout.minute">
+                            <input type="number" name="minute" step="1" min="0" max="60" ng-model="settings.items.timeout.minute">
                             <div ng-messages="cacheForm.minute.$error">
                                 <div ng-message="min">Less than 0</div>
                                 <div ng-message="max">Larger than 60</div>
@@ -129,7 +129,7 @@
                         </md-input-container>
                         <md-input-container flex>
                             <label>second</label>
-                            <input type="number" name="second" step="1" min="1" max="60" ng-model="timeout.second">
+                            <input type="number" name="second" step="1" min="1" max="60" ng-model="settings.items.timeout.second">
                             <div ng-messages="cacheForm.second.$error">
                                 <div ng-message="min">Less than 1</div>
                                 <div ng-message="max">Larger than 60</div>
@@ -138,19 +138,22 @@
                     </form>
                 </md-list-item>
                 <!-- settings:cache end -->
+                <md-list-item layout layout-align="center center">
+                    <md-button class="md-primary md-raised" ng-click="settings.save()">Save</md-button>
+                </md-list-item>
                 <!-- settings:about start -->
                 <md-subheader>About</md-subheader>
                 <md-list-item>
                     <md-icon icon-font-library="material-icons" aria-label="author">perm_identity</md-icon>
-                    <p>{{ about.author }}</p>
+                    <p>{{ settings.items.about.author }}</p>
                 </md-list-item>
                 <md-list-item>
                     <md-icon icon-font-library="material-icons" aria-label="email">email</md-icon>
-                    <p>{{ about.email }}</p>
+                    <p>{{ settings.items.about.email }}</p>
                 </md-list-item>
                 <md-list-item>
                     <md-icon md-svg-src="static/image/github.svg" aria-label="github"></md-icon>
-                    <p>{{ about.github }}</p>
+                    <p><a class="link" ng-click="app.openUrl('https://github.com/' + settings.items.about.githubAccount )">{{ settings.items.about.githubAccount }}</a></p>
                 </md-list-item>
                 <!-- settings:about end -->
             </md-list>

@@ -1,16 +1,16 @@
-module.exports = [ '$state', '$scope', '$stateParams', 'detail',
-    function ( $state, $scope, $stateParams, detail ) {
+module.exports = [ '$state', '$scope', '$rootScope', '$stateParams', 'bangumiService', 'bangumiListRestrict', 'detail',
+    function ( $state, $scope, $rootScope, $stateParams, bangumiService, bangumiListRestrict, detail ) {
         var vm = this;
 
-        $scope.$parent.isListShowed = false;
+        // $scope.$parent === bangumiList
         $scope.$parent.lastBangumiID = $stateParams.bangumiID;
 
-        vm.isListShowed = function () {
-            return $scope.$parent.isListShowed;
+        vm.isShowed = function () {
+            return !bangumiListRestrict.isListShowed();
         };
 
         vm.goBack = function () {
-            $scope.$parent.isListShowed = true;
+            bangumiListRestrict.showList();
         };
 
         vm.reload = function () {
@@ -20,6 +20,22 @@ module.exports = [ '$state', '$scope', '$stateParams', 'detail',
             $state.transitionTo( $state.current, params, { reload: false, inherit: true, notify: false } );
         };
 
+        vm.getAudio = function () {
+            $rootScope.$emit( 'notify', 'Loading...' );
+            bangumiService.getAudio(
+                    bangumiListRestrict.getSelectedCatalogue(),
+                    vm.data.audio )
+                .then( function ( data ) {
+                    vm.audio = data;
+                    $rootScope.$emit( 'notify', 'Success', 3000 );
+                }, function ( err ) {
+                    $rootScope.$emit( 'notify', 'Failed', 3000 );
+                })
+                .done();
+        };
+
         vm.data = angular.merge( detail, $scope.bangumiToBeLoaded );
+
+        bangumiListRestrict.hideList();
     }
 ]

@@ -328,7 +328,7 @@ md-select +md-progress-circular {
 .bangumi-detail-list p,
 .bangumi-detail-list pre {
   line-height: 24px;
-  padding-left: 15px;
+  margin: 0 0 0 15px;
 }
 .bangumi-detail-list p img {
   vertical-align: middle;

@@ -1,17 +1,17 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = [ '$state', '$scope', '$stateParams', 'detail',
-    function ( $state, $scope, $stateParams, detail ) {
+module.exports = [ '$state', '$scope', '$rootScope', '$stateParams', 'bangumiService', 'bangumiListRestrict', 'detail',
+    function ( $state, $scope, $rootScope, $stateParams, bangumiService, bangumiListRestrict, detail ) {
         var vm = this;
 
-        $scope.$parent.isListShowed = false;
+        // $scope.$parent === bangumiList
         $scope.$parent.lastBangumiID = $stateParams.bangumiID;
 
-        vm.isListShowed = function () {
-            return $scope.$parent.isListShowed;
+        vm.isShowed = function () {
+            return !bangumiListRestrict.isListShowed();
         };
 
         vm.goBack = function () {
-            $scope.$parent.isListShowed = true;
+            bangumiListRestrict.showList();
         };
 
         vm.reload = function () {
@@ -21,7 +21,23 @@ module.exports = [ '$state', '$scope', '$stateParams', 'detail',
             $state.transitionTo( $state.current, params, { reload: false, inherit: true, notify: false } );
         };
 
+        vm.getAudio = function () {
+            $rootScope.$emit( 'notify', 'Loading...' );
+            bangumiService.getAudio(
+                    bangumiListRestrict.getSelectedCatalogue(),
+                    vm.data.audio )
+                .then( function ( data ) {
+                    vm.audio = data;
+                    $rootScope.$emit( 'notify', 'Success', 3000 );
+                }, function ( err ) {
+                    $rootScope.$emit( 'notify', 'Failed', 3000 );
+                })
+                .done();
+        };
+
         vm.data = angular.merge( detail, $scope.bangumiToBeLoaded );
+
+        bangumiListRestrict.hideList();
     }
 ]
 },{}],2:[function(require,module,exports){
@@ -31,11 +47,10 @@ module.exports = [ '$state', '$stateParams', '$scope', 'bangumiListRestrict', 'l
 
         vm.data = list;
 
-        $scope.isListShowed = true;
         $scope.lastBangumiID = '';
 
-        vm.isListShowed = function () {
-            return $scope.isListShowed;
+        vm.isShowed = function () {
+            return bangumiListRestrict.isListShowed();
         };
 
         vm.isSelectedDay = function ( day ) {
@@ -47,9 +62,9 @@ module.exports = [ '$state', '$stateParams', '$scope', 'bangumiListRestrict', 'l
         }
 
         vm.loadDetails = function ( bangumi ) {
-            // skip request new bangumi if loaded
+            // skip requesting new bangumi if loaded
             if ( $scope.lastBangumiID === bangumi.id ) {
-                $scope.isListShowed = false;
+                bangumiListRestrict.hideList();
                 return;
             }
 
@@ -84,7 +99,7 @@ module.exports = [ '$window',
                     return data;
                 },
                 function ( err ) {
-                    throw new Error(err);
+                    throw new Error( err );
                 })
                 .finally( function () {
                     busy = false;
@@ -100,7 +115,21 @@ module.exports = [ '$window',
                     return data;
                 },
                 function ( err ) {
-                    throw new Error(err);
+                    throw new Error( err );
+                })
+                .finally( function () {
+                    busy = false;
+                });
+        };
+
+        this.getAudio = function ( cid, url ) {
+            busy = true;
+
+            return $window.App.getAudioAsync( cid, url )
+                .then( function ( data ) {
+                    return data;
+                }, function ( err ) {
+                    throw new Error( err );
                 })
                 .finally( function () {
                     busy = false;
@@ -221,6 +250,10 @@ module.exports = [ '$scope', '$state', 'catalogueService', 'bangumiListRestrict'
 
             $state.go( 'catalogue', { catalogueID: id } );
         }
+
+        vm.isDisabled = function () {
+            return !bangumiListRestrict.isListShowed();
+        };
     }
 ]
 },{}],8:[function(require,module,exports){
@@ -232,7 +265,6 @@ module.exports = angular.module( 'radioit.catalogue', ['ui.router'] )
         function ( event, toState, toParams, fromState, fromParams, error ) {
             if ( toState.name === 'catalogue' ) {
                 console.log( 'failed to load list' );
-                $rootScope.$broadcast( 'CatalogueStateError' );
             }
         });
 })
@@ -251,12 +283,12 @@ radioit.controller( 'AppCtrl',
 
         vm.selectedTabName = 'home';
 
-        vm.isLoading = function () {
-            return bangumiService.isBusy();
-        };
-
         vm.selectTab = function ( tabName ) {
             vm.selectedTabName = tabName;
+        };
+
+        vm.openUrl = function ( url ) {
+            $window.App.openUrl( url );
         };
     }]
 )
@@ -323,41 +355,7 @@ module.exports = angular.module( 'radioit', [
         );
     });
 })
-
-.service( 'bangumiListRestrict',
-    [function () {
-        var _lastCatalogue = _currentCatalogue = '',
-            _lastDay = _currentDay = 'mon';
-
-        this.getSelectedCatalogue = function () {
-            return _currentCatalogue;
-        };
-
-        this.setSelectedCatalogue = function ( value ) {
-            _lastCatalogue = _currentCatalogue;
-            _currentCatalogue = value;
-        };
-
-        this.getSelectedDay = function () {
-            return _currentDay;
-        };
-
-        this.setSelectedDay = function ( value ) {
-            _lastDay = _currentDay;
-            _currentDay = value;
-        };
-
-        this.revertSelectedCatalogue = function () {
-            _currentCatalogue = _lastCatalogue;
-            return _currentCatalogue;
-        }
-
-        this.revertSelectedDay = function () {
-            _currentDay = _lastDay;
-            return _currentDay;
-        };
-    }
-]);
+;
 
 require( './services' );
 require( './controllers' );
@@ -381,6 +379,42 @@ radioit.service( 'appService',
         };
     }]
 )
+
+.service( 'bangumiListRestrict',
+    [function () {
+        var _currentCatalogue = '',
+            _currentDay = 'mon',
+            _isListShowed = true;
+
+        this.getSelectedCatalogue = function () {
+            return _currentCatalogue;
+        };
+
+        this.setSelectedCatalogue = function ( value ) {
+            _currentCatalogue = value;
+        };
+
+        this.getSelectedDay = function () {
+            return _currentDay;
+        };
+
+        this.setSelectedDay = function ( value ) {
+            _currentDay = value;
+        };
+
+        this.isListShowed = function () {
+            return _isListShowed;
+        };
+
+        this.showList = function () {
+            _isListShowed = true;
+        };
+
+        this.hideList = function () {
+            _isListShowed = false;
+        };
+    }
+])
 ;
 },{"./main":11}],13:[function(require,module,exports){
 module.exports = angular.module( 'radioit.settings', [] )
@@ -393,14 +427,10 @@ module.exports = [ '$scope', 'settingsService',
     function ( $scope, settingsService ) {
         var vm = this;
 
-        var settings = settingsService.getSettings();
-
-        $scope.proxy = settings.proxy;
-        $scope.timeout = settings.timeout;
-        $scope.about = settings.about;
+        vm.items = settingsService.getSettings();
 
         vm.save = function () {
-            ;
+            settingsService.saveSettings( vm.items );
         }
     }
 ]
@@ -410,6 +440,10 @@ module.exports = [ '$window',
         this.getSettings = function () {
             return $window.App.getSettings();
         };
+
+        this.saveSettings = function ( settings ) {console.log(settings)
+            $window.App.saveSettings( settings );
+        }
     }
 ]
 },{}],16:[function(require,module,exports){
@@ -439,6 +473,10 @@ module.exports = [ 'bangumiListRestrict',
 
         vm.isSelected = function ( day ) {
             return bangumiListRestrict.getSelectedDay() == day;
+        };
+
+        vm.isDisabled = function () {
+            return !bangumiListRestrict.isListShowed();
         };
     }
 ]

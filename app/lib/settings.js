@@ -17,7 +17,7 @@ var settingStorage = new Storage( env.settingsPath );
  *   about
  *     author
  *     email
- *     github
+ *     githubAccount
  */
 
 var Default = {
@@ -34,7 +34,7 @@ var Default = {
     'about': {
         'author': env.author || '',
         'email': env.email || '',
-        'github': env.github || ''
+        'githubAccount': env.githubAccount || ''
     }
 };
 

@@ -148,7 +148,27 @@ var onsen = {
             });
     },
 
-    getAudioRealUrlAsync: function ( url ) {}
+    getAudioRealUrlAsync: function ( url ) {
+        // Extract html and structure data
+        // data will be formated as a json object in following structure:
+        // Data should be formated as a json object in following structure:
+        // {
+        //     'url': 'URL, http://.......  or  mms://...........',
+        //     'downloadSupported': 'Boolean'
+        // }
+        return request
+            .get( url )
+            .then( function ( res ) {
+                var json = JSON.parse( res.text.slice( 9, -3 ) );
+                return {
+                    'url': json["moviePath"]["pc"],
+                    'downloadSupported': true
+                }
+            }, function ( err ) {
+                console.log( 'onsen:get audio error: ' + err );
+                throw new Error( err );
+            });
+    }
 };
 
 module.exports = onsen;

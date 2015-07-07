@@ -14,7 +14,7 @@ module.exports = [ '$window',
                     return data;
                 },
                 function ( err ) {
-                    throw new Error(err);
+                    throw new Error( err );
                 })
                 .finally( function () {
                     busy = false;
@@ -30,7 +30,21 @@ module.exports = [ '$window',
                     return data;
                 },
                 function ( err ) {
-                    throw new Error(err);
+                    throw new Error( err );
+                })
+                .finally( function () {
+                    busy = false;
+                });
+        };
+
+        this.getAudio = function ( cid, url ) {
+            busy = true;
+
+            return $window.App.getAudioAsync( cid, url )
+                .then( function ( data ) {
+                    return data;
+                }, function ( err ) {
+                    throw new Error( err );
                 })
                 .finally( function () {
                     busy = false;

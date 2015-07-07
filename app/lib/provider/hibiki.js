@@ -154,7 +154,37 @@ var hibiki = {
             });
     },
 
-    getAudioRealUrlAsync: function ( url ) {}
+    getAudioRealUrlAsync: function ( url ) {
+        return request
+            .get( url )
+            .then( function ( res ) {console.log(res)
+                var $,
+                    data;
+
+                $ = cheerio.load( res.text, {
+                    'decodeEntities': true,
+                    'lowerCaseAttributeNames': true
+                });
+
+                // Extract html and structure data
+                // data will be formated as a json object in following structure:
+                // Data should be formated as a json object in following structure:
+                // {
+                //     'url': 'URL, http://.......  or  mms://...........',
+                //     'downloadSupported': 'Boolean'
+                // }
+                data = {
+                    'url': $( 'ref' ).eq( 0 ).attr( 'href' ),
+                    'downloadSupported': false
+                };
+
+                return data;
+
+            }, function ( err ) {
+                console.log( 'hibiki:get audio error: ' + err );
+                throw new Error( err );
+            });
+    }
 };
 
 module.exports = hibiki;

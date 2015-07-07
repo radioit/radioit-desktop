@@ -7,12 +7,12 @@ radioit.controller( 'AppCtrl',
 
         vm.selectedTabName = 'home';
 
-        vm.isLoading = function () {
-            return bangumiService.isBusy();
-        };
-
         vm.selectTab = function ( tabName ) {
             vm.selectedTabName = tabName;
+        };
+
+        vm.openUrl = function ( url ) {
+            $window.App.openUrl( url );
         };
     }]
 )

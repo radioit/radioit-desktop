@@ -1,4 +1,5 @@
-<div ng-show="bangumiList.isListShowed()" class="bangumi-list-wrapper animate-toggle-left">
+<!-- ng-controller="bangumiList" -->
+<div ng-show="bangumiList.isShowed()" class="bangumi-list-wrapper animate-toggle-left">
     <!-- head bar start -->
     <div layout="row" layout-align="space-between center">
         <!-- homepage button -->
@@ -30,4 +31,4 @@
     </md-list>
     <!-- bangumi list end -->
 </div>
-<div ui-view ng-hide="bangumiDetail.isListShowed()" class="bangumi-content-wrapper animate-toggle-right"></div>
+<div ui-view ng-show="bangumiDetail.isShowed()" class="bangumi-content-wrapper animate-toggle-right"></div>

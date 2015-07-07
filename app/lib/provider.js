@@ -109,7 +109,7 @@ var provider = {
      *     'downloadSupported': 'Boolean'
      * }
      */
-    getAudioRealUrlAsync: function ( catalogueID, url ) {
+    getAudioRealUrlAsync: function ( catalogueID,  url ) {
         var c;
 
         if ( !( c = catalogue[catalogueID] ) ) {

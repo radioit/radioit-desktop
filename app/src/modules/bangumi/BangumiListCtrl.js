@@ -4,11 +4,10 @@ module.exports = [ '$state', '$stateParams', '$scope', 'bangumiListRestrict', 'l
 
         vm.data = list;
 
-        $scope.isListShowed = true;
         $scope.lastBangumiID = '';
 
-        vm.isListShowed = function () {
-            return $scope.isListShowed;
+        vm.isShowed = function () {
+            return bangumiListRestrict.isListShowed();
         };
 
         vm.isSelectedDay = function ( day ) {
@@ -20,9 +19,9 @@ module.exports = [ '$state', '$stateParams', '$scope', 'bangumiListRestrict', 'l
         }
 
         vm.loadDetails = function ( bangumi ) {
-            // skip request new bangumi if loaded
+            // skip requesting new bangumi if loaded
             if ( $scope.lastBangumiID === bangumi.id ) {
-                $scope.isListShowed = false;
+                bangumiListRestrict.hideList();
                 return;
             }
 

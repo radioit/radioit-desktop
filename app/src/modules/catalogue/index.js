@@ -6,7 +6,6 @@ module.exports = angular.module( 'radioit.catalogue', ['ui.router'] )
         function ( event, toState, toParams, fromState, fromParams, error ) {
             if ( toState.name === 'catalogue' ) {
                 console.log( 'failed to load list' );
-                $rootScope.$broadcast( 'CatalogueStateError' );
             }
         });
 })

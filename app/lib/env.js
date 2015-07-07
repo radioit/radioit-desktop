@@ -7,7 +7,7 @@ exports.description = packageJson.description;
 exports.version = packageJson.version;
 exports.author = packageJson.author;
 exports.email = packageJson.email;
-exports.github = packageJson.github;
+exports.githubAccount = packageJson.githubAccount;
 
 exports.root = path.resolve( path.join( __dirname, '../..' ) );
 exports.settingsPath = path.resolve( exports.root, 'settings.json' );

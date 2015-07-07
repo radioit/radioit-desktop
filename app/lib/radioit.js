@@ -21,7 +21,9 @@ var Radioit = ( function () {
         ipc.on( 'get-settings', function ( event, arg ) {
             event.returnValue = settings.get();
         });
-        ipc.on( 'set-settings', function ( event, arg ) {});
+        ipc.on( 'save-settings', function ( event, arg ) {
+            settings.save( arg );
+        });
 
         // cache
         ipc.on( 'get-cache', function ( event, arg ) {

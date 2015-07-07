@@ -5,7 +5,7 @@
   "main": "main.js",
   "author": "exoticknight",
   "email": "draco.knight0@gmail.com",
-  "github": "https://github.com/exoticknight",
+  "githubAccount": "exoticknight",
   "devDependencies": {
     "jshint": "latest",
     "rimraf": "latest",

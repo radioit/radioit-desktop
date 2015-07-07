@@ -34,41 +34,7 @@ module.exports = angular.module( 'radioit', [
         );
     });
 })
-
-.service( 'bangumiListRestrict',
-    [function () {
-        var _lastCatalogue = _currentCatalogue = '',
-            _lastDay = _currentDay = 'mon';
-
-        this.getSelectedCatalogue = function () {
-            return _currentCatalogue;
-        };
-
-        this.setSelectedCatalogue = function ( value ) {
-            _lastCatalogue = _currentCatalogue;
-            _currentCatalogue = value;
-        };
-
-        this.getSelectedDay = function () {
-            return _currentDay;
-        };
-
-        this.setSelectedDay = function ( value ) {
-            _lastDay = _currentDay;
-            _currentDay = value;
-        };
-
-        this.revertSelectedCatalogue = function () {
-            _currentCatalogue = _lastCatalogue;
-            return _currentCatalogue;
-        }
-
-        this.revertSelectedDay = function () {
-            _currentDay = _lastDay;
-            return _currentDay;
-        };
-    }
-]);
+;
 
 require( './services' );
 require( './controllers' );
