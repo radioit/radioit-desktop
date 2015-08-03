@@ -1,0 +1,44 @@
+<md-content class="paper-bg-white content-high">
+    <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" layout="column" layout-padding style="width:80%;margin:20px auto" ng-controller="ExplorerCtrl as explorer">
+        <fieldset style="border:none">
+            <!-- url input start -->
+            <md-input-container md-no-float flex>
+                <md-icon icon-font-library="material-icons" class="paper-text-grey" aria-label="link" md-menu-origin>link</md-icon>
+                <input type="text" required placeholder="URL, such as http://www.google.com" ng-model="explorer.url" ng-disabled="explorer.busy">
+            </md-input-container>
+            <!-- url input end -->
+
+            <!-- filetypes start -->
+            <div layout="row" layout-wrap>
+                <md-checkbox ng-repeat="( key, value ) in explorer.filetype" ng-model="explorer.filetype[key]" ng-disabled="explorer.busy">.{{ key }} file</md-checkbox>
+            </div>
+            <!-- filetypes end -->
+            <md-input-container md-no-float flex>
+                <md-icon icon-font-library="material-icons" class="paper-text-grey" aria-label="search text">search</md-icon>
+                <input type="text" placeholder="RegExp text" ng-model="explorer.stringRe" ng-disabled="explorer.busy">
+            </md-input-container>
+            <!-- search button start -->
+            <div layout layout-align="end end" ng-switch on="explorer.busy">
+                <div ng-switch-when="false">
+                    <md-button class="md-raised md-primary" aria-label="explore" ng-click="explorer.explore()">Explore</md-button>
+                </div>
+                <div ng-switch-when="true">
+                    <md-progress-circular class="md-accent" md-mode="indeterminate"></md-progress-circular>
+                </div>
+            </div>
+            <!-- search button end -->
+        </fieldset>
+        <fieldset style="border:none" ng-show="explorer.result.filetype">
+            <lengend>File</lengend>
+            <div layout layout-align="start center" ng-repeat="( ext, files ) in explorer.result.filetype">
+                <p flex ng-repeat="file in files"><span class="paper-bg-grey paper-text-white" style="padding:2px 4px">{{ ext }}</span> {{ file }}</p>
+            </div>
+        </fieldset>
+        <fieldset style="border:none" ng-show="explorer.result.string">
+            <lengend>Keyword</lengend>
+            <div layout layout-align="start center" ng-repeat="fragment in explorer.result.string">
+                <code flex>{{ fragment }}</code>
+            </div>
+        </fieldset>
+    </md-whiteframe>
+</md-content>

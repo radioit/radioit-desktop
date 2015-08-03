@@ -1,0 +1,86 @@
+<md-content class="paper-bg-white content-high">
+    <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" style="margin:20px auto;width:61.8%" layout layout-align="center center" ng-controller="SettingsCtrl as settings">
+        <md-list flex>
+            <!-- settings:proxy start -->
+            <md-subheader>Proxy</md-subheader>
+            <md-list-item>
+                <p>{{ proxy.enable ? 'Enabled' : 'Disabled' }}</p>
+                <md-switch ng-model="settings.items.proxy.enable" aria-label="proxy enable"></md-switch>
+            </md-list-item>
+            <md-list-item>
+                <form name="proxyForm" layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>IP</label>
+                        <input type="text" name="ip" ng-model="settings.items.proxy.ip" ng-disabled="!settings.items.proxy.enable" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" ng-model-options="{ updateOn: 'blur' }">
+                        <div ng-messages="proxyForm.ip.$error">
+                            <div ng-message="pattern">Wrong format</div>
+                        </div>
+                    </md-input-container>
+                    <span>:</span>
+                    <md-input-container flex>
+                        <label>Port</label>
+                        <input type="number" name="port" step="1" min="1" max="65535" ng-model="settings.items.proxy.port" ng-disabled="!settings.items.proxy.enable">
+                        <div ng-messages="proxyForm.port.$error">
+                            <div ng-message="min">Less than 1</div>
+                            <div ng-message="max">Larger than 65535</div>
+                        </div>
+                    </md-input-container>
+                </form>
+            </md-list-item>
+            <!-- settings:proxy end -->
+            <!-- settings:cache start -->
+            <md-subheader>Cache</md-subheader>
+            <md-list-item>
+                <form name="cacheForm" layout="row" layout-align="start center">
+                    <span>Timeout in</span>
+                    <md-input-container flex>
+                        <label>hour</label>
+                        <input type="number" name="hour" step="1" min="0" max="24" ng-model="settings.items.timeout.hour">
+                        <div ng-messages="cacheForm.hour.$error">
+                            <div ng-message="min">Less than 0</div>
+                            <div ng-message="max">Larger than 24</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>minute</label>
+                        <input type="number" name="minute" step="1" min="0" max="60" ng-model="settings.items.timeout.minute">
+                        <div ng-messages="cacheForm.minute.$error">
+                            <div ng-message="min">Less than 0</div>
+                            <div ng-message="max">Larger than 60</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label>second</label>
+                        <input type="number" name="second" step="1" min="1" max="60" ng-model="settings.items.timeout.second">
+                        <div ng-messages="cacheForm.second.$error">
+                            <div ng-message="min">Less than 1</div>
+                            <div ng-message="max">Larger than 60</div>
+                        </div>
+                    </md-input-container>
+                </form>
+            </md-list-item>
+            <!-- settings:cache end -->
+            <md-list-item layout layout-align="center center">
+                <md-button class="md-primary md-raised" ng-click="settings.save()">Save</md-button>
+            </md-list-item>
+            <!-- settings:about start -->
+            <md-subheader>About</md-subheader>
+            <md-list-item>
+                <md-icon icon-font-library="material-icons" aria-label="author">perm_identity</md-icon>
+                <p>{{ settings.items.about.author }}</p>
+            </md-list-item>
+            <md-list-item>
+                <md-icon icon-font-library="material-icons" aria-label="email">email</md-icon>
+                <p>{{ settings.items.about.email }}</p>
+            </md-list-item>
+            <md-list-item>
+                <md-icon md-svg-src="static/image/github.svg" aria-label="github"></md-icon>
+                <p><a class="link" ng-click="app.openUrl('https://github.com/' + settings.items.about.githubAccount )">{{ settings.items.about.githubAccount }}</a></p>
+            </md-list-item>
+            <md-list-item>
+                <p>{{ settings.items.about.version }} {{ settings.items.about.codename }}</p>
+            </md-list-item>
+            <!-- settings:about end -->
+        </md-list>
+    </md-whiteframe>
+</md-content>
