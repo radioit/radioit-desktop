@@ -5,6 +5,7 @@ var EE = require( 'events' ).EventEmitter;
 var Promise = require("bluebird");
 
 var provider = require( './provider.js' );
+var explorer = require( './explorer.js' );
 
 var App = function () {
     var self = this;
@@ -35,17 +36,19 @@ var App = function () {
     // APIs
     // APIs include three types:
     // * relate to catalogue and bangumi
+    // * realte to explorer
     // * relate to setting
     // * relate to cache
     // ----------------------------------------------
 
     // catalogue and bangumi related APIs
     // ----------------------------------------------
-    self.getCatalogueList = function () {
+    self.catalogue = {};
+    self.catalogue.getList = function () {
         return provider.getCatalogueList();
     };
 
-    self.getCatalogueAsync = function ( catalogueID, forcedRefresh ) {
+    self.catalogue.getAsync = function ( catalogueID, forcedRefresh ) {
         var cacheCatalogue;
 
         self.emit( 'get-catalogue:start', catalogueID );
@@ -72,7 +75,7 @@ var App = function () {
 
                     cacheCatalogue[catalogueID] = data;
                     localStorage.setItem( 'catalogue', JSON.stringify( cacheCatalogue ) );
-                    self.saveCache();
+                    self.cache.save();
 
                     return data;
                 },
@@ -86,7 +89,8 @@ var App = function () {
         }
     };
 
-    self.getBangumiAsync = function ( catalogueID, bangumiID, forcedRefresh ) {
+    self.bangumi = {};
+    self.bangumi.getAsync = function ( catalogueID, bangumiID, forcedRefresh ) {
         var cacheBangumi;
 
         self.emit( 'get-bangumi:start', catalogueID, bangumiID );
@@ -113,7 +117,7 @@ var App = function () {
 
                     cacheBangumi[catalogueID + ' ' + bangumiID] = data;
                     localStorage.setItem( 'bangumi', JSON.stringify( cacheBangumi ) );
-                    self.saveCache();
+                    self.cache.save();
 
                     return data;
                 },
@@ -127,7 +131,8 @@ var App = function () {
         }
     };
 
-    self.getAudioAsync = function ( catalogueID, url ) {
+    self.audio = {};
+    self.audio.getAsync = function ( catalogueID, url ) {
         self.emit( 'get-audio:start', catalogueID, url );
 
         return provider.getAudioRealUrlAsync( catalogueID, url )
@@ -147,25 +152,41 @@ var App = function () {
 
     // ----------------------------------------------
 
+    // explorer related APIs
+    // ----------------------------------------------
+    self.explorer = {};
+    self.explorer.exploreAsync = function ( url, options ) {
+        return explorer.explore( url, options );
+    }
+    // ----------------------------------------------
 
     // setting related APIs
     // ----------------------------------------------
-    self.getSettings = function () {
+    self.settings = {};
+    self.settings.load = function () {
         return settings;
     };
-    self.saveSettings = function ( obj ) {
+    self.settings.save = function ( obj ) {
+        // update timeoutInternel
+        timeoutInterval = obj.timeout.second
+            + obj.timeout.minute * 60
+            + obj.timeout.hour * 60 * 60;
         ipc.send( 'save-settings', obj );
     };
     // ----------------------------------------------
 
     // cache related APIs
     // ----------------------------------------------
-    self.saveCache = function () {
+    self.cache = {};
+    self.cache.save = function () {
         ipc.send( 'save-cache', {
             catalogue: JSON.parse( localStorage.getItem( 'catalogue' ) ),
             bangumi: JSON.parse( localStorage.getItem( 'bangumi' ) )
         });
     };
+    self.cache.load = function ( key ) {
+        return JSON.parse( localStorage.getItem( key ) ) || {};
+    }
     // ----------------------------------------------
 
 

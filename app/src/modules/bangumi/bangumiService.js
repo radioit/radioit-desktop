@@ -6,10 +6,10 @@ module.exports = [ '$window',
             return busy;
         }
 
-        this.getList = function ( cid ) {
+        this.getCatalogue = function ( cid ) {
             busy = true;
 
-            return $window.App.getCatalogueAsync( cid )
+            return $window.App.catalogue.getAsync( cid )
                 .then( function ( data ) {
                     return data;
                 },
@@ -25,7 +25,7 @@ module.exports = [ '$window',
         this.getDetail = function ( cid, bid ) {
             busy = true;
 
-            return $window.App.getBangumiAsync( cid, bid )
+            return $window.App.bangumi.getAsync( cid, bid )
                 .then( function ( data ) {
                     return data;
                 },
@@ -40,7 +40,7 @@ module.exports = [ '$window',
         this.getAudio = function ( cid, url ) {
             busy = true;
 
-            return $window.App.getAudioAsync( cid, url )
+            return $window.App.audio.getAsync( cid, url )
                 .then( function ( data ) {
                     return data;
                 }, function ( err ) {

@@ -1,11 +1,11 @@
 module.exports = [ '$window',
     function ( $window ) {
         this.getSettings = function () {
-            return $window.App.getSettings();
+            return $window.App.settings.load();
         };
 
         this.saveSettings = function ( settings ) {
-            $window.App.saveSettings( settings );
+            $window.App.settings.save( settings );
         }
     }
 ]

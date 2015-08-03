@@ -18,6 +18,8 @@ var settingStorage = new Storage( env.settingsPath );
  *     author
  *     email
  *     githubAccount
+ *     version
+ *     codename
  */
 
 var Default = {
@@ -34,7 +36,9 @@ var Default = {
     'about': {
         'author': env.author || '',
         'email': env.email || '',
-        'githubAccount': env.githubAccount || ''
+        'githubAccount': env.githubAccount || '',
+        'version': env.version,
+        'codename': env.codename
     }
 };
 
@@ -45,6 +49,7 @@ settingStorage.save();
 
 var SettingManager = {
     save: function ( data ) {
+        delete data.about;
         settingStorage.restore( data );
         settingStorage.save();
     },

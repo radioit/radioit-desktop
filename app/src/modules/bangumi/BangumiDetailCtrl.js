@@ -34,6 +34,8 @@ module.exports = [ '$state', '$scope', '$rootScope', '$stateParams', 'bangumiSer
                 .done();
         };
 
+        // merge data from parent and ajax
+        // $scope.bangumiToBeLoaded is from $scope.$parent
         vm.data = angular.merge( detail, $scope.bangumiToBeLoaded );
 
         bangumiListRestrict.hideList();

@@ -10,7 +10,7 @@ module.exports = function ( $stateProvider ) {
                     $rootScope.$emit( 'notify', 'Loading...' );
                     console.log('list start');
 
-                    bangumiService.getList( $stateParams.catalogueID )
+                    bangumiService.getCatalogue( $stateParams.catalogueID )
                         .then( function ( data ) {
                             console.log( data );
                             $rootScope.$emit( 'notify', 'Success', 3000 );
