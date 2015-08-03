@@ -3,7 +3,10 @@
 .animate-toggle-right,
 .animate-slide-left,
 .animate-slide-right,
-.animate-opcity {
+.animate-opcity,
+body,
+::-webkit-scrollbar-thumb,
+.titlebar-button {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition-duration: 250ms;
 }
@@ -140,14 +143,6 @@
 }
 .paper-icon-48 {
   font-size: 48px;
-}
-.transition-enable,
-body,
-::-webkit-scrollbar-thumb,
-.titlebar-button {
-  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transition-duration: 250ms;
-  transition-property: all;
 }
 *[no-select],
 .titlebar,
