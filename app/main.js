@@ -2,9 +2,10 @@ var app = require( 'app' );  // Module to control application life.
 var BrowserWindow = require( 'browser-window' );  // Module to create native browser window.
 var ipc = require( 'ipc' );
 var path = require( 'path' );
+var env = require( './lib/env.js' );
 
 // global variable
-var APP_NAME = 'Radioit';
+var APP_NAME = env.name + ' ' + env.version + ' ' + env.codename;
 var INDEX = 'file://' + path.join( __dirname, 'index.html' );
 
 // custom js
@@ -46,6 +47,10 @@ function appReady () {
 
     mainWindow.webContents.on( 'did-finish-load', function () {
         mainWindow.show();
+        /* Review:
+            http://www.dotnet-rocks.com/2015/05/06/when-electrons-window-settitle-keeps-driving-you-crazy/
+        */
+        mainWindow.setTitle( APP_NAME );
     });
 
     mainWindow.on( 'closed', function () {

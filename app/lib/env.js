@@ -5,6 +5,7 @@ var packageJson = require( '../package.json' );
 exports.name = packageJson.name;
 exports.description = packageJson.description;
 exports.version = packageJson.version;
+exports.codename = packageJson.codename;
 exports.author = packageJson.author;
 exports.email = packageJson.email;
 exports.githubAccount = packageJson.githubAccount;

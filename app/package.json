@@ -1,7 +1,8 @@
 {
   "name": "Radioit",
   "description": "radioit desktop edition",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "codename": "Aggregator",
   "main": "main.js",
   "author": "exoticknight",
   "email": "draco.knight0@gmail.com",
@@ -18,6 +19,7 @@
     "uglifyjs": "latest",
     "browserify": "latest",
     "watchify": "latest",
+    "asar": "latest",
     "parallelshell": "latest"
   },
   "scripts": {
@@ -32,7 +34,8 @@
     "test": "electron main.js 2>&1 | silence-chromium",
     "test:js": "parallelshell \"npm run watch:js\" \"npm run test\"",
     "start": "npm run build:js && npm run build:css && electron main.js 2>&1 | silence-chromium",
-    "package": "npm run release:js && npm run release:css && electron-packager . Radioit --icon=static/app.ico"
+    "asar": "asar ./ Radioit.asar",
+    "package": "electron-packager ./ Radioit --platform=win32 --arch=x64 --version=0.30.1 --icon=static/image/app.ico --overwrite --out=../ --ignore=./src"
   },
   "dependencies": {
     "bluebird": "^2.9.25",
