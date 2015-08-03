@@ -6,7 +6,8 @@ module.exports = angular.module( 'radioit', [
     require( './settings' ).name,
     require( './catalogue' ).name,
     require( './weekday' ).name,
-    require( './bangumi' ).name
+    require( './bangumi' ).name,
+    require( './explorer' ).name
     ])
 
 .config( function ( $stateProvider, $mdThemingProvider ) {

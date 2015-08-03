@@ -35,6 +35,8 @@ module.exports = [ '$state', '$scope', '$rootScope', '$stateParams', 'bangumiSer
                 .done();
         };
 
+        // merge data from parent and ajax
+        // $scope.bangumiToBeLoaded is from $scope.$parent
         vm.data = angular.merge( detail, $scope.bangumiToBeLoaded );
 
         bangumiListRestrict.hideList();
@@ -91,10 +93,10 @@ module.exports = [ '$window',
             return busy;
         }
 
-        this.getList = function ( cid ) {
+        this.getCatalogue = function ( cid ) {
             busy = true;
 
-            return $window.App.getCatalogueAsync( cid )
+            return $window.App.catalogue.getAsync( cid )
                 .then( function ( data ) {
                     return data;
                 },
@@ -110,7 +112,7 @@ module.exports = [ '$window',
         this.getDetail = function ( cid, bid ) {
             busy = true;
 
-            return $window.App.getBangumiAsync( cid, bid )
+            return $window.App.bangumi.getAsync( cid, bid )
                 .then( function ( data ) {
                     return data;
                 },
@@ -125,7 +127,7 @@ module.exports = [ '$window',
         this.getAudio = function ( cid, url ) {
             busy = true;
 
-            return $window.App.getAudioAsync( cid, url )
+            return $window.App.audio.getAsync( cid, url )
                 .then( function ( data ) {
                     return data;
                 }, function ( err ) {
@@ -150,7 +152,7 @@ module.exports = function ( $stateProvider ) {
                     $rootScope.$emit( 'notify', 'Loading...' );
                     console.log('list start');
 
-                    bangumiService.getList( $stateParams.catalogueID )
+                    bangumiService.getCatalogue( $stateParams.catalogueID )
                         .then( function ( data ) {
                             console.log( data );
                             $rootScope.$emit( 'notify', 'Success', 3000 );
@@ -234,7 +236,7 @@ module.exports = angular.module( 'radioit.bangumi', ['ui.router'] )
 module.exports = [ '$window',
     function ( $window ){
         this.getList = function () {
-            return $window.App.getCatalogueList();
+            return $window.App.catalogue.getList();
         };
     }
 ]
@@ -293,7 +295,7 @@ radioit.controller( 'AppCtrl',
     }]
 )
 ;
-},{"./main":11}],10:[function(require,module,exports){
+},{"./main":15}],10:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.directive( 'closeButton',
@@ -318,7 +320,66 @@ radioit.directive( 'closeButton',
     }]
 )
 ;
-},{"./main":11}],11:[function(require,module,exports){
+},{"./main":15}],11:[function(require,module,exports){
+require( './main' )
+},{"./main":15}],12:[function(require,module,exports){
+module.exports = [ '$scope', 'explorerService',
+    function ( $scope, explorerService ) {
+        var vm = this;
+
+        vm.busy = false;
+        vm.url = 'http://hibiki-radio.jp/description/momor';
+        vm.filetype = {
+            'asx': true,
+            'wsx': true,
+            'mp3': true,
+            'wav': true,
+            'm3u8': true
+        };
+        vm.result = {};
+
+        vm.explore = function () {
+            var filetype = [];
+            vm.busy = true;
+
+            for ( var key in vm.filetype ) {
+                vm.filetype[key] && filetype.push( key );
+            }
+            if ( filetype.length === 0 ) {
+                return;
+            }
+
+            explorerService.explore( vm.url, { 'filetype': filetype } )
+                .then( function ( data ) {
+                    vm.result.filetype = data.filetype;
+                    vm.result.string = data.string;
+                }, function ( err ) {
+                    console.log( 'explorer Error: ' + err );
+                })
+                .finally( function () {
+                    $scope.$apply( function () {
+                        vm.busy = false;
+                    });
+                })
+                .done();
+        };
+    }
+]
+},{}],13:[function(require,module,exports){
+module.exports = [ '$window',
+    function ( $window ) {
+        this.explore = function ( url, options ) {
+            return $window.App.explorer.exploreAsync( url, options );
+        }
+    }
+]
+},{}],14:[function(require,module,exports){
+module.exports = angular.module( 'radioit.explorer', [] )
+
+.service( 'explorerService', require( './explorerService' ) )
+
+.controller( 'ExplorerCtrl', require( './explorerCtrl' ) )
+},{"./explorerCtrl":12,"./explorerService":13}],15:[function(require,module,exports){
 module.exports = angular.module( 'radioit', [
     'ngMaterial',
     'ngMessages',
@@ -327,7 +388,8 @@ module.exports = angular.module( 'radioit', [
     require( './settings' ).name,
     require( './catalogue' ).name,
     require( './weekday' ).name,
-    require( './bangumi' ).name
+    require( './bangumi' ).name,
+    require( './explorer' ).name
     ])
 
 .config( function ( $stateProvider, $mdThemingProvider ) {
@@ -360,7 +422,7 @@ module.exports = angular.module( 'radioit', [
 require( './services' );
 require( './controllers' );
 require( './directives' );
-},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./services":12,"./settings":13,"./weekday":16}],12:[function(require,module,exports){
+},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./explorer":14,"./services":16,"./settings":17,"./weekday":20}],16:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.service( 'appService',
@@ -416,13 +478,13 @@ radioit.service( 'appService',
     }
 ])
 ;
-},{"./main":11}],13:[function(require,module,exports){
+},{"./main":15}],17:[function(require,module,exports){
 module.exports = angular.module( 'radioit.settings', [] )
 
 .service( 'settingsService', require( './settingsService' ) )
 
 .controller( 'SettingsCtrl', require( './settingsCtrl' ) )
-},{"./settingsCtrl":14,"./settingsService":15}],14:[function(require,module,exports){
+},{"./settingsCtrl":18,"./settingsService":19}],18:[function(require,module,exports){
 module.exports = [ '$scope', 'settingsService',
     function ( $scope, settingsService ) {
         var vm = this;
@@ -434,24 +496,24 @@ module.exports = [ '$scope', 'settingsService',
         }
     }
 ]
-},{}],15:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ) {
         this.getSettings = function () {
-            return $window.App.getSettings();
+            return $window.App.settings.load();
         };
 
         this.saveSettings = function ( settings ) {
-            $window.App.saveSettings( settings );
+            $window.App.settings.save( settings );
         }
     }
 ]
-},{}],16:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = angular.module( 'radioit.weekday', [] )
 
 .controller( 'WeekdayCtrl', require( './weekdayCtrl' ) )
 ;
-},{"./weekdayCtrl":17}],17:[function(require,module,exports){
+},{"./weekdayCtrl":21}],21:[function(require,module,exports){
 module.exports = [ 'bangumiListRestrict',
     function ( bangumiListRestrict ) {
         var vm = this;
@@ -480,6 +542,4 @@ module.exports = [ 'bangumiListRestrict',
         };
     }
 ]
-},{}],18:[function(require,module,exports){
-require( './main' )
-},{"./main":11}]},{},[18]);
+},{}]},{},[11]);
