@@ -30,14 +30,21 @@ var explorer = {
         options.filetype.map( function ( val ) {
             filetypeRe[val] = new RegExp( '\\.' + val );
         });
-        stringRe = new RegExp( options.string );
+        // RegExp original string,
+        // will match 0 ~ 2 lines above or behind of the line that keyword belongs to
+        // keyword is in group #4
+        // (.*(\n|^)){0,2}(.*?(keyword).*?(\n|$))(.*(\n|$)){0,2}
+        stringRe = new RegExp( '(.*(\\n|^)){0,2}(.*?(' + options.string + ').*?(\\n|$))(.*(\\n|$)){0,2}', 'gm' );
 
         return request
             .get( url )
             .then( function ( res ) {
                 var $,
                     _,
-                    files = {};
+                    lines,
+                    sections = [],
+                    files = {},
+                    seen = {};
 
                 $ = cheerio.load( res.text, {
                     'decodeEntities': true,
@@ -54,16 +61,25 @@ var explorer = {
 
                     for ( var type in filetypeRe ) {
                         if ( _[0].name === 'a' ) {
-                            filetypeRe[type].test( _.attr( 'href' ) ) && files[type].push( Url.resolve( url, _.attr( 'href' ) ) );
+                            filetypeRe[type].test( _.attr( 'href' ) ) && !seen[_.attr( 'href' )]  && files[type].push( Url.resolve( url, _.attr( 'href' ) ) ) && ( seen[_.attr( 'href' )] = true );
                         } else if ( _[0].name === 'source' ) {
-                            filetypeRe[type].test( _.attr( 'src' ) ) && files[type].push( Url.resolve( url, _.attr( 'src' ) ) );
+                            filetypeRe[type].test( _.attr( 'src' ) ) && !seen[_.attr( 'href' )] && files[type].push( Url.resolve( url, _.attr( 'src' ) ) ) && ( seen[_.attr( 'href' )] = true );
                         }
                     }
                 });
                 $ = _ = null;
 
+                // search keyword in the whole document
+                while ( ( lines = stringRe.exec( res.text ) ) !== null ) {
+                    sections.push({
+                        'text': lines[0],
+                        'keyword': lines[4]
+                    });
+                }
+
                 return {
-                    'filetype': files
+                    'filetype': files,
+                    'string': sections
                 };
             }, function ( err ) {
                 console.log( 'explorer:explore url error: ' + err );

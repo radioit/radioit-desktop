@@ -70,8 +70,14 @@ vendors = offical
 .animate-opcity
     @extend .animation-base
     &.ng-hide-add
+        opacity 1
+        visibility visible
         &.ng-hide-add-active
             opacity 0
+            visibility hidden
     &.ng-hide-remove
+        opacity 0
+        visibility hidden
         &.ng-hide-remove-active
             opacity 1
+            visibility visible

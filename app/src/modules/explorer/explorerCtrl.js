@@ -1,9 +1,9 @@
-module.exports = [ '$scope', 'explorerService',
-    function ( $scope, explorerService ) {
+module.exports = [ '$scope', '$sanitize', 'explorerService',
+    function ( $scope, $sanitize, explorerService ) {
         var vm = this;
 
         vm.busy = false;
-        vm.url = 'http://hibiki-radio.jp/description/momor';
+        vm.url = '';
         vm.filetype = {
             'asx': true,
             'wsx': true,
@@ -11,25 +11,38 @@ module.exports = [ '$scope', 'explorerService',
             'wav': true,
             'm3u8': true
         };
-        vm.stringRe = '';
+        vm.string = '';
 
         vm.result = {};
 
-        vm.explore = function () {
-            var filetype = [];
-            vm.busy = true;
+        vm.trustContent = function ( text ) {}
 
-            for ( var key in vm.filetype ) {
-                vm.filetype[key] && filetype.push( key );
-            }
-            if ( filetype.length === 0 ) {
+        vm.explore = function () {
+            var options;
+
+            if ( !vm.url ) {
                 return;
             }
 
-            explorerService.explore( vm.url, { 'filetype': filetype, 'string': vm.stringRe } )
+            vm.busy = true;
+
+            options = {
+                'filetype': []
+            };
+            for ( var key in vm.filetype ) {
+                vm.filetype[key] && options.filetype.push( key );
+            }
+            if ( options.filetype.length === 0 ) {
+                return;
+            }
+            vm.string && ( options.string = vm.string );
+
+            // retrive data
+            explorerService.explore( vm.url, options )
                 .then( function ( data ) {
                     vm.result.filetype = data.filetype;
                     vm.result.string = data.string;
+
                 }, function ( err ) {
                     console.log( 'explorer Error: ' + err );
                 })

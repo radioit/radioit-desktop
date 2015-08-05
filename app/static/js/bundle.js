@@ -295,7 +295,7 @@ radioit.controller( 'AppCtrl',
     }]
 )
 ;
-},{"./main":15}],10:[function(require,module,exports){
+},{"./main":17}],10:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.directive( 'closeButton',
@@ -320,15 +320,32 @@ radioit.directive( 'closeButton',
     }]
 )
 ;
-},{"./main":15}],11:[function(require,module,exports){
+},{"./main":17}],11:[function(require,module,exports){
 require( './main' )
-},{"./main":15}],12:[function(require,module,exports){
-module.exports = [ '$scope', 'explorerService',
-    function ( $scope, explorerService ) {
+},{"./main":17}],12:[function(require,module,exports){
+module.exports = function () {
+    var entityMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': '&quot;',
+        "'": '&#39;',
+        "/": '&#x2F;'
+    };
+
+    return function( str ) {
+        return String( str ).replace( /[&<>"'\/]/g, function ( s ) {
+            return entityMap[s];
+        });
+    }
+};
+},{}],13:[function(require,module,exports){
+module.exports = [ '$scope', '$sanitize', 'explorerService',
+    function ( $scope, $sanitize, explorerService ) {
         var vm = this;
 
         vm.busy = false;
-        vm.url = 'http://hibiki-radio.jp/description/momor';
+        vm.url = 'http://www.sora-evo.com/radio/';
         vm.filetype = {
             'asx': true,
             'wsx': true,
@@ -336,23 +353,38 @@ module.exports = [ '$scope', 'explorerService',
             'wav': true,
             'm3u8': true
         };
+        vm.string = '第6回';
+
         vm.result = {};
 
-        vm.explore = function () {
-            var filetype = [];
-            vm.busy = true;
+        vm.trustContent = function ( text ) {}
 
-            for ( var key in vm.filetype ) {
-                vm.filetype[key] && filetype.push( key );
-            }
-            if ( filetype.length === 0 ) {
+        vm.explore = function () {
+            var options;
+
+            if ( !vm.url ) {
                 return;
             }
 
-            explorerService.explore( vm.url, { 'filetype': filetype } )
+            vm.busy = true;
+
+            options = {
+                'filetype': []
+            };
+            for ( var key in vm.filetype ) {
+                vm.filetype[key] && options.filetype.push( key );
+            }
+            if ( options.filetype.length === 0 ) {
+                return;
+            }
+            vm.string && ( options.string = vm.string );
+
+            // retrive data
+            explorerService.explore( vm.url, options )
                 .then( function ( data ) {
                     vm.result.filetype = data.filetype;
-                    vm.result.string = data.string;
+                    vm.result.string = data.string;console.log(data.string)
+
                 }, function ( err ) {
                     console.log( 'explorer Error: ' + err );
                 })
@@ -365,7 +397,7 @@ module.exports = [ '$scope', 'explorerService',
         };
     }
 ]
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ) {
         this.explore = function ( url, options ) {
@@ -373,13 +405,23 @@ module.exports = [ '$window',
         }
     }
 ]
-},{}],14:[function(require,module,exports){
-module.exports = angular.module( 'radioit.explorer', [] )
+},{}],15:[function(require,module,exports){
+module.exports = function () {
+    return function( text, className, keyword ) {
+        return String( text ).replace( keyword, '<span class="' + className + '">' + keyword + '</span>' );
+    }
+};
+},{}],16:[function(require,module,exports){
+module.exports = angular.module( 'radioit.explorer', ['ngSanitize'] )
 
 .service( 'explorerService', require( './explorerService' ) )
 
 .controller( 'ExplorerCtrl', require( './explorerCtrl' ) )
-},{"./explorerCtrl":12,"./explorerService":13}],15:[function(require,module,exports){
+
+.filter( 'escapeHTML', require( './escapeHTMLFilter' ) )
+
+.filter( 'highlightText', require( './highlightTextFilter' ) )
+},{"./escapeHTMLFilter":12,"./explorerCtrl":13,"./explorerService":14,"./highlightTextFilter":15}],17:[function(require,module,exports){
 module.exports = angular.module( 'radioit', [
     'ngMaterial',
     'ngMessages',
@@ -422,7 +464,7 @@ module.exports = angular.module( 'radioit', [
 require( './services' );
 require( './controllers' );
 require( './directives' );
-},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./explorer":14,"./services":16,"./settings":17,"./weekday":20}],16:[function(require,module,exports){
+},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./explorer":16,"./services":18,"./settings":19,"./weekday":22}],18:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.service( 'appService',
@@ -478,13 +520,13 @@ radioit.service( 'appService',
     }
 ])
 ;
-},{"./main":15}],17:[function(require,module,exports){
+},{"./main":17}],19:[function(require,module,exports){
 module.exports = angular.module( 'radioit.settings', [] )
 
 .service( 'settingsService', require( './settingsService' ) )
 
 .controller( 'SettingsCtrl', require( './settingsCtrl' ) )
-},{"./settingsCtrl":18,"./settingsService":19}],18:[function(require,module,exports){
+},{"./settingsCtrl":20,"./settingsService":21}],20:[function(require,module,exports){
 module.exports = [ '$scope', 'settingsService',
     function ( $scope, settingsService ) {
         var vm = this;
@@ -496,7 +538,7 @@ module.exports = [ '$scope', 'settingsService',
         }
     }
 ]
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ) {
         this.getSettings = function () {
@@ -508,12 +550,12 @@ module.exports = [ '$window',
         }
     }
 ]
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = angular.module( 'radioit.weekday', [] )
 
 .controller( 'WeekdayCtrl', require( './weekdayCtrl' ) )
 ;
-},{"./weekdayCtrl":21}],21:[function(require,module,exports){
+},{"./weekdayCtrl":23}],23:[function(require,module,exports){
 module.exports = [ 'bangumiListRestrict',
     function ( bangumiListRestrict ) {
         var vm = this;

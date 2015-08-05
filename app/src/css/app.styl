@@ -1,5 +1,18 @@
 @import "window.styl"
 
+.codearea
+    display block
+    max-width 100%
+    margin 10px 0
+    padding 5px
+    border 1px solid $GREY
+    border-radius 3px
+    overflow auto
+    white-space pre
+    &::-webkit-scrollbar
+        width 0
+        height 5px
+
 md-select:not([disabled]):focus
     .md-select-label
         color inherit !important
