@@ -1,5 +1,11 @@
 # radioit-desktop
-radioit desktop edition, based on electron / angular / angular material
+an animation radio aggregator based on electron, angular and angular material
+
+usage
+```
+npm install
+npm run start
+```
 
 ![overview](../../raw/master/screenshot/1.png)
 
