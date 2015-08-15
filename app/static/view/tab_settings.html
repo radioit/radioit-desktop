@@ -2,7 +2,7 @@
     <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" style="margin:20px auto;width:61.8%" layout layout-align="center center" ng-controller="SettingsCtrl as settings">
         <md-list flex>
             <!-- settings:proxy start -->
-            <md-subheader>Proxy</md-subheader>
+            <md-subheader>{{ 'SETTING_HEADER_PROXY' | translate }}</md-subheader>
             <md-list-item>
                 <p>{{ proxy.enable ? 'Enabled' : 'Disabled' }}</p>
                 <md-switch ng-model="settings.items.proxy.enable" aria-label="proxy enable"></md-switch>
@@ -29,7 +29,7 @@
             </md-list-item>
             <!-- settings:proxy end -->
             <!-- settings:cache start -->
-            <md-subheader>Cache</md-subheader>
+            <md-subheader>{{ 'SETTING_HEADER_CACHE' | translate }}</md-subheader>
             <md-list-item>
                 <form name="cacheForm" layout="row" layout-align="start center">
                     <span>Timeout in</span>
@@ -63,8 +63,17 @@
             <md-list-item layout layout-align="center center">
                 <md-button class="md-primary md-raised" ng-click="settings.save()">Save</md-button>
             </md-list-item>
+            <!-- settings:language start -->
+            <md-subheader>{{ 'SETTING_HEADER_LANGUAGE' | translate }}</md-subheader>
+            <md-list-item>
+                <md-select ng-model="settings.items.language" ng-change="settings.changeLanguage()" aria-label="language">
+                    <md-option value="en">English</md-option>
+                    <md-option value="chs">简体中文</md-option>
+                </md-select>
+            </md-list-item>
+            <!-- settings:language end -->
             <!-- settings:about start -->
-            <md-subheader>About</md-subheader>
+            <md-subheader>{{ 'SETTING_HEADER_ABOUT' | translate }}</md-subheader>
             <md-list-item>
                 <md-icon icon-font-library="material-icons" aria-label="author">perm_identity</md-icon>
                 <p>{{ settings.items.about.author }}</p>

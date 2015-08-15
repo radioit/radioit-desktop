@@ -10,7 +10,7 @@ module.exports = [ 'bangumiListRestrict',
             { id: 'fri', name: 'friday' },
             { id: 'sat', name: 'saturday' },
             { id: 'sun', name: 'sunday' },
-            { id: 'irr', name: 'irr' }
+            { id: 'irr', name: 'irregular' }
         ];
 
         vm.switchDay = function ( day ) {

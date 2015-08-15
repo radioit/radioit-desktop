@@ -20,15 +20,15 @@
     <div layout="row" layout-align="start center">
         <div class="titlebar-button" ng-class="{active:app.selectedTabName=='home'}" ng-click="app.selectTab('home')">
             <md-icon icon-font-library="material-icons" aria-label="home">home</md-icon>
-            <p>Home</p>
+            <p>{{ 'TAG_HOME_NAME' | translate }}</p>
         </div>
         <div class="titlebar-button" ng-class="{active:app.selectedTabName=='explore'}" ng-click="app.selectTab('explore')">
             <md-icon icon-font-library="material-icons" aria-label="explore">explore</md-icon>
-            <p>Explore</p>
+            <p>{{ 'TAG_EXPLORE_NAME' | translate }}</p>
         </div>
         <div class="titlebar-button" ng-class="{active:app.selectedTabName=='settings'}" ng-click="app.selectTab('settings')">
             <md-icon icon-font-library="material-icons" aria-label="settings">settings</md-icon>
-            <p>Settings</p>
+            <p>{{ 'TAG_SETTINGS_NAME' | translate }}</p>
         </div>
     </div>
     <!-- tab end -->
@@ -64,17 +64,18 @@
 require( './lib/app.js' );
 </script>
 
-<!-- Angular Material Dependencies -->
+<!-- Angular Dependencies -->
 <script src="static/js/angular.min.js"></script>
 <script src="static/js/angular-messages.min.js"></script>
 <script src="static/js/angular-animate.min.js"></script>
 <script src="static/js/angular-aria.min.js"></script>
 <script src="static/js/angular-sanitize.min.js"></script>
-<script src="static/js/angular-material.min.js"></script>
-<script src="static/js/angular-ui-router.min.js"></script>
 
 <!-- Angular vendors -->
+<script src="static/js/angular-material.min.js"></script>
+<script src="static/js/angular-ui-router.min.js"></script>
 <script src="static/js/angular-lazy-img.min.js"></script>
+<script src="static/js/angular-translate.min.js"></script>
 
 <!-- startup angular app -->
 <script src="static/js/bundle.js"></script>

@@ -295,7 +295,7 @@ radioit.controller( 'AppCtrl',
     }]
 )
 ;
-},{"./main":17}],10:[function(require,module,exports){
+},{"./main":20}],10:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.directive( 'closeButton',
@@ -320,9 +320,9 @@ radioit.directive( 'closeButton',
     }]
 )
 ;
-},{"./main":17}],11:[function(require,module,exports){
+},{"./main":20}],11:[function(require,module,exports){
 require( './main' )
-},{"./main":17}],12:[function(require,module,exports){
+},{"./main":20}],12:[function(require,module,exports){
 module.exports = function () {
     var entityMap = {
         "&": "&amp;",
@@ -345,7 +345,7 @@ module.exports = [ '$scope', '$sanitize', 'explorerService',
         var vm = this;
 
         vm.busy = false;
-        vm.url = 'http://www.sora-evo.com/radio/';
+        vm.url = '';
         vm.filetype = {
             'asx': true,
             'wsx': true,
@@ -353,7 +353,7 @@ module.exports = [ '$scope', '$sanitize', 'explorerService',
             'wav': true,
             'm3u8': true
         };
-        vm.string = '第6回';
+        vm.string = '';
 
         vm.result = {};
 
@@ -383,7 +383,7 @@ module.exports = [ '$scope', '$sanitize', 'explorerService',
             explorerService.explore( vm.url, options )
                 .then( function ( data ) {
                     vm.result.filetype = data.filetype;
-                    vm.result.string = data.string;console.log(data.string)
+                    vm.result.string = data.string;
 
                 }, function ( err ) {
                     console.log( 'explorer Error: ' + err );
@@ -422,11 +422,90 @@ module.exports = angular.module( 'radioit.explorer', ['ngSanitize'] )
 
 .filter( 'highlightText', require( './highlightTextFilter' ) )
 },{"./escapeHTMLFilter":12,"./explorerCtrl":13,"./explorerService":14,"./highlightTextFilter":15}],17:[function(require,module,exports){
+module.exports = function( $translateProvider ) {
+    $translateProvider.useSanitizeValueStrategy( 'escape' );
+    $translateProvider
+        .translations( 'en', require( './i18n/en' ) )
+        .translations( 'chs', require( './i18n/chs' ) );
+    $translateProvider.preferredLanguage( 'chs' );
+}
+},{"./i18n/chs":18,"./i18n/en":19}],18:[function(require,module,exports){
+module.exports = {
+    'monday': '星期一',
+    'tuesday': '星期二',
+    'wednesday': '星期三',
+    'thusday': '星期四',
+    'friday': '星期五',
+    'saturday': '星期六',
+    'sunday': '星期日',
+    'irregular': '不定期',
+
+    'TAG_HOME_NAME': '主页',
+    'TAG_SETTINGS_NAME': '设置',
+    'TAG_EXPLORE_NAME': '探索',
+
+    'BUTTON_GETAUDIO_TEXT': '点击获取音频地址',
+    'BUTTON_CHANNEL_TITLE': '选择频道',
+
+    'INPUT_URL_PLACEHOLDER': '网址，比如 http://www.google.com',
+    'INPUT_REGTEXT_PLACEHOLDER': '正则表达式',
+
+    'SETTING_HEADER_PROXY': '代理',
+    'SETTING_HEADER_CACHE': '缓存',
+    'SETTING_HEADER_LANGUAGE': '语言',
+    'SETTING_HEADER_ABOUT': '关于',
+
+    'TEXT-GoTo': '前往',
+    'TEXT-Refresh': '刷新',
+    'TEXT-updatedAt': '刷新于',
+    'TEXT-New': '新',
+    'TEXT-file': '文件',
+    'TEXT-Explore': '探索',
+    'TEXT-File': '文件',
+    'TEXT-Keyword': '关键字',
+}
+},{}],19:[function(require,module,exports){
+module.exports = {
+    'monday': 'Monday',
+    'tuesday': 'Tuesday',
+    'wednesday': 'Wednesday',
+    'thusday': 'Thusday',
+    'friday': 'Friday',
+    'saturday': 'Saturday',
+    'sunday': 'Sunday',
+    'irregular': 'Irregular',
+
+    'TAG_HOME_NAME': 'Home',
+    'TAG_SETTINGS_NAME': 'Settings',
+    'TAG_EXPLORE_NAME': 'Explore',
+
+    'BUTTON_GETAUDIO_TEXT': 'Click to get audio',
+    'BUTTON_CHANNEL_TITLE': 'Select Channel',
+
+    'INPUT_URL_PLACEHOLDER': 'URL, such as http://www.google.com',
+    'INPUT_REGTEXT_PLACEHOLDER': 'RegExp text',
+
+    'SETTING_HEADER_PROXY': 'Proxy',
+    'SETTING_HEADER_CACHE': 'Cache',
+    'SETTING_HEADER_LANGUAGE': 'Language',
+    'SETTING_HEADER_ABOUT': 'About',
+
+    'TEXT-GoTo': 'Go to',
+    'TEXT-Refresh': 'Refresh',
+    'TEXT-updatedAt': 'updated at',
+    'TEXT-New': 'New',
+    'TEXT-file': 'file',
+    'TEXT-Explore': 'Explore',
+    'TEXT-File': 'File',
+    'TEXT-Keyword': 'Keyword',
+}
+},{}],20:[function(require,module,exports){
 module.exports = angular.module( 'radioit', [
     'ngMaterial',
     'ngMessages',
     'ui.router',
     'angularLazyImg',
+    'pascalprecht.translate',
     require( './settings' ).name,
     require( './catalogue' ).name,
     require( './weekday' ).name,
@@ -434,7 +513,7 @@ module.exports = angular.module( 'radioit', [
     require( './explorer' ).name
     ])
 
-.config( function ( $stateProvider, $mdThemingProvider ) {
+.config( function ( $stateProvider ) {
     $stateProvider
         .state( 'index', {
             url: '/',
@@ -445,6 +524,8 @@ module.exports = angular.module( 'radioit', [
 .config( function( $logProvider ) {
     $logProvider.debugEnabled( true );
 })
+
+.config( require( './i18n' ) )
 
 .run( function ( $rootScope, $mdToast ) {
     // notification
@@ -464,7 +545,7 @@ module.exports = angular.module( 'radioit', [
 require( './services' );
 require( './controllers' );
 require( './directives' );
-},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./explorer":16,"./services":18,"./settings":19,"./weekday":22}],18:[function(require,module,exports){
+},{"./bangumi":5,"./catalogue":8,"./controllers":9,"./directives":10,"./explorer":16,"./i18n":17,"./services":21,"./settings":22,"./weekday":25}],21:[function(require,module,exports){
 var radioit = require( './main' );
 
 radioit.service( 'appService',
@@ -520,25 +601,29 @@ radioit.service( 'appService',
     }
 ])
 ;
-},{"./main":17}],19:[function(require,module,exports){
+},{"./main":20}],22:[function(require,module,exports){
 module.exports = angular.module( 'radioit.settings', [] )
 
 .service( 'settingsService', require( './settingsService' ) )
 
 .controller( 'SettingsCtrl', require( './settingsCtrl' ) )
-},{"./settingsCtrl":20,"./settingsService":21}],20:[function(require,module,exports){
-module.exports = [ '$scope', 'settingsService',
-    function ( $scope, settingsService ) {
+},{"./settingsCtrl":23,"./settingsService":24}],23:[function(require,module,exports){
+module.exports = [ '$scope', '$translate', 'settingsService',
+    function ( $scope, $translate, settingsService ) {
         var vm = this;
 
         vm.items = settingsService.getSettings();
+
+        vm.changeLanguage = function () {
+            $translate.use( vm.items.language );console.log('call')
+        };
 
         vm.save = function () {
             settingsService.saveSettings( vm.items );
         }
     }
 ]
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ) {
         this.getSettings = function () {
@@ -550,12 +635,12 @@ module.exports = [ '$window',
         }
     }
 ]
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = angular.module( 'radioit.weekday', [] )
 
 .controller( 'WeekdayCtrl', require( './weekdayCtrl' ) )
 ;
-},{"./weekdayCtrl":23}],23:[function(require,module,exports){
+},{"./weekdayCtrl":26}],26:[function(require,module,exports){
 module.exports = [ 'bangumiListRestrict',
     function ( bangumiListRestrict ) {
         var vm = this;
@@ -568,7 +653,7 @@ module.exports = [ 'bangumiListRestrict',
             { id: 'fri', name: 'friday' },
             { id: 'sat', name: 'saturday' },
             { id: 'sun', name: 'sunday' },
-            { id: 'irr', name: 'irr' }
+            { id: 'irr', name: 'irregular' }
         ];
 
         vm.switchDay = function ( day ) {

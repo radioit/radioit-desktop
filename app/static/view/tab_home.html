@@ -2,7 +2,7 @@
     <!-- channel switch start -->
     <md-menu ng-controller="CatalogueSwitchCtrl as catalogueSwitch">
         <md-button class="md-icon-button" style="transform:scale(1.5)" ng-click="$mdOpenMenu()" ng-disabled="catalogueSwitch.isDisabled()">
-            <md-tooltip md-autohide md-direction="right">Select channel</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'BUTTON_CHANNEL_TITLE' | translate }}</md-tooltip>
             <md-icon icon-font-library="material-icons" class="paper-text-blue" aria-label="channel" md-menu-origin>radio</md-icon>
         </md-button>
         <md-menu-content>
@@ -15,7 +15,7 @@
     <!-- weekday left start -->
     <md-list id="weekday-list" ng-controller="WeekdayCtrl as weekday" ng-disabled="catalogueSwitch.isDisabled()">
         <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">
-            <p>{{ day.name }}</p>
+            <p>{{ day.name | translate }}</p>
         </md-list-item>
     </md-list>
 </div>

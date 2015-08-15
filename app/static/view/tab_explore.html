@@ -4,27 +4,27 @@
             <!-- url input start -->
             <md-input-container md-no-float flex>
                 <md-icon icon-font-library="material-icons" class="paper-text-grey" aria-label="link" md-menu-origin>link</md-icon>
-                <input type="text" required placeholder="URL, such as http://www.google.com" ng-model="explorer.url" ng-disabled="explorer.busy">
+                <input type="text" required placeholder="{{ 'INPUT_URL_PLACEHOLDER' | translate }}" ng-model="explorer.url" ng-disabled="explorer.busy">
             </md-input-container>
             <!-- url input end -->
 
             <!-- filetypes start -->
             <div layout="row" layout-wrap>
-                <md-checkbox ng-repeat="( key, value ) in explorer.filetype" ng-model="explorer.filetype[key]" ng-disabled="explorer.busy">.{{ key }} file</md-checkbox>
+                <md-checkbox ng-repeat="( key, value ) in explorer.filetype" ng-model="explorer.filetype[key]" ng-disabled="explorer.busy">.{{ key }} {{ 'TEXT-file' | translate }}</md-checkbox>
             </div>
             <!-- filetypes end -->
 
             <!-- search string start -->
             <md-input-container md-no-float flex>
                 <md-icon icon-font-library="material-icons" class="paper-text-grey" aria-label="search text">search</md-icon>
-                <input type="text" placeholder="RegExp text" ng-model="explorer.string" ng-disabled="explorer.busy">
+                <input type="text" placeholder="{{ 'INPUT_REGTEXT_PLACEHOLDER' | translate }}" ng-model="explorer.string" ng-disabled="explorer.busy">
             </md-input-container>
             <!-- search string end -->
 
             <!-- search button start -->
             <div layout layout-align="end center" ng-switch on="explorer.busy">
                 <div ng-switch-when="false">
-                    <md-button class="md-raised md-primary" aria-label="explore" ng-click="explorer.explore()">Explore</md-button>
+                    <md-button class="md-raised md-primary" aria-label="explore" ng-click="explorer.explore()">{{ 'TEXT-Explore' | translate }}</md-button>
                 </div>
                 <div ng-switch-when="true">
                     <md-progress-circular class="md-accent" md-mode="indeterminate"></md-progress-circular>
@@ -33,13 +33,13 @@
             <!-- search button end -->
         </div>
         <div layout-padding ng-show="explorer.result.filetype">
-            <h5 class="md-title">File</h5>
+            <h5 class="md-title">{{ 'TEXT-File' | translate }}</h5>
             <div ng-repeat="( ext, files ) in explorer.result.filetype">
                 <p flex ng-repeat="file in files"><span class="paper-bg-blue paper-text-white" style="padding:2px 4px;margin-right:4px">{{ ext }}</span>{{ file }}</p>
             </div>
         </div>
         <div layout-padding ng-show="explorer.result.string">
-            <h5 class="md-title">Keyword</h5>
+            <h5 class="md-title">{{ 'TEXT-Keyword' | translate }}</h5>
             <codearea ng-repeat="fragment in explorer.result.string"><pre class="codearea" class="paper-bg-white" flex ng-bind-html="fragment.text|escapeHTML|highlightText:'paper-bg-yellow':fragment.keyword"></pre></codearea>
         </div>
     </md-whiteframe>

@@ -58,7 +58,7 @@
                 <div flex ng-switch on="!!bangumiDetail.audio">
                     <p title="audio" ng-switch-when="true">{{ bangumiDetail.audio.url }}</p>
                     <div ng-switch-when="false">
-                        <md-button class="md-primary md-raised" ng-click="bangumiDetail.getAudio()">Click to get audio</md-button>
+                        <md-button class="md-primary md-raised" ng-click="bangumiDetail.getAudio()">{{ 'BUTTON_GETAUDIO_TEXT' | translate }}</md-button>
                     </div>
                 </div>
             </md-list-item>

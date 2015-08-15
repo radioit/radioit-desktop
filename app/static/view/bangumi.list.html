@@ -4,26 +4,26 @@
     <div layout="row" layout-align="space-between center">
         <!-- homepage button -->
         <md-button class="md-icon-button" aria-label="homepage" ng-click="app.openUrl(bangumiList.data.url)">
-            <md-tooltip md-autohide md-direction="right">Go to {{ bangumiList.data.name }}</md-tooltip>
+            <md-tooltip md-autohide md-direction="right">{{ 'TEXT-GoTo' | translate }} {{ bangumiList.data.name }}</md-tooltip>
             <md-icon md-font-library="material-icons" aria-label="open_in_new">open_in_new</md-icon>
         </md-button>
         <span flex></span>
         <!-- refresh button -->
         <md-button class="md-icon-button" aria-label="refresh" ng-click="bangumiList.reload()">
-            <md-tooltip md-autohide md-direction="left">Refresh</md-tooltip>
+            <md-tooltip md-autohide md-direction="left">{{ 'TEXT-Refresh' | translate }}</md-tooltip>
             <md-icon md-font-library="material-icons" aria-label="refresh">refresh</md-icon>
         </md-button>
-        <p>updated at {{ bangumiList.data.timestamp | date : 'yyyy/MM/dd HH:mm:ss' }}</p>
+        <p>{{ 'TEXT-updatedAt' | translate }} {{ bangumiList.data.timestamp | date : 'yyyy/MM/dd HH:mm:ss' }}</p>
         <span style="width:10px"></span>
     </div>
     <!-- head bar end -->
     <md-divider></md-divider>
     <!-- bangumi list start -->
     <md-list ng-repeat="( day, bangumis ) in bangumiList.data.bangumi" ng-show="bangumiList.isSelectedDay(day)">
-        <md-subheader class="md-no-sticky" style="text-transform:capitalize;"><h2 class="md-headline">{{ day }}</h2></md-subheader>
+        <md-subheader class="md-no-sticky" style="text-transform:capitalize;"><h2 class="md-headline">{{ day | translate }}</h2></md-subheader>
         <md-list-item layout="row" layout-align="space-between center" ng-repeat="bangumi in bangumis" ng-click="bangumiList.loadDetails(bangumi)">
             <img src="static/image/spinner.gif" lazy-img="{{ bangumi.image }}" alt="{{ bangumi.name }}">
-            <h5 class="md-title"><span ng-show="bangumiList.isNew(bangumi)" style="color:red">New</span> {{ bangumi.name }}</h5>
+            <h5 class="md-title"><span ng-show="bangumiList.isNew(bangumi)" style="color:red">{{ 'TEXT-New' | translate }}</span> {{ bangumi.name }}</h5>
             <md-button class="md-icon-button" aria-label="homepage" title="Open in browser" ng-click="app.openUrl(bangumi.homepage);$event.preventDefault();$event.stopPropagation()">
                 <md-icon md-font-library="material-icons" aria-label="home">home</md-icon>
             </md-button>
