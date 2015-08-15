@@ -7,8 +7,8 @@ npm install
 npm run start
 ```
 
-![overview](../../raw/master/screenshot/1.png)
+![1](../../raw/master/screenshot/1.png)
 
-![list](../../raw/master/screenshot/2.png)
+![2](../../raw/master/screenshot/2.png)
 
-![detail](../../raw/master/screenshot/3.png)
+![3](../../raw/master/screenshot/3.png)
