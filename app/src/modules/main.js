@@ -3,6 +3,7 @@ module.exports = angular.module( 'radioit', [
     'ngMessages',
     'ui.router',
     'angularLazyImg',
+    'pascalprecht.translate',
     require( './settings' ).name,
     require( './catalogue' ).name,
     require( './weekday' ).name,
@@ -10,7 +11,7 @@ module.exports = angular.module( 'radioit', [
     require( './explorer' ).name
     ])
 
-.config( function ( $stateProvider, $mdThemingProvider ) {
+.config( function ( $stateProvider ) {
     $stateProvider
         .state( 'index', {
             url: '/',
@@ -21,6 +22,8 @@ module.exports = angular.module( 'radioit', [
 .config( function( $logProvider ) {
     $logProvider.debugEnabled( true );
 })
+
+.config( require( './i18n' ) )
 
 .run( function ( $rootScope, $mdToast ) {
     // notification
