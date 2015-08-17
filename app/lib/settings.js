@@ -6,14 +6,11 @@ var settingStorage = new Storage( env.settingsPath );
 
 /**
  * Setting
- *   proxy
- *     enable
- *     ip
- *     port
  *   timout
  *     hour
  *     minute
  *     second
+ *   language
  *   about
  *     author
  *     email
@@ -23,16 +20,12 @@ var settingStorage = new Storage( env.settingsPath );
  */
 
 var Default = {
-    'proxy': {
-        'enable': false,
-        'ip': '',
-        'port': 0
-    },
     'timeout': {
         'hour': 0,
         'minute': 0,
         'second': 60 // default is 60 seconds
     },
+    'language': 'en',
     'about': {
         'author': env.author || '',
         'email': env.email || '',

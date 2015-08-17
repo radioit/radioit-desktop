@@ -1,67 +1,40 @@
 <md-content class="paper-bg-white content-high">
     <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" style="margin:20px auto;width:61.8%" layout layout-align="center center" ng-controller="SettingsCtrl as settings">
         <md-list flex>
-            <!-- settings:proxy start -->
-            <md-subheader>{{ 'SETTING_HEADER_PROXY' | translate }}</md-subheader>
-            <md-list-item>
-                <p>{{ proxy.enable ? 'Enabled' : 'Disabled' }}</p>
-                <md-switch ng-model="settings.items.proxy.enable" aria-label="proxy enable"></md-switch>
-            </md-list-item>
-            <md-list-item>
-                <form name="proxyForm" layout="row" layout-align="start center">
-                    <md-input-container flex>
-                        <label>IP</label>
-                        <input type="text" name="ip" ng-model="settings.items.proxy.ip" ng-disabled="!settings.items.proxy.enable" ng-pattern="/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/" ng-model-options="{ updateOn: 'blur' }">
-                        <div ng-messages="proxyForm.ip.$error">
-                            <div ng-message="pattern">Wrong format</div>
-                        </div>
-                    </md-input-container>
-                    <span>:</span>
-                    <md-input-container flex>
-                        <label>Port</label>
-                        <input type="number" name="port" step="1" min="1" max="65535" ng-model="settings.items.proxy.port" ng-disabled="!settings.items.proxy.enable">
-                        <div ng-messages="proxyForm.port.$error">
-                            <div ng-message="min">Less than 1</div>
-                            <div ng-message="max">Larger than 65535</div>
-                        </div>
-                    </md-input-container>
-                </form>
-            </md-list-item>
-            <!-- settings:proxy end -->
             <!-- settings:cache start -->
             <md-subheader>{{ 'SETTING_HEADER_CACHE' | translate }}</md-subheader>
             <md-list-item>
                 <form name="cacheForm" layout="row" layout-align="start center">
-                    <span>Timeout in</span>
+                    <span>{{ 'TEXT-TimeoutIn' | translate }}</span>
                     <md-input-container flex>
-                        <label>hour</label>
+                        <label>{{ 'INPUT_HOUR_LABEL' | translate }}</label>
                         <input type="number" name="hour" step="1" min="0" max="24" ng-model="settings.items.timeout.hour">
                         <div ng-messages="cacheForm.hour.$error">
-                            <div ng-message="min">Less than 0</div>
-                            <div ng-message="max">Larger than 24</div>
+                            <div ng-message="min">{{ 'INPUT_HOUR_ERROR_MIN' | translate }}</div>
+                            <div ng-message="max">{{ 'INPUT_HOUR_ERROR_MAX' | translate }}</div>
                         </div>
                     </md-input-container>
                     <md-input-container flex>
-                        <label>minute</label>
+                        <label>{{ 'INPUT_MINUTE_LABEL' | translate }}</label>
                         <input type="number" name="minute" step="1" min="0" max="60" ng-model="settings.items.timeout.minute">
                         <div ng-messages="cacheForm.minute.$error">
-                            <div ng-message="min">Less than 0</div>
-                            <div ng-message="max">Larger than 60</div>
+                            <div ng-message="min">{{ 'INPUT_MINUTE_ERROR_MIN' | translate }}</div>
+                            <div ng-message="max">{{ 'INPUT_MINUTE_ERROR_MAX' | translate }}</div>
                         </div>
                     </md-input-container>
                     <md-input-container flex>
-                        <label>second</label>
+                        <label>{{ 'INPUT_SECOND_LABEL' | translate }}</label>
                         <input type="number" name="second" step="1" min="1" max="60" ng-model="settings.items.timeout.second">
                         <div ng-messages="cacheForm.second.$error">
-                            <div ng-message="min">Less than 1</div>
-                            <div ng-message="max">Larger than 60</div>
+                            <div ng-message="min">{{ 'INPUT_SECOND_ERROR_MIN' | translate }}</div>
+                            <div ng-message="max">{{ 'INPUT_SECOND_ERROR_MAX' | translate }}</div>
                         </div>
                     </md-input-container>
                 </form>
             </md-list-item>
             <!-- settings:cache end -->
             <md-list-item layout layout-align="center center">
-                <md-button class="md-primary md-raised" ng-click="settings.save()">Save</md-button>
+                <md-button class="md-primary md-raised" ng-click="settings.save()">{{ 'BUTTON_SAVE_TEXT' | translate }}</md-button>
             </md-list-item>
             <!-- settings:language start -->
             <md-subheader>{{ 'SETTING_HEADER_LANGUAGE' | translate }}</md-subheader>

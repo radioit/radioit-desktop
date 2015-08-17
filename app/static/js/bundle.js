@@ -445,17 +445,28 @@ module.exports = {
     'TAG_EXPLORE_NAME': '探索',
 
     'BUTTON_GETAUDIO_TEXT': '点击获取音频地址',
+    'BUTTON_SAVE_TEXT': '保存',
     'BUTTON_CHANNEL_TITLE': '选择频道',
 
     'INPUT_URL_PLACEHOLDER': '网址，比如 http://www.google.com',
     'INPUT_REGTEXT_PLACEHOLDER': '正则表达式',
 
-    'SETTING_HEADER_PROXY': '代理',
+    'INPUT_HOUR_LABEL': '时',
+    'INPUT_HOUR_ERROR_MIN': '不小于 0',
+    'INPUT_HOUR_ERROR_MAX': '不大于 24',
+    'INPUT_MINUTE_LABEL': '分',
+    'INPUT_MINUTE_ERROR_MIN': '不小于 0',
+    'INPUT_MINUTE_ERROR_MAX': '不大于 60',
+    'INPUT_SECOND_LABEL': '秒',
+    'INPUT_SECOND_ERROR_MIN': '不小于 1',
+    'INPUT_SECOND_ERROR_MAX': '不大于 60',
+
     'SETTING_HEADER_CACHE': '缓存',
     'SETTING_HEADER_LANGUAGE': '语言',
     'SETTING_HEADER_ABOUT': '关于',
 
     'TEXT-GoTo': '前往',
+    'TEXT-Back': '返回',
     'TEXT-Refresh': '刷新',
     'TEXT-updatedAt': '刷新于',
     'TEXT-New': '新',
@@ -463,6 +474,7 @@ module.exports = {
     'TEXT-Explore': '探索',
     'TEXT-File': '文件',
     'TEXT-Keyword': '关键字',
+    'TEXT-TimeoutIn': '有效期'
 }
 },{}],19:[function(require,module,exports){
 module.exports = {
@@ -480,17 +492,28 @@ module.exports = {
     'TAG_EXPLORE_NAME': 'Explore',
 
     'BUTTON_GETAUDIO_TEXT': 'Click to get audio',
+    'BUTTON_SAVE_TEXT': 'Save',
     'BUTTON_CHANNEL_TITLE': 'Select Channel',
 
     'INPUT_URL_PLACEHOLDER': 'URL, such as http://www.google.com',
     'INPUT_REGTEXT_PLACEHOLDER': 'RegExp text',
 
-    'SETTING_HEADER_PROXY': 'Proxy',
+    'INPUT_HOUR_LABEL': 'hour',
+    'INPUT_HOUR_ERROR_MIN': 'Less than 0',
+    'INPUT_HOUR_ERROR_MAX': 'Larger than 24',
+    'INPUT_MINUTE_LABEL': 'minute',
+    'INPUT_MINUTE_ERROR_MIN': 'Less than 0',
+    'INPUT_MINUTE_ERROR_MAX': 'Larger than 60',
+    'INPUT_SECOND_LABEL': 'second',
+    'INPUT_SECOND_ERROR_MIN': 'Less than 1',
+    'INPUT_SECOND_ERROR_MAX': 'Larger than 60',
+
     'SETTING_HEADER_CACHE': 'Cache',
     'SETTING_HEADER_LANGUAGE': 'Language',
     'SETTING_HEADER_ABOUT': 'About',
 
     'TEXT-GoTo': 'Go to',
+    'TEXT-Back': 'Back',
     'TEXT-Refresh': 'Refresh',
     'TEXT-updatedAt': 'updated at',
     'TEXT-New': 'New',
@@ -498,6 +521,7 @@ module.exports = {
     'TEXT-Explore': 'Explore',
     'TEXT-File': 'File',
     'TEXT-Keyword': 'Keyword',
+    'TEXT-TimeoutIn': 'Timeout in'
 }
 },{}],20:[function(require,module,exports){
 module.exports = angular.module( 'radioit', [
@@ -615,7 +639,7 @@ module.exports = [ '$scope', '$translate', 'settingsService',
         vm.items = settingsService.getSettings();
 
         vm.changeLanguage = function () {
-            $translate.use( vm.items.language );console.log('call')
+            $translate.use( vm.items.language );
         };
 
         vm.save = function () {
