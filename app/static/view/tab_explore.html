@@ -40,7 +40,7 @@
         </div>
         <div layout-padding ng-show="explorer.result.string">
             <h5 class="md-title">{{ 'TEXT-Keyword' | translate }}</h5>
-            <codearea ng-repeat="fragment in explorer.result.string"><pre class="codearea" class="paper-bg-white" flex ng-bind-html="fragment.text|escapeHTML|highlightText:'paper-bg-yellow':fragment.keyword"></pre></codearea>
+            <pre ng-repeat="fragment in explorer.result.string" class="codearea paper-bg-white" flex ng-bind-html="fragment.text|escapeHTML|highlightText:'paper-bg-yellow':fragment.keyword"></pre>
         </div>
     </md-whiteframe>
 </md-content>

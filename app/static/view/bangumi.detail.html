@@ -56,7 +56,7 @@
             <md-list-item layout="row" layout-align="start start">
                 <md-icon md-font-library="material-icons" class="md-black" aria-label="audiotrack">audiotrack</md-icon>
                 <div flex ng-switch on="!!bangumiDetail.audio">
-                    <p title="audio" ng-switch-when="true">{{ bangumiDetail.audio.url }}</p>
+                    <pre title="audio" ng-switch-when="true" class="codearea paper-bg-white" >{{ bangumiDetail.audio.url }}</pre>
                     <div ng-switch-when="false">
                         <md-button class="md-primary md-raised" ng-click="bangumiDetail.getAudio()">{{ 'BUTTON_GETAUDIO_TEXT' | translate }}</md-button>
                     </div>
