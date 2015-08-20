@@ -64,16 +64,16 @@ var animate = {
                 days.forEach( function ( el ) {
                     var _;
 
-                    data.bangumi[el] = $( '#' + el + ' .contents_block_A' ).map( function () {
+                    data.bangumi[el] = $( '#' + el + ' .box' ).map( function () {
                         _ = $( this );
                         return {
-                            'id': _.find( '.title a' ).attr( 'href' ).slice( 22 ),
-                            'homepage': url.resolve( URLs.catalogue, _.find( '.title a' ).attr( 'href' ) ),
-                            'name': _.find( '.title a' ).text(),
-                            'image': _.find( '.image img').attr( 'src' ),
-                            'status': _.find( '.textArea p.new' ) ? 'new' : 'normal',
-                            'update': _.find( '.date' ).text().slice( 0, 16 ),
-                            'personality': _.find( '.text' ).text().slice( 8 )
+                            'id': _.find( 'a' ).attr( 'href' ).slice( 22 ),
+                            'homepage': url.resolve( URLs.catalogue, _.find( 'a' ).attr( 'href' ) ),
+                            'name': _.find( '.title' ).text(),
+                            'image': url.resolve( URLs.catalogue, _.find( '.img img').attr( 'src' ) ),
+                            'status': 'normal',
+                            'update': _.find( '.date' ).text(),
+                            'personality': _.find( '.main' ).text()
                         };
                     }).get();
 
@@ -122,20 +122,20 @@ var animate = {
                 // }
                 data = {
                     'timestamp': Date.now(),
-                    'name': $( '.ttl' ).text().trim(),
+                    'name': $( 'title' ).text().trim(),
                     'homepage': url.resolve( URLs.bangumi, id ),
-                    'description': $( '.tab-outline' ).text().trim(),
-                    'title': $( '.broadcast_title' ).text().trim(),
-                    'comment': $( '.textBox' ).text().trim(),
-                    'schedule': $( '.ttlArea .date' ).eq( 0 ).text().trim(),
-                    'personality': '',
+                    'description': $( '#tabBox02' ).text().trim(),
+                    'title': $( '.radioTitle' ).text().trim(),
+                    'comment': $( '#tabBox01' ).text().trim(),
+                    'schedule': $( '.entry .textBox' ).text().trim(),
+                    'personality': $( '.textBox ul li' ).map( function () {return $( this ).text() }).get(),
                     'guest': '',
                     'images': (function () {
-                        var image = $( '.thumbnail img' );
-                        image = image.length ? image : $( '.box_img > img' );
-                        return image.map( function() {return url.resolve( URLs.catalogue, $( this ).attr( 'src' ) );} ).get();
+                        var image = $( '#tabBox01 img' );
+                        image = image.length ? image : $( '.photo img' );
+                        return image.map( function () {return url.resolve( URLs.catalogue, $( this ).attr( 'src' ) );} ).get();
                     })(),
-                    'audio': url.resolve( URLs.catalogue, $( '.playBox' ).eq( -1 ).find( '.btn > a' ).eq( 0 ).attr( 'href' ) )
+                    'audio': url.resolve( URLs.catalogue, $( '.wmp a' ).attr( 'href' ) )
                 };
 
                 return data;
@@ -149,7 +149,7 @@ var animate = {
     getAudioRealUrlAsync: function ( url ) {
         return request
             .get( url )
-            .then( function ( res ) {console.log(res)
+            .then( function ( res ) {
                 return request.get( res.redirects[0] ).buffer(); // .buffer() is important
             }, function ( err ) {
                 console.log( 'animate:get audio error: ' + err );
