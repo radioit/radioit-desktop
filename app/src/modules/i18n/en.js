@@ -42,5 +42,6 @@ module.exports = {
     'TEXT-Explore': 'Explore',
     'TEXT-File': 'File',
     'TEXT-Keyword': 'Keyword',
-    'TEXT-TimeoutIn': 'Timeout in'
+    'TEXT-TimeoutIn': 'Timeout in',
+    'TEXT-Debug': 'Open Dev Tools'
 }

@@ -42,5 +42,6 @@ module.exports = {
     'TEXT-Explore': '探索',
     'TEXT-File': '文件',
     'TEXT-Keyword': '关键字',
-    'TEXT-TimeoutIn': '有效期'
+    'TEXT-TimeoutIn': '有效期',
+    'TEXT-Debug': '打开开发者工具'
 }

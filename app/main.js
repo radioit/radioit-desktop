@@ -43,7 +43,7 @@ function appReady () {
     });
 
     mainWindow.loadUrl( INDEX );
-    mainWindow.openDevTools(); // remove this
+    // mainWindow.openDevTools(); // remove this
 
     mainWindow.webContents.on( 'did-finish-load', function () {
         mainWindow.show();
@@ -57,6 +57,11 @@ function appReady () {
         mainWindow = null;
     });
 }
+
+ipc.on( 'open-dev', function ( event ) {
+    event.returnValue = true;
+    mainWindow.openDevTools();
+});
 
 ipc.on( 'app-quit', function ( event ) {
     event.returnValue = true;

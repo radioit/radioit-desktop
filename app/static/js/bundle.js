@@ -292,6 +292,10 @@ radioit.controller( 'AppCtrl',
         vm.openUrl = function ( url ) {
             $window.App.openUrl( url );
         };
+
+        vm.openDevTools = function () {
+            $window.App.openDevTools();
+        };
     }]
 )
 ;
@@ -474,7 +478,8 @@ module.exports = {
     'TEXT-Explore': '探索',
     'TEXT-File': '文件',
     'TEXT-Keyword': '关键字',
-    'TEXT-TimeoutIn': '有效期'
+    'TEXT-TimeoutIn': '有效期',
+    'TEXT-Debug': '打开开发者工具'
 }
 },{}],19:[function(require,module,exports){
 module.exports = {
@@ -521,7 +526,8 @@ module.exports = {
     'TEXT-Explore': 'Explore',
     'TEXT-File': 'File',
     'TEXT-Keyword': 'Keyword',
-    'TEXT-TimeoutIn': 'Timeout in'
+    'TEXT-TimeoutIn': 'Timeout in',
+    'TEXT-Debug': 'Open Dev Tools'
 }
 },{}],20:[function(require,module,exports){
 module.exports = angular.module( 'radioit', [
@@ -581,10 +587,6 @@ radioit.service( 'appService',
 
         this.minimize = function () {
             $window.App.minimize();
-        };
-
-        this.openUrl = function ( url ) {
-            $window.App.openExternelUrl( url );
         };
     }]
 )

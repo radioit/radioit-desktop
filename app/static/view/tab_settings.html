@@ -62,6 +62,9 @@
             <md-list-item>
                 <p>{{ settings.items.about.version }} {{ settings.items.about.codename }}</p>
             </md-list-item>
+            <md-list-item>
+                <md-button class="md-raised md-primary" aria-label="debug" ng-click="app.openDevTools()">{{ 'TEXT-Debug' | translate }}</md-button>
+            </md-list-item>
             <!-- settings:about end -->
         </md-list>
     </md-whiteframe>

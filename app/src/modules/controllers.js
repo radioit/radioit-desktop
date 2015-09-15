@@ -14,6 +14,10 @@ radioit.controller( 'AppCtrl',
         vm.openUrl = function ( url ) {
             $window.App.openUrl( url );
         };
+
+        vm.openDevTools = function () {
+            $window.App.openDevTools();
+        };
     }]
 )
 ;

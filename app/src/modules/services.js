@@ -10,10 +10,6 @@ radioit.service( 'appService',
         this.minimize = function () {
             $window.App.minimize();
         };
-
-        this.openUrl = function ( url ) {
-            $window.App.openExternelUrl( url );
-        };
     }]
 )
 

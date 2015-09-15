@@ -195,6 +195,10 @@ var App = function () {
     self.openUrl = function ( url ) {
         shell.openExternal( url );
     };
+
+    self.openDevTools = function () {
+        ipc.sendSync( 'open-dev' );
+    };
     // ----------------------------------------------
 
     // control APIs
