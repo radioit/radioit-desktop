@@ -7,20 +7,27 @@
   "author": "exoticknight",
   "email": "draco.knight0@gmail.com",
   "githubAccount": "exoticknight",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radioit/radioit-desktop"
+  },
+  "bugs": {
+    "url": "https://github.com/radioit/radioit-desktop/issues"
+  },
   "devDependencies": {
-    "jshint": "latest",
-    "rimraf": "latest",
+    "asar": "latest",
+    "browserify": "latest",
     "electron-packager": "latest",
     "electron-prebuilt": "latest",
-    "silence-chromium": "latest",
+    "jshint": "latest",
     "mkdirp": "latest",
     "nib": "latest",
+    "parallelshell": "latest",
+    "rimraf": "latest",
+    "silence-chromium": "latest",
     "stylus": "latest",
     "uglifyjs": "latest",
-    "browserify": "latest",
-    "watchify": "latest",
-    "asar": "latest",
-    "parallelshell": "latest"
+    "watchify": "latest"
   },
   "scripts": {
     "clean:test": "rimraf test",
@@ -31,9 +38,9 @@
     "release:js": "browserify src/modules/entry.js | uglifyjs > static/js/bundle.js",
     "watch:css": "stylus -u nib src/css/app.styl -o static/css/app.css -w",
     "watch:js": "watchify src/modules/entry.js -o static/js/bundle.js",
-    "test": "electron main.js 2>&1 | silence-chromium",
+    "test": "electron main.js --enable-logging 2>&1 | silence-chromium",
     "test:js": "parallelshell \"npm run watch:js\" \"npm run test\"",
-    "start": "npm run build:js && npm run build:css && electron main.js 2>&1 | silence-chromium",
+    "start": "npm run build:js && npm run build:css && electron main.js --enable-logging 2>&1 | silence-chromium",
     "asar": "asar ./ Radioit.asar",
     "package": "electron-packager ./ Radioit --platform=win32 --arch=x64 --version=0.30.1 --icon=static/image/app.ico --overwrite --out=../ --ignore=./src"
   },

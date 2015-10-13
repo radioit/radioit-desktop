@@ -60,7 +60,7 @@ function appReady () {
 
 ipc.on( 'open-dev', function ( event ) {
     event.returnValue = true;
-    mainWindow.openDevTools();
+    mainWindow.webContents.openDevTools();
 });
 
 ipc.on( 'app-quit', function ( event ) {
