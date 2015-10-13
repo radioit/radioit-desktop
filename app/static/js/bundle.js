@@ -435,14 +435,15 @@ module.exports = function( $translateProvider ) {
 }
 },{"./i18n/chs":18,"./i18n/en":19}],18:[function(require,module,exports){
 module.exports = {
-    'monday': '星期一',
-    'tuesday': '星期二',
-    'wednesday': '星期三',
-    'thusday': '星期四',
-    'friday': '星期五',
-    'saturday': '星期六',
-    'sunday': '星期日',
-    'irregular': '不定期',
+    'mon': '星期一',
+    'tue': '星期二',
+    'wed': '星期三',
+    'thu': '星期四',
+    'fri': '星期五',
+    'sat': '星期六',
+    'sun': '星期日',
+    'irr': '不定期',
+    'tod': '今天',
 
     'TAG_HOME_NAME': '主页',
     'TAG_SETTINGS_NAME': '设置',
@@ -483,14 +484,15 @@ module.exports = {
 }
 },{}],19:[function(require,module,exports){
 module.exports = {
-    'monday': 'Monday',
-    'tuesday': 'Tuesday',
-    'wednesday': 'Wednesday',
-    'thusday': 'Thusday',
-    'friday': 'Friday',
-    'saturday': 'Saturday',
-    'sunday': 'Sunday',
-    'irregular': 'Irregular',
+    'mon': 'Monday',
+    'tue': 'Tuesday',
+    'wed': 'Wednesday',
+    'thu': 'Thusday',
+    'fri': 'Friday',
+    'sat': 'Saturday',
+    'sun': 'Sunday',
+    'irr': 'Irregular',
+    'tod': 'Today',
 
     'TAG_HOME_NAME': 'Home',
     'TAG_SETTINGS_NAME': 'Settings',
@@ -665,21 +667,30 @@ module.exports = [ '$window',
 module.exports = angular.module( 'radioit.weekday', [] )
 
 .controller( 'WeekdayCtrl', require( './weekdayCtrl' ) )
+
+.filter( 'isToday', require( './isTodayFilter' ) )
 ;
-},{"./weekdayCtrl":26}],26:[function(require,module,exports){
+},{"./isTodayFilter":26,"./weekdayCtrl":27}],26:[function(require,module,exports){
+module.exports = function () {
+    return function ( input ) {
+        // 0 for sunday
+        return input === ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getUTCDay()] ? 'tod': input;
+    }
+}
+},{}],27:[function(require,module,exports){
 module.exports = [ 'bangumiListRestrict',
     function ( bangumiListRestrict ) {
         var vm = this;
 
         vm.day = [
-            { id: 'mon', name: 'monday' },
-            { id: 'tue', name: 'tuesday' },
-            { id: 'wed', name: 'wednesday' },
-            { id: 'thu', name: 'thusday' },
-            { id: 'fri', name: 'friday' },
-            { id: 'sat', name: 'saturday' },
-            { id: 'sun', name: 'sunday' },
-            { id: 'irr', name: 'irregular' }
+            'mon',
+            'tue',
+            'wed',
+            'thu',
+            'fri',
+            'sat',
+            'sun',
+            'irr'
         ];
 
         vm.switchDay = function ( day ) {
@@ -693,6 +704,9 @@ module.exports = [ 'bangumiListRestrict',
         vm.isDisabled = function () {
             return !bangumiListRestrict.isListShowed();
         };
+
+        // init
+        vm.switchDay( ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getUTCDay()] );
     }
 ]
 },{}]},{},[11]);

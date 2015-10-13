@@ -14,8 +14,8 @@
     <!-- channel switch end -->
     <!-- weekday left start -->
     <md-list id="weekday-list" ng-controller="WeekdayCtrl as weekday" ng-disabled="catalogueSwitch.isDisabled()">
-        <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day.id)}" ng-click="weekday.switchDay(day.id)">
-            <p>{{ day.name | translate }}</p>
+        <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day)}" ng-click="weekday.switchDay(day)">
+            <p>{{ day | isToday | translate }}</p>
         </md-list-item>
     </md-list>
 </div>

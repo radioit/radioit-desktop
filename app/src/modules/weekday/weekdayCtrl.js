@@ -3,14 +3,14 @@ module.exports = [ 'bangumiListRestrict',
         var vm = this;
 
         vm.day = [
-            { id: 'mon', name: 'monday' },
-            { id: 'tue', name: 'tuesday' },
-            { id: 'wed', name: 'wednesday' },
-            { id: 'thu', name: 'thusday' },
-            { id: 'fri', name: 'friday' },
-            { id: 'sat', name: 'saturday' },
-            { id: 'sun', name: 'sunday' },
-            { id: 'irr', name: 'irregular' }
+            'mon',
+            'tue',
+            'wed',
+            'thu',
+            'fri',
+            'sat',
+            'sun',
+            'irr'
         ];
 
         vm.switchDay = function ( day ) {
@@ -24,5 +24,8 @@ module.exports = [ 'bangumiListRestrict',
         vm.isDisabled = function () {
             return !bangumiListRestrict.isListShowed();
         };
+
+        // init
+        vm.switchDay( ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getUTCDay()] );
     }
 ]
