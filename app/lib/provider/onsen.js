@@ -11,7 +11,7 @@ var URLs = {
     'catalogue': 'http://www.onsen.ag',
     'bangumi': 'http://www.onsen.ag/program/',
     'audio': 'http://www.onsen.ag/data/api/getMovieInfo/'
-}
+};
 
 var onsen = {
     catalogueName: NAME,

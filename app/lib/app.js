@@ -1,11 +1,13 @@
-var ipc = require( 'ipc' );
-var shell = require( 'shell' );
-var inherits = require( 'util' ).inherits;
-var EE = require( 'events' ).EventEmitter;
-var Promise = require("bluebird");
+const electron = require( 'electron' );
+const ipcRenderer = electron.ipcRenderer;
+const shell = electron.shell;
 
-var provider = require( './provider.js' );
-var explorer = require( './explorer.js' );
+const inherits = require( 'util' ).inherits;
+const EE = require( 'events' ).EventEmitter;
+const Promise = require("bluebird");
+
+const provider = require( './provider.js' );
+const explorer = require( './explorer.js' );
 
 var App = function () {
     var self = this;
@@ -23,8 +25,8 @@ var App = function () {
     // ----------------------------------------------
 
     // init
-    settings = ipc.sendSync( 'get-settings' );
-    cache = ipc.sendSync( 'get-cache' );
+    settings = ipcRenderer.sendSync( 'get-settings' );
+    cache = ipcRenderer.sendSync( 'get-cache' );
 
     timeoutInterval = settings.timeout.second
         + settings.timeout.minute * 60
@@ -157,7 +159,7 @@ var App = function () {
     self.explorer = {};
     self.explorer.exploreAsync = function ( url, options ) {
         return explorer.explore( url, options );
-    }
+    };
     // ----------------------------------------------
 
     // setting related APIs
@@ -171,7 +173,7 @@ var App = function () {
         timeoutInterval = obj.timeout.second
             + obj.timeout.minute * 60
             + obj.timeout.hour * 60 * 60;
-        ipc.send( 'save-settings', obj );
+        ipcRenderer.send( 'save-settings', obj );
     };
     // ----------------------------------------------
 
@@ -179,14 +181,14 @@ var App = function () {
     // ----------------------------------------------
     self.cache = {};
     self.cache.save = function () {
-        ipc.send( 'save-cache', {
+        ipcRenderer.send( 'save-cache', {
             catalogue: JSON.parse( localStorage.getItem( 'catalogue' ) ),
             bangumi: JSON.parse( localStorage.getItem( 'bangumi' ) )
         });
     };
     self.cache.load = function ( key ) {
         return JSON.parse( localStorage.getItem( key ) ) || {};
-    }
+    };
     // ----------------------------------------------
 
 
@@ -197,21 +199,21 @@ var App = function () {
     };
 
     self.openDevTools = function () {
-        ipc.sendSync( 'open-dev' );
+        ipcRenderer.sendSync( 'open-dev' );
     };
     // ----------------------------------------------
 
     // control APIs
     // ----------------------------------------------
     self.quit = function () {
-        ipc.sendSync( 'app-quit' );
+        ipcRenderer.sendSync( 'app-quit' );
     };
 
     self.minimize = function () {
-        ipc.sendSync( 'app-minimize' );
+        ipcRenderer.sendSync( 'app-minimize' );
     };
     // ----------------------------------------------
-}
+};
 inherits( App, EE );
 
 module.exports = window.App = App();

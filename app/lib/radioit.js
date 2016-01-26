@@ -1,12 +1,13 @@
-var ipc = require( 'ipc' );
+const electron = require( 'electron' );
+const ipcMain = electron.ipcMain;
 
-var settings = require( './settings.js' );
-var cache = require( './cache.js' );
+const settings = require( './settings.js' );
+const cache = require( './cache.js' );
 
 var Radioit = ( function () {
     var Radioit = function () {
         this.registerListeners();
-    }
+    };
 
     // Singleton
     Radioit.boot = function () {
@@ -14,22 +15,22 @@ var Radioit = ( function () {
             throw new Error( 'only allow one instance running at the same time');
         }
         Radioit.INSTANCE = new Radioit();
-    }
+    };
 
     Radioit.prototype.registerListeners = function () {
         // setting
-        ipc.on( 'get-settings', function ( event, arg ) {
+        ipcMain.on( 'get-settings', function ( event, arg ) {
             event.returnValue = settings.get();
         });
-        ipc.on( 'save-settings', function ( event, arg ) {
+        ipcMain.on( 'save-settings', function ( event, arg ) {
             settings.save( arg );
         });
 
         // cache
-        ipc.on( 'get-cache', function ( event, arg ) {
+        ipcMain.on( 'get-cache', function ( event, arg ) {
             event.returnValue = cache.get();
         });
-        ipc.on( 'save-cache', function ( event, arg ) {
+        ipcMain.on( 'save-cache', function ( event, arg ) {
             cache.save( arg );
         });
     };

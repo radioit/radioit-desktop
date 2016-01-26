@@ -10,7 +10,7 @@ var HOST = 'http://www.animate.tv/radio';
 var URLs = {
     'catalogue': 'http://animate.tv/radio',
     'bangumi': 'http://animate.tv/radio/'
-}
+};
 
 var animate = {
     catalogueName: NAME,

@@ -1,8 +1,9 @@
-var app = require( 'app' );  // Module to control application life.
-var BrowserWindow = require( 'browser-window' );  // Module to create native browser window.
-var ipc = require( 'ipc' );
-var path = require( 'path' );
-var env = require( './lib/env.js' );
+const electron = require( 'electron' );
+const app = electron.app;  // Module to control application life.
+const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
+const ipcMain = electron.ipcMain;
+const path = require( 'path' );
+const env = require( './lib/env.js' );
 
 // global variable
 var APP_NAME = env.name + ' ' + env.version + ' ' + env.codename;
@@ -12,17 +13,31 @@ var INDEX = 'file://' + path.join( __dirname, 'index.html' );
 var Radioit = require( './lib/radioit.js' );
 Radioit.boot();
 
-// Report crashes to our server.
-require( 'crash-reporter' ).start();
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
 var mainWindow = null;
 
+var shouldQuit = app.makeSingleInstance( function ( commandLine, workingDirectory ) {
+    // Someone tried to run a second instance, we should focus our window
+    if ( mainWindow ) {
+        if ( mainWindow.isMinimized() ) {
+            mainWindow.restore();
+        }
+        mainWindow.focus();
+    }
+    return true;
+});
+
+if ( shouldQuit ) {
+    app.quit();
+    return;
+}
+
 // Quit when all windows are closed.
 app.on( 'window-all-closed', function () {
-  if ( process.platform != 'darwin' )
+  if ( process.platform != 'darwin' ) {
     app.quit();
+  }
 });
 
 // This method will be called when Electron has done everything
@@ -42,7 +57,7 @@ function appReady () {
         'transparent': true
     });
 
-    mainWindow.loadUrl( INDEX );
+    mainWindow.loadURL( INDEX );
     // mainWindow.openDevTools(); // remove this
 
     mainWindow.webContents.on( 'did-finish-load', function () {
@@ -58,17 +73,17 @@ function appReady () {
     });
 }
 
-ipc.on( 'open-dev', function ( event ) {
+ipcMain.on( 'open-dev', function ( event ) {
     event.returnValue = true;
     mainWindow.webContents.openDevTools();
 });
 
-ipc.on( 'app-quit', function ( event ) {
+ipcMain.on( 'app-quit', function ( event ) {
     event.returnValue = true;
     mainWindow.close();
 });
 
-ipc.on( 'app-minimize', function ( event ) {
+ipcMain.on( 'app-minimize', function ( event ) {
     event.returnValue = true;
     mainWindow.minimize();
 });
