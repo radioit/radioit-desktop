@@ -2,15 +2,14 @@ var url = require( 'url' );
 
 var Promise = require( 'bluebird' );
 var request = require( 'superagent-bluebird-promise' );
-var cheerio = require( 'cheerio' );
 
 var NAME = '響 - HiBiKi Radio Station -';
 var HOST = 'http://hibiki-radio.jp';
 
 var URLs = {
-    'catalogue': 'http://hibiki-radio.jp/program',
-    'bangumi': 'http://hibiki-radio.jp/description/'
-}
+    'catalogue': 'https://vcms-api.hibiki-radio.jp/api/v1/programs',
+    'bangumi': 'https://vcms-api.hibiki-radio.jp/api/v1/programs/'
+};
 
 var hibiki = {
     catalogueName: NAME,
@@ -19,18 +18,32 @@ var hibiki = {
     getCatalogueAsync: function () {
         return request
             .get( URLs.catalogue )
+            .set({
+                'Host': 'vcms-api.hibiki-radio.jp',
+                'Connection': 'keep-alive',
+                'Accept': 'application/json, text/plain, */*',
+                'Origin': 'http://hibiki-radio.jp',
+                'X-Requested-With': 'XMLHttpRequest',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36',
+                'DNT': '1',
+                'Referer': 'http://hibiki-radio.jp/',
+                'Accept-Encoding': 'gzip, deflate, sdch',
+                'Accept-Language': 'en-US,en;q=0.8'
+            })
             .then( function ( res ) {
-                var $,
+                var bangumis,
                     days,
-                    bangumi,
                     data;
+
+                var filterWithSpecKV = function ( key, value ) {
+                    return function( el ) {
+                        return el[key] === value;
+                    };
+                };
 
                 days = 'mon tue wed thu fri sat sun irr'.split( ' ' );
 
-                $ = cheerio.load( res.text, {
-                    'decodeEntities': true,
-                    'lowerCaseAttributeNames': true
-                });
+                bangumis = JSON.parse( res.text );
 
                 // Extract html and structure data
                 // data will be formated as a json object in following structure:
@@ -58,30 +71,20 @@ var hibiki = {
                 //         'irr': [{...},{...}],
                 //     }
                 // }
-                data = {};
-                data.bangumi = {};
-                days.forEach( function ( el ) {
-                    data.bangumi[el] = [];
-                });
-
 
                 // Structure daily bangumis
-                $( '.hbkProgramTable' ).each( function ( i, el ) {
-                    var _;
-
-                    data.bangumi[days[i]] = $( this ).find( '.hbkProgramTitleNew, .hbkProgramTitle' ).map( function ( _, el ) {
-                        _ = $( this );
-
+                data = {};
+                data.bangumi = {};
+                days.forEach( function ( el, i ) {
+                    data.bangumi[el] = bangumis.filter( filterWithSpecKV( 'day_of_week', i ) ).map( function ( el ) {
                         return {
-                            'id': _.parent().attr( 'href' ).slice( 35 ),
-                            'homepage': _.parent().attr( 'href' ),
-                            'name': _.text(),
-                            'image': _.prev().children().eq( 0 ).attr( 'src' ),
-                            'status': _.attr( 'class' ) === 'hbkProgramTitleNew' ? 'new' : 'normal'
+                            'id': el.access_id,
+                            'homepage': url.resolve( URLs.bangumi, el.access_id ),
+                            'name': el.name,
+                            'image': el.pc_image_url,
+                            'status': el.update_flg || el.new_program_flg ? 'new' : 'normal'
                         };
-                    }).get();
-
-                    _ = null;
+                    });
                 });
 
                 // add extra data
@@ -100,14 +103,23 @@ var hibiki = {
     getBangumiAsync: function ( id ) {
         return request
             .get( url.resolve( URLs.bangumi, id ) )
+            .set({
+                'Host': 'vcms-api.hibiki-radio.jp',
+                'Connection': 'keep-alive',
+                'Accept': 'application/json, text/plain, */*',
+                'Origin': 'http://hibiki-radio.jp',
+                'X-Requested-With': 'XMLHttpRequest',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36',
+                'DNT': '1',
+                'Referer': 'http://hibiki-radio.jp/',
+                'Accept-Encoding': 'gzip, deflate, sdch',
+                'Accept-Language': 'en-US,en;q=0.8'
+            })
             .then( function ( res ) {
-                var $,
+                var bangumi,
                     data;
 
-                $ = cheerio.load( res.text, {
-                    'decodeEntities': true,
-                    'lowerCaseAttributeNames': true
-                });
+                bangumi = JSON.parse( res.text );
 
                 // Extract html and structure data
                 // data will be formated as a json object in following structure:
@@ -126,24 +138,17 @@ var hibiki = {
                 // }
                 data = {
                     'timestamp': Date.now(),
-                    'name': $( 'title' ).text().slice( 27, -5 ),
+                    'name': bangumi.name,
                     'homepage': url.resolve( URLs.bangumi, id ),
-                    'description': $( 'table.hbkTextTable td:nth-of-type(1) div:nth-of-type(1)' ).eq( 0 ).text().trim(),
-                    'title': $( 'table.hbkTextTable td:nth-of-type(1) div:nth-of-type(3) table:nth-of-type(1) div' ).eq( 0 ).text().trim(),
-                    'comment': $( 'table.hbkTextTable td:nth-of-type(1) div:nth-of-type(3) table:nth-of-type(2) td' ).eq( 0 ).text().trim(),
-                    'schedule': (function () {
-                        var _, text;
-                        _ = $( 'table.hbkTextTable > tr > td:nth-of-type(2) > div' );
-                        if ( !( text = _.eq( -5 ).text().trim() ) ) {
-                            text = _.eq( -3 ).text();
-                        }
-                        return text;
-                    })(),
-                    'update': $( '.hbkDescriptonContents' ).eq( -1 ).prev().prev().find( 'span' ).eq( 0 ).text(),
-                    'personality': $( 'table.hbkTextTable td:nth-of-type(1) > table table td:nth-of-type(2n) a' ).map( function () {return $( this ).text();} ).get().join( ' ' ),
+                    'description': bangumi.description,
+                    'title': bangumi.latest_episode_name,
+                    'comment': bangumi.episode.episode_parts.map( function ( el ) {return el.description;}).join('\n'),
+                    'schedule': bangumi.onair_information,
+                    'update': bangumi.episode_updated_at,
+                    'personality': bangumi.cast.replace( ', ', '\n' ),
                     'guest': '',
-                    'images': $( 'table.hbkTextTable td:nth-of-type(1) div:nth-of-type(3) table:nth-of-type(2) td img' ).map( function () {return $( this ).attr( 'src' );}).get(),
-                    'audio': $( 'div.hbkDescriptonContents embed' ).eq( -1 ).attr( 'src' )
+                    'images': bangumi.episode.episode_parts.map( function ( el ) {return el.pc_image_url;}),
+                    'audio': ''
                 };
 
                 return data;
@@ -155,35 +160,7 @@ var hibiki = {
     },
 
     getAudioRealUrlAsync: function ( url ) {
-        return request
-            .get( url )
-            .then( function ( res ) {console.log(res)
-                var $,
-                    data;
-
-                $ = cheerio.load( res.text, {
-                    'decodeEntities': true,
-                    'lowerCaseAttributeNames': true
-                });
-
-                // Extract html and structure data
-                // data will be formated as a json object in following structure:
-                // Data should be formated as a json object in following structure:
-                // {
-                //     'url': 'URL, http://.......  or  mms://...........',
-                //     'downloadSupported': 'Boolean'
-                // }
-                data = {
-                    'url': $( 'ref' ).eq( 0 ).attr( 'href' ),
-                    'downloadSupported': false
-                };
-
-                return data;
-
-            }, function ( err ) {
-                console.log( 'hibiki:get audio error: ' + err );
-                throw new Error( err );
-            });
+        return Promise.resolve( 'not supported' );
     }
 };
 
