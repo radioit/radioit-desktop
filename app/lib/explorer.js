@@ -1,10 +1,10 @@
-var Url = require( 'url' );
+const Url = require( 'url' );
 
-var Promise = require("bluebird");
-var request = require( 'superagent-bluebird-promise' );
-var cheerio = require( 'cheerio' );
+const Promise = require("bluebird");
+const request = require( 'superagent-bluebird-promise' );
+const cheerio = require( 'cheerio' );
 
-var explorer = {
+const explorer = {
     // anlayze web page, focus on specifical filetype and string
     // @param url
     // @param options, = {
@@ -24,7 +24,7 @@ var explorer = {
     //     ]
     // }
     explore: function ( url, options ) {
-        var filetypeRe = {},
+        let filetypeRe = {},
             stringRe;
 
         options.filetype.map( function ( val ) {
@@ -39,7 +39,7 @@ var explorer = {
         return request
             .get( url )
             .then( function ( res ) {
-                var $,
+                let $,
                     _,
                     lines,
                     sections = [],
@@ -51,7 +51,7 @@ var explorer = {
                     'lowerCaseAttributeNames': true
                 });
 
-                for ( var type in filetypeRe ) {
+                for ( let type in filetypeRe ) {
                     files[type] = [];
                 }
 
@@ -59,7 +59,7 @@ var explorer = {
                 $( 'a,source' ).map( function () {
                     _ = $( this );
 
-                    for ( var type in filetypeRe ) {
+                    for ( let type in filetypeRe ) {
                         if ( _[0].name === 'a' ) {
                             filetypeRe[type].test( _.attr( 'href' ) ) && !seen[_.attr( 'href' )]  && files[type].push( Url.resolve( url, _.attr( 'href' ) ) ) && ( seen[_.attr( 'href' )] = true );
                         } else if ( _[0].name === 'source' ) {

@@ -1,11 +1,11 @@
-var path = require( 'path' );
-var fs = require( 'fs' );
-var deepcopy = require( 'deepcopy' );
+const path = require( 'path' );
+const fs = require( 'fs' );
+const deepcopy = require( 'deepcopy' );
 
-var Storage = function ( filePath ) {
-    var self = this;
+const Storage = function ( filePath ) {
+    const self = this;
 
-    var db = load( filePath );
+    let db = load( filePath );
 
     self.restore = function ( json ) {
         try {
@@ -39,7 +39,7 @@ var Storage = function ( filePath ) {
     };
 
     self.getItems = function ( keys ) {
-        var _ = {};
+        let _ = {};
         if ( keys ) {
             keys.forEach( function ( el ) {
                 _[el] = deepcopy( db[key] );

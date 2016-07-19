@@ -9,14 +9,14 @@ const Promise = require("bluebird");
 const provider = require( './provider.js' );
 const explorer = require( './explorer.js' );
 
-var App = function () {
-    var self = this;
+const App = function () {
+    const self = this;
     if ( !( this instanceof App ) ) {
         return new App();
     }
     EE.call( this );
 
-    var timeoutInterval,
+    let timeoutInterval,
         settings,
         cache;
 
@@ -25,8 +25,8 @@ var App = function () {
     // ----------------------------------------------
 
     // init
-    settings = ipcRenderer.sendSync( 'get-settings' );
-    cache = ipcRenderer.sendSync( 'get-cache' );
+    settings = ipcRenderer.sendSync( 'load-settings' );
+    cache = ipcRenderer.sendSync( 'load-cache' );
 
     timeoutInterval = settings.timeout.second
         + settings.timeout.minute * 60
@@ -36,7 +36,7 @@ var App = function () {
     localStorage.setItem( 'bangumi', JSON.stringify( cache['bangumi'] || {} ) );
 
     // APIs
-    // APIs include three types:
+    // APIs include types below:
     // * relate to catalogue and bangumi
     // * realte to explorer
     // * relate to setting
@@ -51,7 +51,7 @@ var App = function () {
     };
 
     self.catalogue.getAsync = function ( catalogueID, forcedRefresh ) {
-        var cacheCatalogue;
+        let cacheCatalogue;
 
         self.emit( 'get-catalogue:start', catalogueID );
         cacheCatalogue = JSON.parse( localStorage.getItem( 'catalogue' ) );
@@ -93,7 +93,7 @@ var App = function () {
 
     self.bangumi = {};
     self.bangumi.getAsync = function ( catalogueID, bangumiID, forcedRefresh ) {
-        var cacheBangumi;
+        let cacheBangumi;
 
         self.emit( 'get-bangumi:start', catalogueID, bangumiID );
         cacheBangumi = JSON.parse( localStorage.getItem( 'bangumi' ) ) || {};

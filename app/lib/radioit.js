@@ -4,8 +4,8 @@ const ipcMain = electron.ipcMain;
 const settings = require( './settings.js' );
 const cache = require( './cache.js' );
 
-var Radioit = ( function () {
-    var Radioit = function () {
+const Radioit = ( function () {
+    const Radioit = function () {
         this.registerListeners();
     };
 
@@ -19,16 +19,16 @@ var Radioit = ( function () {
 
     Radioit.prototype.registerListeners = function () {
         // setting
-        ipcMain.on( 'get-settings', function ( event, arg ) {
-            event.returnValue = settings.get();
+        ipcMain.on( 'load-settings', function ( event, arg ) {
+            event.returnValue = settings.load();
         });
         ipcMain.on( 'save-settings', function ( event, arg ) {
             settings.save( arg );
         });
 
         // cache
-        ipcMain.on( 'get-cache', function ( event, arg ) {
-            event.returnValue = cache.get();
+        ipcMain.on( 'load-cache', function ( event, arg ) {
+            event.returnValue = cache.load();
         });
         ipcMain.on( 'save-cache', function ( event, arg ) {
             cache.save( arg );

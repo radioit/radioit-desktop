@@ -1,8 +1,8 @@
-var extend = require( 'extend' );
-var env = require( './env.js' );
-var Storage = require( './storage.js' );
+const extend = require( 'extend' );
+const env = require( './env.js' );
+const Storage = require( './storage.js' );
 
-var settingStorage = new Storage( env.settingsPath );
+const settingStorage = new Storage( env.settingsPath );
 
 /**
  * Setting
@@ -19,7 +19,7 @@ var settingStorage = new Storage( env.settingsPath );
  *     codename
  */
 
-var Default = {
+const Default = {
     'timeout': {
         'hour': 0,
         'minute': 0,
@@ -40,14 +40,14 @@ var Default = {
 settingStorage.restore( extend( true, {}, Default, settingStorage.getItems() ) );
 settingStorage.save();
 
-var SettingManager = {
+const SettingManager = {
     save: function ( data ) {
         delete data.about;
         settingStorage.restore( data );
         settingStorage.save();
     },
 
-    get: function () {
+    load: function () {
         return settingStorage.getItems();
     }
 };

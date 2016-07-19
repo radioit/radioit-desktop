@@ -1,16 +1,16 @@
-var catalogue = {
+const catalogue = {
     'hibiki': require( './provider/hibiki.js' ),
     'onsen': require( './provider/onsen.js' ),
     'animate': require( './provider/animate.js' )
 };
 
-var provider = {
+const provider = {
     /**
      * Get the list of catalogue
      * @return {Array} list of catalogue
      */
     getCatalogueList: function () {
-        var arr = [],
+        let arr = [],
             item;
 
         for ( item in catalogue ) {
@@ -59,7 +59,7 @@ var provider = {
      * }
      */
     getCatalogueAsync: function ( id ) {
-        var c;
+        let c;
 
         if ( !( c = catalogue[id] ) ) {
             return;
@@ -89,7 +89,7 @@ var provider = {
      * }
      */
     getBangumiAsync: function ( catalogueID, bangumiID ) {
-        var c;
+        let c;
 
         if ( !( c = catalogue[catalogueID] ) ) {
             return;
@@ -110,7 +110,7 @@ var provider = {
      * }
      */
     getAudioRealUrlAsync: function ( catalogueID,  url ) {
-        var c;
+        let c;
 
         if ( !( c = catalogue[catalogueID] ) ) {
             return;

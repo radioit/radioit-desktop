@@ -1,49 +1,62 @@
-var url = require( 'url' );
+const url = require( 'url' );
 
-var Promise = require( 'bluebird' );
-var request = require( 'superagent-bluebird-promise' );
+const Promise = require( 'bluebird' );
+const request = require( 'superagent-bluebird-promise' );
 
-var NAME = '響 - HiBiKi Radio Station -';
-var HOST = 'http://hibiki-radio.jp';
+const NAME = '響 - HiBiKi Radio Station -';
+const HOST = 'http://hibiki-radio.jp';
 
-var URLs = {
+const URLs = {
     'catalogue': 'https://vcms-api.hibiki-radio.jp/api/v1/programs',
-    'bangumi': 'https://vcms-api.hibiki-radio.jp/api/v1/programs/'
+    'bangumi': 'https://vcms-api.hibiki-radio.jp/api/v1/programs/',
+    'BangumiDetail': `http://hibiki-radio.jp/description/`
 };
 
-var hibiki = {
+const HEADERs = {
+    'Host': 'vcms-api.hibiki-radio.jp',
+    'Connection': 'keep-alive',
+    'Accept': 'application/json, text/plain, */*',
+    'Origin': 'http://hibiki-radio.jp',
+    'X-Requested-With': 'XMLHttpRequest',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36',
+    'DNT': '1',
+    'Referer': 'http://hibiki-radio.jp/',
+    'Accept-Encoding': 'gzip, deflate, sdch',
+    'Accept-Language': 'en-US,en;q=0.8'
+}
+
+const hibiki = {
     catalogueName: NAME,
     host: HOST,
 
     getCatalogueAsync: function () {
         return request
             .get( URLs.catalogue )
-            .set({
-                'Host': 'vcms-api.hibiki-radio.jp',
-                'Connection': 'keep-alive',
-                'Accept': 'application/json, text/plain, */*',
-                'Origin': 'http://hibiki-radio.jp',
-                'X-Requested-With': 'XMLHttpRequest',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36',
-                'DNT': '1',
-                'Referer': 'http://hibiki-radio.jp/',
-                'Accept-Encoding': 'gzip, deflate, sdch',
-                'Accept-Language': 'en-US,en;q=0.8'
-            })
+            .set( HEADERs )
             .then( function ( res ) {
-                var bangumis,
+                let bangumis,
                     days,
                     data;
 
-                var filterWithSpecKV = function ( key, value ) {
-                    return function( el ) {
+                let filterWithSpecKV = function ( key, value ) {
+                    return function ( el ) {
                         return el[key] === value;
                     };
                 };
 
                 days = 'mon tue wed thu fri sat sun irr'.split( ' ' );
+                days = {
+                    'mon': 1,
+                    'tue': 2,
+                    'wed': 3,
+                    'thu': 4,
+                    'fri': 5,
+                    'sat': 6,
+                    'sun': 6,
+                    'irr': 7,
+                };
 
-                bangumis = JSON.parse( res.text );
+                bangumis = JSON.parse( res.text );console.log(bangumis)
 
                 // Extract html and structure data
                 // data will be formated as a json object in following structure:
@@ -75,15 +88,15 @@ var hibiki = {
                 // Structure daily bangumis
                 data = {};
                 data.bangumi = {};
-                days.forEach( function ( el, i ) {
-                    data.bangumi[el] = bangumis.filter( filterWithSpecKV( 'day_of_week', i ) ).map( function ( el ) {
-                        return {
-                            'id': el.access_id,
-                            'homepage': url.resolve( URLs.bangumi, el.access_id ),
-                            'name': el.name,
-                            'image': el.pc_image_url,
-                            'status': el.update_flg || el.new_program_flg ? 'new' : 'normal'
-                        };
+                Object.keys( days ).forEach( function ( el ) {
+                    data.bangumi[el] = bangumis.filter( filterWithSpecKV( 'day_of_week', days[el] ) ).map( function ( el ) {
+                            return {
+                                'id': el.access_id,
+                                'homepage': url.resolve( URLs.bangumi, el.access_id ),
+                                'name': el.name,
+                                'image': el.pc_image_url,
+                                'status': el.update_flg || el.new_program_flg ? 'new' : 'normal'
+                            };
                     });
                 });
 
@@ -103,18 +116,7 @@ var hibiki = {
     getBangumiAsync: function ( id ) {
         return request
             .get( url.resolve( URLs.bangumi, id ) )
-            .set({
-                'Host': 'vcms-api.hibiki-radio.jp',
-                'Connection': 'keep-alive',
-                'Accept': 'application/json, text/plain, */*',
-                'Origin': 'http://hibiki-radio.jp',
-                'X-Requested-With': 'XMLHttpRequest',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36',
-                'DNT': '1',
-                'Referer': 'http://hibiki-radio.jp/',
-                'Accept-Encoding': 'gzip, deflate, sdch',
-                'Accept-Language': 'en-US,en;q=0.8'
-            })
+            .set( HEADERs )
             .then( function ( res ) {
                 var bangumi,
                     data;
@@ -139,7 +141,7 @@ var hibiki = {
                 data = {
                     'timestamp': Date.now(),
                     'name': bangumi.name,
-                    'homepage': url.resolve( URLs.bangumi, id ),
+                    'homepage': url.resolve( URLs.BangumiDetail, id ),
                     'description': bangumi.description,
                     'title': bangumi.latest_episode_name,
                     'comment': bangumi.episode.episode_parts.map( function ( el ) {return el.description;}).join('\n'),
@@ -160,7 +162,7 @@ var hibiki = {
     },
 
     getAudioRealUrlAsync: function ( url ) {
-        return Promise.resolve( 'not supported' );
+        return Promise.resolve( { url: 'not supported' } );
     }
 };
 

@@ -1,6 +1,6 @@
-var fs = require( 'fs' );
-var path = require( 'path' );
-var packageJson = require( '../package.json' );
+const fs = require( 'fs' );
+const path = require( 'path' );
+const packageJson = require( '../package.json' );
 
 exports.name = packageJson.name;
 exports.description = packageJson.description;

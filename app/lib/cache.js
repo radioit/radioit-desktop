@@ -1,11 +1,11 @@
-var extend = require( 'extend' );
-var env = require( './env.js' );
-var Storage = require( './storage.js' );
+const extend = require( 'extend' );
+const env = require( './env.js' );
+const Storage = require( './storage.js' );
 
-var cacheStorage = new Storage( env.cachePath );
+const cacheStorage = new Storage( env.cachePath );
 
-var CacheManager = {
-    get: function () {
+const CacheManager = {
+    load: function () {
         return extend( true, {}, cacheStorage.getItems() );
     },
 

@@ -1,19 +1,19 @@
-var url = require( 'url' );
+const url = require( 'url' );
 
-var Promise = require( 'bluebird' );
-var request = require( 'superagent-bluebird-promise' );
-var cheerio = require( 'cheerio' );
+const Promise = require( 'bluebird' );
+const request = require( 'superagent-bluebird-promise' );
+const cheerio = require( 'cheerio' );
 
-var NAME = 'インターネットラジオステーション＜音泉＞';
-var HOST = 'http://www.onsen.ag';
+const NAME = 'インターネットラジオステーション＜音泉＞';
+const HOST = 'http://www.onsen.ag';
 
-var URLs = {
+const URLs = {
     'catalogue': 'http://www.onsen.ag',
     'bangumi': 'http://www.onsen.ag/program/',
     'audio': 'http://www.onsen.ag/data/api/getMovieInfo/'
 };
 
-var onsen = {
+const onsen = {
     catalogueName: NAME,
     host: HOST,
 
@@ -21,7 +21,7 @@ var onsen = {
         return request
             .get( URLs.catalogue )
             .then( function ( res ) {
-                var $,
+                let $,
                     days,
                     bangumi,
                     data;
@@ -68,7 +68,7 @@ var onsen = {
 
                 // Structure daily bangumis
                 $( 'li', '.listWrap' ).each( function ( i, el ) {
-                    var _;
+                    let _;
 
                     _ = $( this );
                     data.bangumi[_.data( 'week' )].push({
@@ -102,7 +102,7 @@ var onsen = {
         return request
             .get( url.resolve( URLs.bangumi, id ) )
             .then( function ( res ) {
-                var $,
+                let $,
                     data;
 
                 $ = cheerio.load( res.text, {
@@ -136,6 +136,7 @@ var onsen = {
                     'update': $( '.newProgramUpdate' ).text().trim(),
                     'personality': $( '.personality02' ).map( function () { return $( this ).text().trim();} ).get().join( ' ' ),
                     'guest': '',
+                    'image': url.resolve( res.request.url, $( '#mainImg img' ).attr( 'src' ) ),
                     'images': $( '.newProgramLeft > img' ).map( function () {return url.resolve( URLs.bangumi, id ) + '/' + $( this ).attr( 'src' );}).get(),
                     'audio': url.resolve( URLs.audio, id )
                 };
@@ -159,7 +160,7 @@ var onsen = {
         return request
             .get( url )
             .then( function ( res ) {
-                var json = JSON.parse( res.text.slice( 9, -3 ) );
+                let json = JSON.parse( res.text.slice( 9, -3 ) );
                 return {
                     'url': json["moviePath"]["pc"],
                     'downloadSupported': true

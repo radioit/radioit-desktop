@@ -1,18 +1,18 @@
-var url = require( 'url' );
+const url = require( 'url' );
 
-var Promise = require( 'bluebird' );
-var request = require( 'superagent-bluebird-promise' );
-var cheerio = require( 'cheerio' );
+const Promise = require( 'bluebird' );
+const request = require( 'superagent-bluebird-promise' );
+const cheerio = require( 'cheerio' );
 
-var NAME = 'ウェブラジオ - アニメイトTV';
-var HOST = 'http://www.animate.tv/radio';
+const NAME = 'ウェブラジオ - アニメイトタイムズ';
+const HOST = 'http://www.animatetimes.com/radio';
 
-var URLs = {
-    'catalogue': 'http://animate.tv/radio',
-    'bangumi': 'http://animate.tv/radio/'
+const URLs = {
+    'catalogue': 'http://www.animatetimes.com/radio',
+    'bangumi': 'http://www.animatetimes.com/radio/'
 };
 
-var animate = {
+const animate = {
     catalogueName: NAME,
     host: HOST,
 
@@ -20,7 +20,7 @@ var animate = {
         return request
             .get( URLs.catalogue )
             .then( function ( res ) {
-                var $,
+                let $,
                     days,
                     bangumi,
                     data;
@@ -62,7 +62,7 @@ var animate = {
                 data = {};
                 data.bangumi = {};
                 days.forEach( function ( el ) {
-                    var _;
+                    let _;
 
                     data.bangumi[el] = $( '#' + el + ' .box' ).map( function () {
                         _ = $( this );
@@ -97,7 +97,7 @@ var animate = {
         return request
             .get( url.resolve( URLs.bangumi, id ) )
             .then( function ( res ) {
-                var $,
+                let $,
                     data;
 
                 $ = cheerio.load( res.text, {
@@ -131,7 +131,7 @@ var animate = {
                     'personality': $( '.textBox ul li' ).map( function () {return $( this ).text() }).get(),
                     'guest': '',
                     'images': (function () {
-                        var image = $( '#tabBox01 img' );
+                        let image = $( '#tabBox01 img' );
                         image = image.length ? image : $( '.photo img' );
                         return image.map( function () {return url.resolve( URLs.catalogue, $( this ).attr( 'src' ) );} ).get();
                     })(),
@@ -156,7 +156,7 @@ var animate = {
                 throw new Error( err );
             })
             .then( function ( res ) {console.log(res)
-                var $,
+                let $,
                     data;
 
                 $ = cheerio.load( res.text, {

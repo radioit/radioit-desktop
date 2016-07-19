@@ -1,23 +1,20 @@
-const electron = require( 'electron' );
-const app = electron.app;  // Module to control application life.
-const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
-const ipcMain = electron.ipcMain;
+const { app, BrowserWindow, ipcMain }  = require( 'electron' );
 const path = require( 'path' );
 const env = require( './lib/env.js' );
 
 // global variable
-var APP_NAME = env.name + ' ' + env.version + ' ' + env.codename;
-var INDEX = 'file://' + path.join( __dirname, 'index.html' );
+let APP_NAME = `${env.name} ${env.version} ${env.codename}`;
+let INDEX = `file://${__dirname}/index.html`;
 
 // custom js
-var Radioit = require( './lib/radioit.js' );
+let Radioit = require( './lib/radioit.js' );
 Radioit.boot();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
-var mainWindow = null;
+let mainWindow = null;
 
-var shouldQuit = app.makeSingleInstance( function ( commandLine, workingDirectory ) {
+let shouldQuit = app.makeSingleInstance( function ( commandLine, workingDirectory ) {
     // Someone tried to run a second instance, we should focus our window
     if ( mainWindow ) {
         if ( mainWindow.isMinimized() ) {
@@ -58,7 +55,7 @@ function appReady () {
     });
 
     mainWindow.loadURL( INDEX );
-    // mainWindow.openDevTools(); // remove this
+    mainWindow.openDevTools(); // remove this
 
     mainWindow.webContents.on( 'did-finish-load', function () {
         mainWindow.show();
