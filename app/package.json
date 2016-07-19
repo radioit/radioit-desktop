@@ -38,7 +38,7 @@
     "release:js": "browserify src/modules/entry.js | uglifyjs > static/js/bundle.js",
     "watch:css": "stylus -u nib src/css/app.styl -o static/css/app.css -w",
     "watch:js": "watchify src/modules/entry.js -o static/js/bundle.js",
-    "test": "electron main.js --enable-logging 2>&1 | silence-chromium",
+    "test": "electron --debug main.js --development",
     "test:js": "parallelshell \"npm run watch:js\" \"npm run test\"",
     "start": "npm run build:js && npm run build:css && electron main.js --enable-logging 2>&1 | silence-chromium",
     "asar": "asar ./ Radioit.asar",
