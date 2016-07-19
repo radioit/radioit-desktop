@@ -18,7 +18,7 @@ module.exports = [ 'bangumiListRestrict',
         };
 
         vm.isSelected = function ( day ) {
-            return bangumiListRestrict.getSelectedDay() == day;
+            return bangumiListRestrict.getSelectedDay() === day;
         };
 
         vm.isDisabled = function () {

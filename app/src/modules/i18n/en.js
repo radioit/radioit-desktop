@@ -12,12 +12,13 @@ module.exports = {
     'TAG_HOME_NAME': 'Home',
     'TAG_SETTINGS_NAME': 'Settings',
     'TAG_EXPLORE_NAME': 'Explore',
+    'TAG_FAVORITE_NAME': 'Favorite',
 
     'BUTTON_GETAUDIO_TEXT': 'Click to get audio',
     'BUTTON_SAVE_TEXT': 'Save',
     'BUTTON_CHANNEL_TITLE': 'Select Channel',
 
-    'INPUT_URL_PLACEHOLDER': 'URL, such as http://www.google.com',
+    'INPUT_URL_PLACEHOLDER': 'URL',
     'INPUT_REGTEXT_PLACEHOLDER': 'RegExp text',
 
     'INPUT_HOUR_LABEL': 'hour',
@@ -30,9 +31,10 @@ module.exports = {
     'INPUT_SECOND_ERROR_MIN': 'Less than 1',
     'INPUT_SECOND_ERROR_MAX': 'Larger than 60',
 
-    'SETTING_HEADER_CACHE': 'Cache',
+    'SETTING_HEADER_CACHE': 'Cache Timeout in',
     'SETTING_HEADER_LANGUAGE': 'Language',
-    'SETTING_HEADER_ABOUT': 'About',
+    'SETTING_HEADER_VERSION': 'Version',
+    'SETTING_HEADER_AUTHOR': 'Author',
 
     'TEXT-GoTo': 'Go to',
     'TEXT-Back': 'Back',

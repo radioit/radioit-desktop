@@ -2,7 +2,7 @@ module.exports = [ '$scope', '$translate', 'settingsService',
     function ( $scope, $translate, settingsService ) {
         var vm = this;
 
-        vm.items = settingsService.getSettings();
+        vm.items = settingsService.loadSettings();
 
         vm.changeLanguage = function () {
             $translate.use( vm.items.language );

@@ -1,71 +1,72 @@
 <md-content class="paper-bg-white content-high">
-    <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" style="margin:20px auto;width:61.8%" layout layout-align="center center" ng-controller="SettingsCtrl as settings">
-        <md-list flex>
-            <!-- settings:cache start -->
-            <md-subheader>{{ 'SETTING_HEADER_CACHE' | translate }}</md-subheader>
-            <md-list-item>
-                <form name="cacheForm" layout="row" layout-align="start center">
-                    <span>{{ 'TEXT-TimeoutIn' | translate }}</span>
-                    <md-input-container flex>
-                        <label>{{ 'INPUT_HOUR_LABEL' | translate }}</label>
-                        <input type="number" name="hour" step="1" min="0" max="24" ng-model="settings.items.timeout.hour">
-                        <div ng-messages="cacheForm.hour.$error">
-                            <div ng-message="min">{{ 'INPUT_HOUR_ERROR_MIN' | translate }}</div>
-                            <div ng-message="max">{{ 'INPUT_HOUR_ERROR_MAX' | translate }}</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container flex>
-                        <label>{{ 'INPUT_MINUTE_LABEL' | translate }}</label>
-                        <input type="number" name="minute" step="1" min="0" max="60" ng-model="settings.items.timeout.minute">
-                        <div ng-messages="cacheForm.minute.$error">
-                            <div ng-message="min">{{ 'INPUT_MINUTE_ERROR_MIN' | translate }}</div>
-                            <div ng-message="max">{{ 'INPUT_MINUTE_ERROR_MAX' | translate }}</div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container flex>
-                        <label>{{ 'INPUT_SECOND_LABEL' | translate }}</label>
-                        <input type="number" name="second" step="1" min="1" max="60" ng-model="settings.items.timeout.second">
-                        <div ng-messages="cacheForm.second.$error">
-                            <div ng-message="min">{{ 'INPUT_SECOND_ERROR_MIN' | translate }}</div>
-                            <div ng-message="max">{{ 'INPUT_SECOND_ERROR_MAX' | translate }}</div>
-                        </div>
-                    </md-input-container>
-                </form>
-            </md-list-item>
-            <!-- settings:cache end -->
-            <md-list-item layout layout-align="center center">
-                <md-button class="md-primary md-raised" ng-click="settings.save()">{{ 'BUTTON_SAVE_TEXT' | translate }}</md-button>
-            </md-list-item>
-            <!-- settings:language start -->
-            <md-subheader>{{ 'SETTING_HEADER_LANGUAGE' | translate }}</md-subheader>
-            <md-list-item>
-                <md-select ng-model="settings.items.language" ng-change="settings.changeLanguage()" aria-label="language">
-                    <md-option value="en">English</md-option>
-                    <md-option value="chs">简体中文</md-option>
-                </md-select>
-            </md-list-item>
-            <!-- settings:language end -->
-            <!-- settings:about start -->
-            <md-subheader>{{ 'SETTING_HEADER_ABOUT' | translate }}</md-subheader>
-            <md-list-item>
-                <md-icon icon-font-library="material-icons" aria-label="author">perm_identity</md-icon>
-                <p>{{ settings.items.about.author }}</p>
-            </md-list-item>
-            <md-list-item>
-                <md-icon icon-font-library="material-icons" aria-label="email">email</md-icon>
-                <p>{{ settings.items.about.email }}</p>
-            </md-list-item>
-            <md-list-item>
-                <md-icon md-svg-src="static/image/github.svg" aria-label="github"></md-icon>
-                <p><a class="link" ng-click="app.openUrl('https://github.com/' + settings.items.about.githubAccount )">{{ settings.items.about.githubAccount }}</a></p>
-            </md-list-item>
-            <md-list-item>
-                <p>{{ settings.items.about.version }} {{ settings.items.about.codename }}</p>
-            </md-list-item>
-            <md-list-item>
-                <md-button class="md-raised md-primary" aria-label="debug" ng-click="app.openDevTools()">{{ 'TEXT-Debug' | translate }}</md-button>
-            </md-list-item>
-            <!-- settings:about end -->
-        </md-list>
+    <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" style="margin:20px auto;width:61.8%" layout="column" ng-controller="SettingsCtrl as settings" >
+        <!-- settings:cache start -->
+        <section flex>
+            <md-subheader class="md-no-sticky">{{ 'SETTING_HEADER_CACHE' | translate }}</md-subheader>
+            <md-list flex>
+                <md-list-item>
+                    <form name="cacheForm" layout="row" layout-align="start start">
+                        <md-input-container class="md-block">
+                            <label>{{ 'INPUT_HOUR_LABEL' | translate }}</label>
+                            <input type="number" name="hour" step="1" min="0" max="24" ng-model="settings.items.timeout.hour" ng-blur="settings.save()">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>{{ 'INPUT_MINUTE_LABEL' | translate }}</label>
+                            <input type="number" name="minute" step="1" min="0" max="60" ng-model="settings.items.timeout.minute" ng-blur="settings.save()">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>{{ 'INPUT_SECOND_LABEL' | translate }}</label>
+                            <input type="number" name="second" step="1" min="1" max="60" ng-model="settings.items.timeout.second" ng-blur="settings.save()">
+                        </md-input-container>
+                    </form>
+                </md-list-item>
+            </md-list>
+        </section>
+        <!-- settings:cache end -->
+        <!-- settings:language start -->
+        <section flex>
+            <md-subheader class="md-no-sticky">{{ 'SETTING_HEADER_LANGUAGE' | translate }}</md-subheader>
+            <md-list flex>
+                <md-list-item>
+                    <md-select ng-model="settings.items.language" ng-change="settings.changeLanguage()" aria-label="language">
+                        <md-option value="en">English</md-option>
+                        <md-option value="chs">简体中文</md-option>
+                    </md-select>
+                </md-list-item>
+            </md-list>
+        </section>
+        <!-- settings:language end -->
+        <!-- settings:version start -->
+        <section flex>
+            <md-subheader class="md-no-sticky">{{ 'SETTING_HEADER_VERSION' | translate }}</md-subheader>
+            <md-list>
+                <md-list-item>
+                    <p>{{ settings.items.about.version }} {{ settings.items.about.codename }}</p>
+                </md-list-item>
+                <md-list-item>
+                    <md-button class="md-raised md-primary md-exclude" aria-label="debug" ng-click="app.openDevTools()">{{ 'TEXT-Debug' | translate }}</md-button>
+                </md-list-item>
+            </md-list>
+        </section>
+        <!-- settings:version end -->
+        <!-- settings:about start -->
+        <section flex>
+            <md-subheader class="md-no-sticky">{{ 'SETTING_HEADER_AUTHOR' | translate }}</md-subheader>
+            <md-list flex>
+                <md-list-item>
+                    <md-icon icon-font-library="material-icons" aria-label="author">perm_identity</md-icon>
+                    <p>{{ settings.items.about.author }}</p>
+                </md-list-item>
+                <md-list-item>
+                    <md-icon icon-font-library="material-icons" aria-label="email">email</md-icon>
+                    <p>{{ settings.items.about.email }}</p>
+                </md-list-item>
+                <md-list-item>
+                    <md-icon md-svg-src="static/image/github.svg" aria-label="github"></md-icon>
+                    <p><a class="link" ng-click="app.openUrl('https://github.com/' + settings.items.about.githubAccount )">{{ settings.items.about.githubAccount }}</a></p>
+                </md-list-item>
+            </md-list>
+        </section>
+        <!-- settings:about end -->
     </md-whiteframe>
 </md-content>

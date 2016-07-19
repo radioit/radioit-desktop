@@ -2,9 +2,10 @@
     <md-whiteframe class="md-whiteframe-z2 paper-bg-pure-white" layout="column" layout-padding style="width:80%;margin:20px auto" ng-controller="ExplorerCtrl as explorer">
         <div style="margin:8px">
             <!-- url input start -->
-            <md-input-container md-no-float flex>
+            <md-input-container md-no-float class="md-block">
                 <md-icon icon-font-library="material-icons" class="paper-text-grey" aria-label="link" md-menu-origin>link</md-icon>
-                <input type="text" required placeholder="{{ 'INPUT_URL_PLACEHOLDER' | translate }}" ng-model="explorer.url" ng-disabled="explorer.busy">
+                <input type="text" required placeholder="{{ 'INPUT_URL_PLACEHOLDER' | translate }}" ng-model="explorer.url" ng-disabled="explorer.busy" ng-pattern="/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/" >
+                <div class="hint">http://www.google.com</div>
             </md-input-container>
             <!-- url input end -->
 
@@ -15,7 +16,7 @@
             <!-- filetypes end -->
 
             <!-- search string start -->
-            <md-input-container md-no-float flex>
+            <md-input-container md-no-float class="md-block">
                 <md-icon icon-font-library="material-icons" class="paper-text-grey" aria-label="search text">search</md-icon>
                 <input type="text" placeholder="{{ 'INPUT_REGTEXT_PLACEHOLDER' | translate }}" ng-model="explorer.string" ng-disabled="explorer.busy">
             </md-input-container>

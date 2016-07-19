@@ -1,6 +1,6 @@
 module.exports = [ '$window',
     function ( $window ) {
-        this.getSettings = function () {
+        this.loadSettings = function () {
             return $window.App.settings.load();
         };
 

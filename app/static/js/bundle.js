@@ -37,7 +37,7 @@ module.exports = [ '$state', '$scope', '$rootScope', '$stateParams', 'bangumiSer
 
         // merge data from parent and ajax
         // $scope.bangumiToBeLoaded is from $scope.$parent
-        vm.data = angular.merge( detail, $scope.bangumiToBeLoaded );
+        vm.data = angular.merge( {}, $scope.bangumiToBeLoaded, detail );
 
         bangumiListRestrict.hideList();
     }
@@ -378,9 +378,9 @@ module.exports = [ '$scope', '$sanitize', 'explorerService',
             for ( var key in vm.filetype ) {
                 vm.filetype[key] && options.filetype.push( key );
             }
-            if ( options.filetype.length === 0 ) {
-                return;
-            }
+            // if ( options.filetype.length === 0 ) {
+            //     return;
+            // }
             vm.string && ( options.string = vm.string );
 
             // retrive data
@@ -448,12 +448,13 @@ module.exports = {
     'TAG_HOME_NAME': '主页',
     'TAG_SETTINGS_NAME': '设置',
     'TAG_EXPLORE_NAME': '探索',
+    'TAG_FAVORITE_NAME': '偏好',
 
     'BUTTON_GETAUDIO_TEXT': '点击获取音频地址',
     'BUTTON_SAVE_TEXT': '保存',
     'BUTTON_CHANNEL_TITLE': '选择频道',
 
-    'INPUT_URL_PLACEHOLDER': '网址，比如 http://www.google.com',
+    'INPUT_URL_PLACEHOLDER': '网址',
     'INPUT_REGTEXT_PLACEHOLDER': '正则表达式',
 
     'INPUT_HOUR_LABEL': '时',
@@ -466,9 +467,10 @@ module.exports = {
     'INPUT_SECOND_ERROR_MIN': '不小于 1',
     'INPUT_SECOND_ERROR_MAX': '不大于 60',
 
-    'SETTING_HEADER_CACHE': '缓存',
+    'SETTING_HEADER_CACHE': '缓存有效期',
     'SETTING_HEADER_LANGUAGE': '语言',
-    'SETTING_HEADER_ABOUT': '关于',
+    'SETTING_HEADER_VERSION': '当前版本',
+    'SETTING_HEADER_AUTHOR': '作者',
 
     'TEXT-GoTo': '前往',
     'TEXT-Back': '返回',
@@ -497,12 +499,13 @@ module.exports = {
     'TAG_HOME_NAME': 'Home',
     'TAG_SETTINGS_NAME': 'Settings',
     'TAG_EXPLORE_NAME': 'Explore',
+    'TAG_FAVORITE_NAME': 'Favorite',
 
     'BUTTON_GETAUDIO_TEXT': 'Click to get audio',
     'BUTTON_SAVE_TEXT': 'Save',
     'BUTTON_CHANNEL_TITLE': 'Select Channel',
 
-    'INPUT_URL_PLACEHOLDER': 'URL, such as http://www.google.com',
+    'INPUT_URL_PLACEHOLDER': 'URL',
     'INPUT_REGTEXT_PLACEHOLDER': 'RegExp text',
 
     'INPUT_HOUR_LABEL': 'hour',
@@ -515,9 +518,10 @@ module.exports = {
     'INPUT_SECOND_ERROR_MIN': 'Less than 1',
     'INPUT_SECOND_ERROR_MAX': 'Larger than 60',
 
-    'SETTING_HEADER_CACHE': 'Cache',
+    'SETTING_HEADER_CACHE': 'Cache Timeout in',
     'SETTING_HEADER_LANGUAGE': 'Language',
-    'SETTING_HEADER_ABOUT': 'About',
+    'SETTING_HEADER_VERSION': 'Version',
+    'SETTING_HEADER_AUTHOR': 'Author',
 
     'TEXT-GoTo': 'Go to',
     'TEXT-Back': 'Back',
@@ -640,7 +644,7 @@ module.exports = [ '$scope', '$translate', 'settingsService',
     function ( $scope, $translate, settingsService ) {
         var vm = this;
 
-        vm.items = settingsService.getSettings();
+        vm.items = settingsService.loadSettings();
 
         vm.changeLanguage = function () {
             $translate.use( vm.items.language );
@@ -654,7 +658,7 @@ module.exports = [ '$scope', '$translate', 'settingsService',
 },{}],24:[function(require,module,exports){
 module.exports = [ '$window',
     function ( $window ) {
-        this.getSettings = function () {
+        this.loadSettings = function () {
             return $window.App.settings.load();
         };
 
@@ -698,7 +702,7 @@ module.exports = [ 'bangumiListRestrict',
         };
 
         vm.isSelected = function ( day ) {
-            return bangumiListRestrict.getSelectedDay() == day;
+            return bangumiListRestrict.getSelectedDay() === day;
         };
 
         vm.isDisabled = function () {

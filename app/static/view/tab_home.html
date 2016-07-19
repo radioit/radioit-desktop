@@ -1,11 +1,11 @@
-<div class="left-pane paper-bg-pure-white" layout="column" layout-align="start center">
+<md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp paper-bg-pure-white md-sidenav-left home-sidenav" layout="column" layout-align="start center">
     <!-- channel switch start -->
     <md-menu ng-controller="CatalogueSwitchCtrl as catalogueSwitch">
         <md-button class="md-icon-button" style="transform:scale(1.5)" ng-click="$mdOpenMenu()" ng-disabled="catalogueSwitch.isDisabled()">
             <md-tooltip md-autohide md-direction="right">{{ 'BUTTON_CHANNEL_TITLE' | translate }}</md-tooltip>
             <md-icon icon-font-library="material-icons" class="paper-text-blue" aria-label="channel" md-menu-origin>radio</md-icon>
         </md-button>
-        <md-menu-content>
+        <md-menu-content width="8">
             <md-menu-item ng-repeat="catalogue in catalogueSwitch.list">
                 <md-button ng-click="catalogueSwitch.switch(catalogue.id)"><span md-menu-align-target>{{ catalogue.name }}</span></md-button>
             </md-menu-item>
@@ -14,11 +14,11 @@
     <!-- channel switch end -->
     <!-- weekday left start -->
     <md-list id="weekday-list" ng-controller="WeekdayCtrl as weekday" ng-disabled="catalogueSwitch.isDisabled()">
-        <md-list-item ng-repeat="day in weekday.day" ng-class="{'active' : weekday.isSelected(day)}" ng-click="weekday.switchDay(day)">
-            <p>{{ day | isToday | translate }}</p>
+        <md-list-item ng-repeat="day in weekday.day" ng-class="{active: weekday.isSelected(day)}">
+            <md-button ng-href="" ng-click="weekday.switchDay(day)">{{ day | isToday | translate }}</md-button>
         </md-list-item>
     </md-list>
-</div>
+</md-sidenav>
 <!-- weekday left end -->
 <!-- bangumi content start -->
 <md-content class="content-high" flex md-scroll-y>

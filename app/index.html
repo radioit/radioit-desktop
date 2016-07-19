@@ -11,7 +11,7 @@
 </head>
 <body ng-app="radioit">
 
-<div id="app" ng-controller="AppCtrl as app">
+<div id="app" ng-controller="AppCtrl as app" ng-cloak>
 
 <!-- title bar start -->
 <div no-select class="titlebar paper-bg-light-black paper-text-white" layout="row" layout-align="start center">
@@ -21,6 +21,10 @@
         <div class="titlebar-button" ng-class="{active:app.selectedTabName=='home'}" ng-click="app.selectTab('home')">
             <md-icon icon-font-library="material-icons" aria-label="home">home</md-icon>
             <p>{{ 'TAG_HOME_NAME' | translate }}</p>
+        </div>
+        <div class="titlebar-button" ng-class="{active:app.selectedTabName=='favorite'}" ng-click="app.selectTab('favorite')">
+            <md-icon icon-font-library="material-icons" aria-label="favorite">favorite</md-icon>
+            <p>{{ 'TAG_FAVORITE_NAME' | translate }}</p>
         </div>
         <div class="titlebar-button" ng-class="{active:app.selectedTabName=='explore'}" ng-click="app.selectTab('explore')">
             <md-icon icon-font-library="material-icons" aria-label="explore">explore</md-icon>
@@ -47,7 +51,7 @@
 <!-- title bar end -->
 
 <!-- tab = home start -->
-<div class="paper-bg-white content-high animate-opcity" ng-show="app.selectedTabName=='home'" layout="row" ng-include="'static/view/tab_home.html'"></div>
+<md-content class="paper-bg-white content-high animate-opcity" ng-show="app.selectedTabName=='home'" layout="row" ng-include="'static/view/tab_home.html'"></md-content>
 <!-- tab = home end -->
 
 <!-- tab = explore start -->

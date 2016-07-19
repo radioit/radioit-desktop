@@ -32,9 +32,9 @@ module.exports = [ '$scope', '$sanitize', 'explorerService',
             for ( var key in vm.filetype ) {
                 vm.filetype[key] && options.filetype.push( key );
             }
-            if ( options.filetype.length === 0 ) {
-                return;
-            }
+            // if ( options.filetype.length === 0 ) {
+            //     return;
+            // }
             vm.string && ( options.string = vm.string );
 
             // retrive data
